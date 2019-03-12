@@ -8,50 +8,40 @@ import com.bashkirov.telegram.contest.DataParser;
 import com.bashkirov.telegram.contest.FileReader;
 import com.bashkirov.telegram.contest.models.ChartModel;
 
-import java.util.List;
+import org.json.JSONException;
 
-import io.reactivex.Single;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableSingleObserver;
-import io.reactivex.schedulers.Schedulers;
+import java.util.List;
 
 class MainActivityViewModel extends ViewModel {
 
     private final String TEST_DATA_FILE_NAME = "chart_data.json";
 
-    private final CompositeDisposable disposables = new CompositeDisposable();
-
     private final MutableLiveData<List<ChartModel>> chartsLiveData = new MutableLiveData<>();
 
+    private Thread mLoader;
+
     void requestData(final Context context) {
-        disposables.add(
-                Single.fromCallable(() -> {
-                    String data = FileReader.readStringFromAsset(context, TEST_DATA_FILE_NAME);
-                    return DataParser.parseCharListJsonString(data);
-                })
-                .subscribeOn(Schedulers.newThread())
-                .subscribeWith(new DisposableSingleObserver<List<ChartModel>>(){
-                    @Override
-                    public void onSuccess(List<ChartModel> chartModels) {
-                        chartsLiveData.postValue(chartModels);
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        e.printStackTrace();
-                    }
-                }));
-
-
+        //This simple approach is applied for the sake of low app size and low min API support.
+        //Otherwise CompletableFuture (API level 24+) or RxJava (increasing app size by ~700KB) should be used
+        mLoader = new Thread(() -> {
+            try {
+                String data = FileReader.readStringFromAsset(context, TEST_DATA_FILE_NAME);
+                List<ChartModel> charts = DataParser.parseCharListJsonString(data);
+                chartsLiveData.postValue(charts);
+            } catch (JSONException ex) {
+                ex.printStackTrace();
+            }
+        });
+        mLoader.start();
     }
 
-    public MutableLiveData<List<ChartModel>> getChartsLiveData() {
+    MutableLiveData<List<ChartModel>> getChartsLiveData() {
         return chartsLiveData;
     }
 
     @Override
     protected void onCleared() {
-        disposables.dispose();
+        mLoader.interrupt();
         super.onCleared();
     }
 }
