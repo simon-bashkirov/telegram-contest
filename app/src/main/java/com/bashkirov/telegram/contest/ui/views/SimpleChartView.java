@@ -88,12 +88,9 @@ public class SimpleChartView extends View {
         }
         List<FloatPointModel> normalized = new ArrayList<>();
 
-        float minYScale = minY;
-        float maxYScale = 1.1f * maxY;
-
         for (PointModel point : points) {
             normalized.add(new FloatPointModel((float) (point.getX() - minX) / (maxX - minX) * width,
-                    (float) (point.getY() - minYScale) / (maxYScale - minYScale) * height));
+                    (float) (point.getY() - minY) / (1.1f * maxY - minY) * height));
         }
         mNormalizedPointsMap.put(curve, normalized);
     }
