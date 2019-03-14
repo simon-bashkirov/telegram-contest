@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.View;
 
 import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.ChartModel;
@@ -59,7 +58,6 @@ public class MainActivity extends Activity {
         (new Handler(Looper.getMainLooper())).post(() -> {
             if (charts.isEmpty()) return;
             mSimpleChartView.loadChart(charts.get(0));
-            mSimpleChartView.setVisibility(View.VISIBLE);
         });
     }
 

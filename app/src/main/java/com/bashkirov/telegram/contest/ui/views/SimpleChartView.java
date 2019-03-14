@@ -55,6 +55,7 @@ public class SimpleChartView extends View {
         for (CurveModel curveModel : curves) {
             setCurve(curveModel);
         }
+        invalidate();
 
     }
 
