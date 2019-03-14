@@ -10,7 +10,7 @@ public class ChartModel {
         this.mCurves = curves;
     }
 
-    public Iterable<CurveModel> getCurves() {
+    public List<CurveModel> getCurves() {
         return mCurves;
     }
 }

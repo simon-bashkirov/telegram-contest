@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
+import android.view.View;
 
 import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.ChartModel;
+import com.bashkirov.telegram.contest.ui.views.SimpleCharView;
 import com.bashkirov.telegram.contest.utils.DataParser;
 import com.bashkirov.telegram.contest.utils.FileReader;
 
@@ -20,6 +21,8 @@ public class MainActivity extends Activity {
 
     private Thread mLoader;
     private final String TEST_DATA_FILE_NAME = "chart_data.json";
+
+    private SimpleCharView mSimpleCharView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +39,7 @@ public class MainActivity extends Activity {
     }
 
     private void initViews() {
-        //TODO
+        mSimpleCharView = findViewById(R.id.simple_chart_view);
     }
 
     private void loadData() {
@@ -54,7 +57,9 @@ public class MainActivity extends Activity {
 
     private void postDataInUIThread(List<ChartModel> charts) {
         (new Handler(Looper.getMainLooper())).post(() -> {
-            Log.d("TEST_DATA", charts.size() + "");
+            if (charts.isEmpty()) return;
+            mSimpleCharView.loadChart(charts.get(0));
+            mSimpleCharView.setVisibility(View.VISIBLE);
         });
     }
 

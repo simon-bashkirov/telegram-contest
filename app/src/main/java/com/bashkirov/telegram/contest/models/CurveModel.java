@@ -16,7 +16,7 @@ public class CurveModel {
         this.mType = type;
     }
 
-    public Iterable<PointModel> getPoints() {
+    public List<PointModel> getPoints() {
         return mPoints;
     }
 
