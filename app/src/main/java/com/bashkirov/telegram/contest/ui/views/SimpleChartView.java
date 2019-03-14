@@ -31,6 +31,12 @@ public class SimpleChartView extends View {
     private Map<CurveModel, Paint> mPaintMap = new HashMap<>();
     private Map<CurveModel, List<FloatPointModel>> mNormalizedPointsMap = new HashMap<>();
 
+    private long minX = Long.MAX_VALUE;
+    private long maxX = 0L;
+
+    private int minY = Integer.MAX_VALUE;
+    private int maxY = 0;
+
     public SimpleChartView(Context context) {
         this(context, null);
     }
@@ -52,49 +58,15 @@ public class SimpleChartView extends View {
 
     }
 
-    public void setCurve(CurveModel curve) {
-        mCurves.add(curve);
-        mPaintMap.put(curve, getPaintForColor(curve.getColor()));
-
-        int width = getWidth();
-        int height = getHeight();
-
-        List<PointModel> points = curve.getPoints();
-
-        long maxX = 0;
-        for (PointModel pointModel : points) {
-            if (pointModel.getX() > maxX) {
-                maxX = pointModel.getX();
-            }
-        }
-        long minX = maxX;
-        for (PointModel pointModel : points) {
-            if (pointModel.getX() < minX) {
-                minX = pointModel.getX();
-            }
-        }
-
-        long maxY = 0;
-        for (PointModel pointModel : points) {
-            if (pointModel.getY() > maxY) {
-                maxY = pointModel.getY();
-            }
-        }
-        long minY = maxY;
-        for (PointModel pointModel : points) {
-            if (pointModel.getY() < minY) {
-                minY = pointModel.getY();
-            }
-        }
+    private static List<FloatPointModel> normalize(List<PointModel> points, long minX, long maxX, int minY, int maxY, int width, int height) {
         List<FloatPointModel> normalized = new ArrayList<>();
 
         for (PointModel point : points) {
             normalized.add(new FloatPointModel((float) (point.getX() - minX) / (maxX - minX) * width,
                     (float) (point.getY() - minY) / (1.1f * maxY - minY) * height));
         }
-        mNormalizedPointsMap.put(curve, normalized);
+        return normalized;
     }
-
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -125,5 +97,59 @@ public class SimpleChartView extends View {
         return paint;
     }
 
+    public void setCurve(CurveModel curve) {
+        mCurves.add(curve);
+        mPaintMap.put(curve, getPaintForColor(curve.getColor()));
+        List<PointModel> points = curve.getPoints();
+        boolean scaleChanged = setScale(points);
+        int width = getWidth();
+        int height = getHeight();
+        if (scaleChanged) {
+            mNormalizedPointsMap.clear();
+            for (CurveModel aCurve : mCurves) {
+                List<FloatPointModel> normalized = normalize(aCurve.getPoints(), minX, maxX, minY, maxY, width, height);
+                mNormalizedPointsMap.put(aCurve, normalized);
+            }
+        } else {
+            List<FloatPointModel> normalized = normalize(curve.getPoints(), minX, maxX, minY, maxY, width, height);
+            mNormalizedPointsMap.put(curve, normalized);
+        }
+    }
+
+    /**
+     * @param points
+     * @return true if scale was changed
+     */
+    private boolean setScale(List<PointModel> points) {
+        boolean isChanged = false;
+        for (PointModel pointModel : points) {
+            if (pointModel.getX() > maxX) {
+                maxX = pointModel.getX();
+                isChanged = true;
+            }
+        }
+
+        for (PointModel pointModel : points) {
+            if (pointModel.getX() < minX) {
+                minX = pointModel.getX();
+                isChanged = true;
+            }
+        }
+
+        for (PointModel pointModel : points) {
+            if (pointModel.getY() > maxY) {
+                maxY = pointModel.getY();
+                isChanged = true;
+            }
+        }
+
+        for (PointModel pointModel : points) {
+            if (pointModel.getY() < minY) {
+                minY = pointModel.getY();
+                isChanged = true;
+            }
+        }
+        return isChanged;
+    }
 
 }
