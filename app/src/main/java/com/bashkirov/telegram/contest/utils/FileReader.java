@@ -1,17 +1,13 @@
-package com.bashkirov.telegram.contest;
+package com.bashkirov.telegram.contest.utils;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import java.io.IOException;
 import java.io.InputStream;
 
 @SuppressWarnings("CharsetObjectCanBeUsed")
 public class FileReader {
 
-    @Nullable
-    public static String readStringFromAsset(@NonNull Context context, @NonNull String fileName) {
+    public static String readStringFromAsset(Context context, String fileName) {
         String string;
         try {
             InputStream is = context.getAssets().open(fileName);

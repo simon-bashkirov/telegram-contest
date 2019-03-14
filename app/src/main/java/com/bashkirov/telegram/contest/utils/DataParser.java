@@ -1,4 +1,4 @@
-package com.bashkirov.telegram.contest;
+package com.bashkirov.telegram.contest.utils;
 
 import android.graphics.Color;
 

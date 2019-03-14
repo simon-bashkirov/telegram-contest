@@ -1,45 +1,62 @@
 package com.bashkirov.telegram.contest.ui.activities;
 
-import android.arch.lifecycle.ViewModelProviders;
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import com.bashkirov.telegram.contest.R;
+import com.bashkirov.telegram.contest.models.ChartModel;
+import com.bashkirov.telegram.contest.utils.DataParser;
+import com.bashkirov.telegram.contest.utils.FileReader;
+
+import org.json.JSONException;
+
+import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
-    private MainActivityViewModel mMainActivityViewModel;
+    private Thread mLoader;
+    private final String TEST_DATA_FILE_NAME = "chart_data.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initViewModel();
         initViews();
-        initObservers();
-        requestData();
+        loadData();
     }
 
-    private void initViewModel() {
-        mMainActivityViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
+    @Override
+    protected void onDestroy() {
+        mLoader.interrupt();
+        super.onDestroy();
     }
 
     private void initViews() {
         //TODO
     }
 
-    private void initObservers() {
-        mMainActivityViewModel.getChartsLiveData()
-                .observe(this, chartModels -> {
-                    if (chartModels == null) return;
-                    Log.d("TEST_DATA", chartModels.size() + "");
-                    //TODO
-                });
+    private void loadData() {
+        mLoader = new Thread(() -> {
+            try {
+                String data = FileReader.readStringFromAsset(this, TEST_DATA_FILE_NAME);
+                List<ChartModel> charts = DataParser.parseCharListJsonString(data);
+                postDataInUIThread(charts);
+            } catch (JSONException ex) {
+                ex.printStackTrace();
+            }
+        });
+        mLoader.start();
     }
 
-    private void requestData() {
-        mMainActivityViewModel.requestData(this);
+    private void postDataInUIThread(List<ChartModel> charts) {
+        (new Handler(Looper.getMainLooper())).post(() -> {
+            Log.d("TEST_DATA", charts.size() + "");
+        });
     }
+
+
 }
