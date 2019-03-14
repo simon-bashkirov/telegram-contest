@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.bashkirov.telegram.contest.ui.views.SimpleCharView
+    <com.bashkirov.telegram.contest.ui.views.SimpleChartView
         android:id="@+id/simple_chart_view"
         android:layout_width="match_parent"
         android:layout_height="50dp"

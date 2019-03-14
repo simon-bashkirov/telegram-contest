@@ -18,7 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class SimpleCharView extends View {
+public class SimpleChartView extends View {
 
     private final static float LINE_WIDTH_PX = 4f;
     private final static boolean IS_ANTI_ALIAS = true;
@@ -31,15 +31,15 @@ public class SimpleCharView extends View {
     private Map<CurveModel, Paint> mPaintMap = new HashMap<>();
     private Map<CurveModel, List<FloatPointModel>> mNormalizedPointsMap = new HashMap<>();
 
-    public SimpleCharView(Context context) {
+    public SimpleChartView(Context context) {
         this(context, null);
     }
 
-    public SimpleCharView(Context context, AttributeSet attrs) {
+    public SimpleChartView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public SimpleCharView(Context context, AttributeSet attrs, int defStyle) {
+    public SimpleChartView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 
@@ -55,7 +55,6 @@ public class SimpleCharView extends View {
     public void setCurve(CurveModel curve) {
         mCurves.add(curve);
         mPaintMap.put(curve, getPaintForColor(curve.getColor()));
-
 
         int width = getWidth();
         int height = getHeight();
