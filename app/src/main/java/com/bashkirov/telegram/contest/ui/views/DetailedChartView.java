@@ -3,13 +3,13 @@ package com.bashkirov.telegram.contest.ui.views;
 import android.content.Context;
 import android.util.AttributeSet;
 
+import com.bashkirov.telegram.contest.models.BoundsModel;
+import com.bashkirov.telegram.contest.models.ChartModel;
+
 /**
  * Provides rangable anda decorated chart visualisation
  */
 public class DetailedChartView extends BaseChartView implements Rangable {
-
-    private float mMinRange = 0.0f;
-    private float mMaxRange = 0.1f;
 
     public DetailedChartView(Context context) {
         this(context, null);
@@ -21,46 +21,47 @@ public class DetailedChartView extends BaseChartView implements Rangable {
 
     public DetailedChartView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+
     }
 
+    private BoundsModel mInitialBounds;
+
+    @Override
+    public void loadChart(ChartModel chart) {
+        super.loadChart(chart);
+        mInitialBounds = getBounds();
+        setRange(0f, 0.31f);
+    }
 
     //============ Rangable =====================
     @Override
     public void setRange(float start, float end) {
-        mMinRange = start;
-        mMaxRange = end;
+        if (end < start) return;
+        BoundsModel initialBounds = mInitialBounds;
+        if (initialBounds == null) return;
+        Float xStartShift = start * (initialBounds.getMaxX() - initialBounds.getMinX());
+        Float xEndShift = end * (initialBounds.getMaxX() - initialBounds.getMinX());
+        BoundsModel newBounds = new BoundsModel(initialBounds.getMinX() + xStartShift.longValue(),
+                initialBounds.getMinX() + xEndShift.longValue(), initialBounds.getMinY(), initialBounds.getMaxY());
+        setBounds(newBounds);
         invalidate();
     }
 
     @Override
     public void shiftRange(float shift) {
-        float minRange = mMinRange + shift;
-        float maxRange = mMaxRange + shift;
-        mMinRange = minRange < 1f ? minRange : mMinRange;
-        mMaxRange = maxRange <= 1f ? maxRange : mMaxRange;
+        BoundsModel initialBounds = mInitialBounds;
+        BoundsModel oldBounds = getBounds();
+        if (initialBounds == null) return;
+        Float xShift = shift * (initialBounds.getMaxX() - initialBounds.getMinX());
+        BoundsModel newBounds = new BoundsModel(oldBounds.getMinX() + xShift.longValue(),
+                oldBounds.getMaxX() + xShift.longValue(), initialBounds.getMinY(), initialBounds.getMaxY());
+        setBounds(newBounds);
         invalidate();
     }
 
     @Override
     public void extendRange(float percent, Direction direction) {
-        switch (direction) {
-            case LEFT:
-                mMinRange -= percent;
-                break;
-
-            case RIGHT:
-                mMaxRange -= percent;
-                break;
-        }
         invalidate();
-    }
-
-    private int getStartIndex(int listSize) {
-        return Math.round(mMinRange * listSize);
-    }
-
-    private int getEndIndex(int listSize) {
-        return Math.round(mMaxRange * listSize);
     }
 
 }

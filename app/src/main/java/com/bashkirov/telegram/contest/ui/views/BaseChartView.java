@@ -21,7 +21,7 @@ import java.util.Map;
 /**
  * Provides basic chart visualisation
  */
-abstract class BaseChartView extends View {
+class BaseChartView extends View {
 
     //Constants
     private final static float LINE_WIDTH_PX = 4f;
@@ -71,7 +71,20 @@ abstract class BaseChartView extends View {
     public void loadCurve(CurveModel curve) {
         mCurves.add(curve);
         mPaintMap.put(curve, getPaintForColor(curve.getColor()));
-        setBounds(curve);
+        adjustBoundsForCurve(curve);
+    }
+
+    public void setBounds(BoundsModel bounds) {
+        mNormalizedPointsMap.clear();
+        for (CurveModel aCurve : mCurves) {
+            List<FloatPointModel> normalized = normalize(aCurve.getPoints(), bounds, getWidth(), getHeight());
+            mNormalizedPointsMap.put(aCurve, normalized);
+        }
+        mBounds = bounds;
+    }
+
+    public BoundsModel getBounds() {
+        return mBounds;
     }
 
     //================ View ==========================
@@ -92,6 +105,7 @@ abstract class BaseChartView extends View {
         }
         super.onDraw(canvas);
     }
+    /////////////////////////////////////////////////////
 
     /**
      * @return paint for given int color
@@ -109,9 +123,9 @@ abstract class BaseChartView extends View {
 
 
     /**
-     * Sets scale for the plot
+     * Adjusts bounds for the given curve
      */
-    protected void setBounds(CurveModel curve) {
+    private void adjustBoundsForCurve(CurveModel curve) {
         int width = getWidth();
         int height = getHeight();
         BoundsModel curveBounds = curve.getBounds();
@@ -120,15 +134,9 @@ abstract class BaseChartView extends View {
         if (mergedBounds.equals(existingBounds)) {
             List<FloatPointModel> normalized = normalize(curve.getPoints(), existingBounds, width, height);
             mNormalizedPointsMap.put(curve, normalized);
-
         } else {
-            //New bounds should be set and normalized data to recalculated.
-            mNormalizedPointsMap.clear();
-            for (CurveModel aCurve : mCurves) {
-                List<FloatPointModel> normalized = normalize(aCurve.getPoints(), mergedBounds, width, height);
-                mNormalizedPointsMap.put(aCurve, normalized);
-            }
-            mBounds = mergedBounds;
+            //New bounds should be set
+            setBounds(mergedBounds);
         }
     }
 

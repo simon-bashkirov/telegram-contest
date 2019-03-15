@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class BoundsModel {
 
-    BoundsModel(long minX, long maxX, int minY, int maxY) {
+    public BoundsModel(long minX, long maxX, int minY, int maxY) {
         this.mMinX = minX;
         this.mMaxX = maxX;
         this.mMinY = minY;
