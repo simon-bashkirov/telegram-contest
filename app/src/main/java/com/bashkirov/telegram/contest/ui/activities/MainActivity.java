@@ -7,6 +7,7 @@ import android.os.Looper;
 
 import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.ChartModel;
+import com.bashkirov.telegram.contest.ui.views.DetailedChartView;
 import com.bashkirov.telegram.contest.ui.views.SimpleChartView;
 import com.bashkirov.telegram.contest.utils.DataParser;
 import com.bashkirov.telegram.contest.utils.FileReader;
@@ -22,6 +23,7 @@ public class MainActivity extends Activity {
     private final String TEST_DATA_FILE_NAME = "chart_data.json";
 
     private SimpleChartView mSimpleChartView;
+    private DetailedChartView mRangableChartView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,7 @@ public class MainActivity extends Activity {
 
     private void initViews() {
         mSimpleChartView = findViewById(R.id.simple_chart_view);
+        mRangableChartView = findViewById(R.id.rangable_chart_view);
     }
 
     private void loadData() {
@@ -57,6 +60,7 @@ public class MainActivity extends Activity {
     private void postDataInUIThread(List<ChartModel> charts) {
         (new Handler(Looper.getMainLooper())).post(() -> {
             if (charts.isEmpty()) return;
+            mRangableChartView.loadChart(charts.get(0));
             mSimpleChartView.loadChart(charts.get(0));
         });
     }

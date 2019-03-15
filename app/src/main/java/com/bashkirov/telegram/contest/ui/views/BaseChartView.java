@@ -32,13 +32,15 @@ abstract class BaseChartView extends View {
     //Common fields
     protected List<CurveModel> mCurves = new LinkedList<>();
     protected Map<CurveModel, List<FloatPointModel>> mNormalizedPointsMap = new HashMap<>();
+    protected long minX = Long.MAX_VALUE;
+    protected long maxX = 0L;
+    protected int minY = Integer.MAX_VALUE;
+    protected int maxY = 0;
+
 
     //Private field
     private Map<CurveModel, Paint> mPaintMap = new HashMap<>();
-    private long minX = Long.MAX_VALUE;
-    private long maxX = 0L;
-    private int minY = Integer.MAX_VALUE;
-    private int maxY = 0;
+
 
     //============  View constructors =============
     public BaseChartView(Context context) {
@@ -56,22 +58,6 @@ abstract class BaseChartView extends View {
     //============  Public methods =============
 
     /**
-     * Maps points given in data coordinates to view coordinates
-     *
-     * @param points in data coordinates
-     * @return points in view coordinates
-     */
-    private static List<FloatPointModel> normalize(List<PointModel> points, long minX, long maxX, int minY, int maxY, int width, int height) {
-        List<FloatPointModel> normalized = new ArrayList<>();
-
-        for (PointModel point : points) {
-            normalized.add(new FloatPointModel((float) (point.getX() - minX) / (maxX - minX) * width,
-                    (float) (point.getY() - minY) / (1.1f * maxY - minY) * height));
-        }
-        return normalized;
-    }
-
-    /**
      * Loads chart containing a list of curves to be displayed
      */
     public void loadChart(ChartModel chart) {
@@ -80,10 +66,7 @@ abstract class BaseChartView extends View {
             loadCurve(curveModel);
         }
         invalidate();
-
     }
-
-    //=============== Protected methods ============
 
     /**
      * Loads single @param curve to be displayed
@@ -107,19 +90,44 @@ abstract class BaseChartView extends View {
         }
     }
 
+    //=============== Abstract methods ============
+
     /**
-     * @return points mapped to float values in view coordinates for @param curve
+     * Maps points given in data coordinates to view coordinates
+     *
+     * @param points in data coordinates
+     * @return points in view coordinates
      */
-    protected abstract List<FloatPointModel> getPoints(CurveModel curve);
+    private static List<FloatPointModel> normalize(List<PointModel> points, long minX, long maxX, int minY, int maxY, int width, int height) {
+        List<FloatPointModel> normalized = new ArrayList<>();
+
+        for (PointModel point : points) {
+            normalized.add(new FloatPointModel((float) (point.getX() - minX) / (maxX - minX) * width,
+                    (float) (point.getY() - minY) / (maxY - minY) * height));
+        }
+        return normalized;
+    }
+
+    /**
+     * @return float points in view coordinates for @param curve
+     */
+    protected abstract List<FloatPointModel> getFloatPoints(CurveModel curve);
 
     ////////////////////////////////////////////////////
+
+    /**
+     * Sets scale for the plot
+     *
+     * @return true if scale was changed
+     */
+    protected abstract boolean setScale(List<PointModel> points);
 
     //================ View ==========================
     @Override
     protected void onDraw(Canvas canvas) {
         for (CurveModel curve : mCurves) {
             Paint paint = mPaintMap.get(curve);
-            List<FloatPointModel> points = getPoints(curve);
+            List<FloatPointModel> points = getFloatPoints(curve);
             if (paint == null || points == null) return;
             float height = getHeight();
 
@@ -145,41 +153,6 @@ abstract class BaseChartView extends View {
         paint.setStrokeJoin(PAINT_JOIN);
         paint.setStrokeCap(STROKE_CAP);
         return paint;
-    }
-
-    /**
-     * @return true if scale was changed
-     */
-    private boolean setScale(List<PointModel> points) {
-        boolean isChanged = false;
-        for (PointModel pointModel : points) {
-            if (pointModel.getX() > maxX) {
-                maxX = pointModel.getX();
-                isChanged = true;
-            }
-        }
-
-        for (PointModel pointModel : points) {
-            if (pointModel.getX() < minX) {
-                minX = pointModel.getX();
-                isChanged = true;
-            }
-        }
-
-        for (PointModel pointModel : points) {
-            if (pointModel.getY() > maxY) {
-                maxY = pointModel.getY();
-                isChanged = true;
-            }
-        }
-
-        for (PointModel pointModel : points) {
-            if (pointModel.getY() < minY) {
-                minY = pointModel.getY();
-                isChanged = true;
-            }
-        }
-        return isChanged;
     }
 
 }

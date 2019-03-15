@@ -5,11 +5,17 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <com.bashkirov.telegram.contest.ui.views.DetailedChartView
+        android:id="@+id/rangable_chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="16dp"
+        android:background="@color/black10" />
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_margin="16dp"
-        android:gravity="center">
+        android:layout_margin="16dp">
 
     <com.bashkirov.telegram.contest.ui.views.SimpleChartView
         android:id="@+id/simple_chart_view"
