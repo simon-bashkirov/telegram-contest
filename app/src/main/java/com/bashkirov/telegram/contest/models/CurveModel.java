@@ -38,6 +38,26 @@ public class CurveModel {
         return mBounds;
     }
 
+    public BoundsModel adjustBoundsHeight(BoundsModel boundsModel) {
+        int minY = Integer.MAX_VALUE;
+        int maxY = 0;
+        long minX = boundsModel.getMinX();
+        long maxX = boundsModel.getMaxX();
+        for (PointModel pointModel : getPoints()) {
+            long x = pointModel.getX();
+            if (x >= minX && x <= maxX) {
+                int y = pointModel.getY();
+                if (y > maxY) {
+                    maxY = y;
+                }
+                if (y < minY) {
+                    minY = y;
+                }
+            }
+        }
+        return new BoundsModel(minX, maxX, minY, maxY);
+    }
+
     private static BoundsModel getBounds(List<PointModel> points) {
         long minX = Long.MAX_VALUE;
         long maxX = 0L;

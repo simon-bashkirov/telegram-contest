@@ -76,8 +76,11 @@ class BaseChartView extends View {
 
     public void setBounds(BoundsModel bounds) {
         mNormalizedPointsMap.clear();
+        BoundsModel adjustedBounds = null;
         for (CurveModel aCurve : mCurves) {
-            List<FloatPointModel> normalized = normalize(aCurve.getPoints(), bounds, getWidth(), getHeight());
+            if (adjustedBounds == null) adjustedBounds = aCurve.adjustBoundsHeight(bounds);
+            else adjustedBounds = adjustedBounds.megre(aCurve.adjustBoundsHeight(bounds));
+            List<FloatPointModel> normalized = normalize(aCurve.getPoints(), adjustedBounds, getWidth(), getHeight());
             mNormalizedPointsMap.put(aCurve, normalized);
         }
         mBounds = bounds;
