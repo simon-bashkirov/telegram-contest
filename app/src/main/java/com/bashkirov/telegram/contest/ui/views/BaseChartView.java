@@ -115,19 +115,20 @@ abstract class BaseChartView extends View {
         int width = getWidth();
         int height = getHeight();
         BoundsModel curveBounds = curve.getBounds();
-        BoundsModel mergedBounds = curveBounds.megre(mBounds);
-        if (mergedBounds.equals(mBounds)) {
-            List<FloatPointModel> normalized = normalize(curve.getPoints(), mBounds, width, height);
+        BoundsModel existingBounds = mBounds;
+        BoundsModel mergedBounds = curveBounds.megre(existingBounds);
+        if (mergedBounds.equals(existingBounds)) {
+            List<FloatPointModel> normalized = normalize(curve.getPoints(), existingBounds, width, height);
             mNormalizedPointsMap.put(curve, normalized);
 
         } else {
             //New bounds should be set and normalized data to recalculated.
-            mBounds = mergedBounds;
             mNormalizedPointsMap.clear();
             for (CurveModel aCurve : mCurves) {
-                List<FloatPointModel> normalized = normalize(aCurve.getPoints(), mBounds, width, height);
+                List<FloatPointModel> normalized = normalize(aCurve.getPoints(), mergedBounds, width, height);
                 mNormalizedPointsMap.put(aCurve, normalized);
             }
+            mBounds = mergedBounds;
         }
     }
 
