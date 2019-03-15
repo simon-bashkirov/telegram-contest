@@ -3,20 +3,13 @@ package com.bashkirov.telegram.contest.ui.views;
 import android.content.Context;
 import android.util.AttributeSet;
 
-import com.bashkirov.telegram.contest.models.CurveModel;
-import com.bashkirov.telegram.contest.models.FloatPointModel;
-import com.bashkirov.telegram.contest.models.PointModel;
-
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Provides rangable anda decorated chart visualisation
  */
-public class DetailedChartView extends BaseChartView {
+public class DetailedChartView extends BaseChartView implements Rangable {
 
-    private float mMinRange = 0.3f;
-    private float mMaxRange = 0.7f;
+    private float mMinRange = 0.0f;
+    private float mMaxRange = 0.1f;
 
     public DetailedChartView(Context context) {
         this(context, null);
@@ -30,40 +23,36 @@ public class DetailedChartView extends BaseChartView {
         super(context, attrs, defStyle);
     }
 
+
+    //============ Rangable =====================
     @Override
-    protected List<FloatPointModel> getFloatPoints(CurveModel curve) {
-        List<FloatPointModel> points = mNormalizedPointsMap.get(curve);
-        if (points == null) return Collections.emptyList();
-        int size = points.size();
-        int start = getStartIndex(size);
-        int end = getEndIndex(size);
-        return points.subList(start, end);
+    public void setRange(float start, float end) {
+        mMinRange = start;
+        mMaxRange = end;
+        invalidate();
     }
 
     @Override
-    protected boolean setScale(List<PointModel> points) {
-        int size = points.size();
-        int start = getStartIndex(size);
-        int end = getEndIndex(size);
-        List<PointModel> cutPoints = points.subList(start, end);
-        boolean isChanged = false;
-        for (PointModel pointModel : cutPoints) {
-            if (pointModel.getY() > maxY) {
-                maxY = pointModel.getY();
-                isChanged = true;
-            }
-        }
+    public void shiftRange(float shift) {
+        float minRange = mMinRange + shift;
+        float maxRange = mMaxRange + shift;
+        mMinRange = minRange < 1f ? minRange : mMinRange;
+        mMaxRange = maxRange <= 1f ? maxRange : mMaxRange;
+        invalidate();
+    }
 
-        for (PointModel pointModel : cutPoints) {
-            if (pointModel.getY() < minY) {
-                minY = pointModel.getY();
-                isChanged = true;
-            }
-        }
+    @Override
+    public void extendRange(float percent, Direction direction) {
+        switch (direction) {
+            case LEFT:
+                mMinRange -= percent;
+                break;
 
-        minX = points.get(getStartIndex(size)).getX();
-        maxX = points.get(getEndIndex(size)).getX();
-        return isChanged;
+            case RIGHT:
+                mMaxRange -= percent;
+                break;
+        }
+        invalidate();
     }
 
     private int getStartIndex(int listSize) {

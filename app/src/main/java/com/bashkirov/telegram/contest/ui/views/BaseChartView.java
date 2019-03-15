@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.bashkirov.telegram.contest.models.BoundsModel;
 import com.bashkirov.telegram.contest.models.ChartModel;
 import com.bashkirov.telegram.contest.models.CurveModel;
 import com.bashkirov.telegram.contest.models.FloatPointModel;
@@ -32,14 +33,10 @@ abstract class BaseChartView extends View {
     //Common fields
     protected List<CurveModel> mCurves = new LinkedList<>();
     protected Map<CurveModel, List<FloatPointModel>> mNormalizedPointsMap = new HashMap<>();
-    protected long minX = Long.MAX_VALUE;
-    protected long maxX = 0L;
-    protected int minY = Integer.MAX_VALUE;
-    protected int maxY = 0;
-
 
     //Private field
     private Map<CurveModel, Paint> mPaintMap = new HashMap<>();
+    private BoundsModel mBounds;
 
 
     //============  View constructors =============
@@ -74,60 +71,15 @@ abstract class BaseChartView extends View {
     public void loadCurve(CurveModel curve) {
         mCurves.add(curve);
         mPaintMap.put(curve, getPaintForColor(curve.getColor()));
-        List<PointModel> points = curve.getPoints();
-        boolean scaleChanged = setScale(points);
-        int width = getWidth();
-        int height = getHeight();
-        if (scaleChanged) {
-            mNormalizedPointsMap.clear();
-            for (CurveModel aCurve : mCurves) {
-                List<FloatPointModel> normalized = normalize(aCurve.getPoints(), minX, maxX, minY, maxY, width, height);
-                mNormalizedPointsMap.put(aCurve, normalized);
-            }
-        } else {
-            List<FloatPointModel> normalized = normalize(curve.getPoints(), minX, maxX, minY, maxY, width, height);
-            mNormalizedPointsMap.put(curve, normalized);
-        }
+        setBounds(curve);
     }
-
-    //=============== Abstract methods ============
-
-    /**
-     * Maps points given in data coordinates to view coordinates
-     *
-     * @param points in data coordinates
-     * @return points in view coordinates
-     */
-    private static List<FloatPointModel> normalize(List<PointModel> points, long minX, long maxX, int minY, int maxY, int width, int height) {
-        List<FloatPointModel> normalized = new ArrayList<>();
-
-        for (PointModel point : points) {
-            normalized.add(new FloatPointModel((float) (point.getX() - minX) / (maxX - minX) * width,
-                    (float) (point.getY() - minY) / (maxY - minY) * height));
-        }
-        return normalized;
-    }
-
-    /**
-     * @return float points in view coordinates for @param curve
-     */
-    protected abstract List<FloatPointModel> getFloatPoints(CurveModel curve);
-
-    ////////////////////////////////////////////////////
-
-    /**
-     * Sets scale for the plot
-     *
-     * @return true if scale was changed
-     */
-    protected abstract boolean setScale(List<PointModel> points);
 
     //================ View ==========================
     @Override
     protected void onDraw(Canvas canvas) {
         for (CurveModel curve : mCurves) {
             Paint paint = mPaintMap.get(curve);
-            List<FloatPointModel> points = getFloatPoints(curve);
+            List<FloatPointModel> points = mNormalizedPointsMap.get(curve);
             if (paint == null || points == null) return;
             float height = getHeight();
 
@@ -153,6 +105,50 @@ abstract class BaseChartView extends View {
         paint.setStrokeJoin(PAINT_JOIN);
         paint.setStrokeCap(STROKE_CAP);
         return paint;
+    }
+
+
+    /**
+     * Sets scale for the plot
+     */
+    protected void setBounds(CurveModel curve) {
+        int width = getWidth();
+        int height = getHeight();
+        BoundsModel curveBounds = curve.getBounds();
+        BoundsModel mergedBounds = curveBounds.megre(mBounds);
+        if (mergedBounds.equals(mBounds)) {
+            List<FloatPointModel> normalized = normalize(curve.getPoints(), mBounds, width, height);
+            mNormalizedPointsMap.put(curve, normalized);
+
+        } else {
+            //New bounds should be set and normalized data to recalculated.
+            mBounds = mergedBounds;
+            mNormalizedPointsMap.clear();
+            for (CurveModel aCurve : mCurves) {
+                List<FloatPointModel> normalized = normalize(aCurve.getPoints(), mBounds, width, height);
+                mNormalizedPointsMap.put(aCurve, normalized);
+            }
+        }
+    }
+
+
+    /**
+     * Maps points given in data coordinates to view coordinates
+     *
+     * @param points in data coordinates
+     * @return points in view coordinates
+     */
+    private static List<FloatPointModel> normalize(List<PointModel> points, BoundsModel bounds, int width, int height) {
+        List<FloatPointModel> normalized = new ArrayList<>();
+        long minX = bounds.getMinX();
+        long maxX = bounds.getMaxX();
+        int minY = bounds.getMinY();
+        int maxY = bounds.getMaxY();
+        for (PointModel point : points) {
+            normalized.add(new FloatPointModel((float) (point.getX() - minX) / (maxX - minX) * width,
+                    (float) (point.getY() - minY) / (maxY - minY) * height));
+        }
+        return normalized;
     }
 
 }

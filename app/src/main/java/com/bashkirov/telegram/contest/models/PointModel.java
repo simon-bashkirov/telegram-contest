@@ -1,7 +1,9 @@
 package com.bashkirov.telegram.contest.models;
 
 public class PointModel {
+
     private final long mX;
+
     private final int mY;
 
     public PointModel(long x, int y) {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.widget.SeekBar;
 
 import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.ChartModel;
@@ -24,6 +25,7 @@ public class MainActivity extends Activity {
 
     private SimpleChartView mSimpleChartView;
     private DetailedChartView mRangableChartView;
+    private SeekBar mSeekBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,9 +41,30 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
+    private int lastProgress;
+
     private void initViews() {
         mSimpleChartView = findViewById(R.id.simple_chart_view);
         mRangableChartView = findViewById(R.id.rangable_chart_view);
+        mSeekBar = findViewById(R.id.seekBar);
+        lastProgress = mSeekBar.getProgress();
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mRangableChartView.shiftRange((float) (progress - lastProgress) / 100);
+                lastProgress = progress;
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     private void loadData() {
