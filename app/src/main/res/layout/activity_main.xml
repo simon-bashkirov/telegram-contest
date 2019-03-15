@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="16dp"
+        android:gravity="center">
 
     <com.bashkirov.telegram.contest.ui.views.SimpleChartView
         android:id="@+id/simple_chart_view"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_margin="16dp"
-        android:background="@color/black10" />
+        android:layout_height="match_parent" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-16dp"
+            android:layout_marginRight="-16dp"
+            android:progressDrawable="@drawable/shape_seek_bar_progress"
+            android:thumb="@drawable/shape_seek_bar_tumb"
+            android:thumbOffset="0dp" />
+    </FrameLayout>
 </LinearLayout>

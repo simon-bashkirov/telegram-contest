@@ -2,4 +2,6 @@
 <resources>
     <color name="colorPrimary">#008577</color>
     <color name="black10">#1A646464</color>
+    <color name="transparent">#00000000</color>
+    <color name="blue20">#3303A9F4</color>
 </resources>
