@@ -5,30 +5,8 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.bashkirov.telegram.contest.ui.views.DetailedChartView
-        android:id="@+id/rangable_chart_view"
+    <com.bashkirov.telegram.contest.ui.views.CompoundChartView
+        android:id="@+id/compound_chart_view"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_margin="16dp" />
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_margin="16dp">
-
-    <com.bashkirov.telegram.contest.ui.views.SimpleChartView
-        android:id="@+id/simple_chart_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-        <SeekBar
-            android:id="@+id/seekBar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="-16dp"
-            android:layout_marginRight="-16dp"
-            android:progressDrawable="@drawable/shape_seek_bar_progress"
-            android:thumb="@drawable/shape_seek_bar_tumb"
-            android:thumbOffset="0dp" />
-    </FrameLayout>
+        android:layout_height="wrap_content" />
 </LinearLayout>

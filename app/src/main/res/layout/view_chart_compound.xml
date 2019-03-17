@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:orientation="vertical"
+    tools:layout_width="match_parent"
+    tools:parentTag="android.widget.LinearLayout"
+    tools:layout_height="wrap_content">
+
+    <com.bashkirov.telegram.contest.ui.views.DetailedChartView
+        android:id="@+id/rangable_chart_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_margin="16dp"
+        tools:background="@color/black10" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+
+        android:layout_height="50dp"
+        android:layout_margin="16dp">
+
+        <com.bashkirov.telegram.contest.ui.views.SimpleChartView
+            android:id="@+id/simple_chart_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="-16dp"
+            android:layout_marginRight="-16dp"
+            android:progressDrawable="@drawable/shape_seek_bar_progress"
+            android:thumb="@drawable/shape_seek_bar_tumb"
+            android:thumbOffset="0dp" />
+    </FrameLayout>
+</merge>

@@ -4,12 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.widget.SeekBar;
 
 import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.ChartModel;
-import com.bashkirov.telegram.contest.ui.views.DetailedChartView;
-import com.bashkirov.telegram.contest.ui.views.SimpleChartView;
+import com.bashkirov.telegram.contest.ui.views.CompoundChartView;
 import com.bashkirov.telegram.contest.utils.DataParser;
 import com.bashkirov.telegram.contest.utils.FileReader;
 
@@ -23,9 +21,7 @@ public class MainActivity extends Activity {
     private Thread mLoader;
     private final String TEST_DATA_FILE_NAME = "chart_data.json";
 
-    private SimpleChartView mSimpleChartView;
-    private DetailedChartView mRangableChartView;
-    private SeekBar mSeekBar;
+    private CompoundChartView mCompoundChartView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,30 +37,8 @@ public class MainActivity extends Activity {
         super.onDestroy();
     }
 
-    private int lastProgress;
-
     private void initViews() {
-        mSimpleChartView = findViewById(R.id.simple_chart_view);
-        mRangableChartView = findViewById(R.id.rangable_chart_view);
-        mSeekBar = findViewById(R.id.seekBar);
-        lastProgress = mSeekBar.getProgress();
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mRangableChartView.shiftRange((float) (progress - lastProgress) / 100);
-                lastProgress = progress;
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-        });
+        mCompoundChartView = findViewById(R.id.compound_chart_view);
     }
 
     private void loadData() {
@@ -83,8 +57,7 @@ public class MainActivity extends Activity {
     private void postDataInUIThread(List<ChartModel> charts) {
         (new Handler(Looper.getMainLooper())).post(() -> {
             if (charts.isEmpty()) return;
-            mRangableChartView.loadChart(charts.get(0));
-            mSimpleChartView.loadChart(charts.get(0));
+            mCompoundChartView.loadChart(charts.get(0));
         });
     }
 
