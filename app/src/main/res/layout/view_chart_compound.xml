@@ -10,7 +10,9 @@
         android:id="@+id/chart_name"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/default_margin"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
         android:text="Followers"
         android:textColor="@color/blue"
         android:textSize="@dimen/chart_name_test_size" />
@@ -20,16 +22,16 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/detailed_chart_height"
         android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin"
         tools:background="@color/black10" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/seek_chart_height"
         android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        android:layout_marginBottom="@dimen/default_margin">
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin">
 
         <com.bashkirov.telegram.contest.ui.views.SimpleChartView
             android:id="@+id/simple_chart_view"
@@ -47,4 +49,16 @@
             android:thumbOffset="@dimen/seek_thumb__offset" />
 
     </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/check_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        android:divider="@drawable/shape_seek_bar_progress"
+        android:orientation="vertical" />
+
+
 </merge>

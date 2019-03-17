@@ -11,4 +11,5 @@
     <dimen name="seek_thumb__stroke_width">4dp</dimen>
     <dimen name="seek_thumb__offset">0dp</dimen>
 
+    <dimen name="divider_height">1dp</dimen>
 </resources>
