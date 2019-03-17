@@ -84,12 +84,13 @@ public class CompoundChartView extends LinearLayout {
     }
 
     private void setCheckGroup() {
+        mCheckGroup.removeAllViews();
         int count = 0;
         List<CurveModel> curves = mChartModel.getCurves();
         for (CurveModel curve : mChartModel.getCurves()) {
             String name = curve.getName();
             int color = curve.getColor();
-            CheckBox checkBox = new CheckBox(getContext());
+            final CheckBox checkBox = new CheckBox(getContext());
             checkBox.setText(name);
             setCheckBoxTint(checkBox, color);
             checkBox.setChecked(true);
@@ -101,6 +102,14 @@ public class CompoundChartView extends LinearLayout {
                 mCheckGroup.addView(divider);
                 count++;
             }
+            checkBox.setOnCheckedChangeListener(
+                    (buttonView, isChecked) -> {
+                        if (buttonView == checkBox) {
+                            mDetailedChartView.setCurveVisible(curve, isChecked);
+                            mSimpleChartView.setCurveVisible(curve, isChecked);
+                        }
+                    }
+            );
         }
     }
 

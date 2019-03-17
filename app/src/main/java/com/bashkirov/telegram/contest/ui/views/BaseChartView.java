@@ -35,6 +35,7 @@ class BaseChartView extends View {
     //Common fields
     protected List<CurveModel> mCurves = new LinkedList<>();
     protected Map<CurveModel, List<FloatPointModel>> mNormalizedPointsMap = new HashMap<>();
+    protected Map<CurveModel, Boolean> mCurvesVisibility = new HashMap<>();
 
     //Private field
     private Map<CurveModel, Paint> mPaintMap = new HashMap<>();
@@ -73,6 +74,7 @@ class BaseChartView extends View {
     public void loadCurve(CurveModel curve) {
         mCurves.add(curve);
         mPaintMap.put(curve, getPaintForColor(curve.getColor()));
+        mCurvesVisibility.put(curve, true);
         adjustBoundsForCurve(curve);
     }
 
@@ -80,16 +82,26 @@ class BaseChartView extends View {
         mNormalizedPointsMap.clear();
         BoundsModel adjustedBounds = null;
         for (CurveModel aCurve : mCurves) {
+            Boolean visible = mCurvesVisibility.get(aCurve);
+            if (visible == null || !visible) continue;
             if (adjustedBounds == null) adjustedBounds = aCurve.adjustBoundsHeight(bounds);
             else adjustedBounds = adjustedBounds.megre(aCurve.adjustBoundsHeight(bounds));
             List<FloatPointModel> normalized = normalize(aCurve.getPoints(), adjustedBounds);
             mNormalizedPointsMap.put(aCurve, normalized);
         }
-        mBounds = adjustedBounds;
+        if (adjustedBounds != null) {
+            //null case occurs when all curves set invisible
+            mBounds = adjustedBounds;
+        }
     }
 
-    public BoundsModel getBounds() {
-        return mBounds;
+    public void setCurveVisible(CurveModel curveModel, boolean visible) {
+        if (mCurvesVisibility.containsKey(curveModel)) {
+            mCurvesVisibility.remove(curveModel);
+            mCurvesVisibility.put(curveModel, visible);
+            recalculateBounds();
+            invalidate();
+        }
     }
 
     //========= Protected methods ==============
@@ -143,6 +155,10 @@ class BaseChartView extends View {
         this.mBaseYPadding = mBaseYPadding;
     }
 
+    protected BoundsModel getBounds() {
+        return mBounds;
+    }
+
     //================ View ==========================
     @Override
     protected void onDraw(Canvas canvas) {
@@ -150,7 +166,7 @@ class BaseChartView extends View {
         for (CurveModel curve : mCurves) {
             Paint paint = mPaintMap.get(curve);
             List<FloatPointModel> points = mNormalizedPointsMap.get(curve);
-            if (paint == null || points == null) return;
+            if (paint == null || points == null) continue;
             for (int i = 0; i < points.size() - 1; i++) {
                 FloatPointModel point = points.get(i);
                 FloatPointModel nextPoint = points.get(i + 1);
@@ -175,5 +191,9 @@ class BaseChartView extends View {
             //New bounds should be set
             setBounds(mergedBounds);
         }
+    }
+
+    private void recalculateBounds() {
+        setBounds(mBounds);
     }
 }
