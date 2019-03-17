@@ -30,6 +30,8 @@ class BaseChartView extends View {
     private final static Paint.Join PAINT_JOIN = Paint.Join.ROUND;
     private final static Paint.Cap STROKE_CAP = Paint.Cap.ROUND;
 
+    private int mBaseYPadding = 0;
+
     //Common fields
     protected List<CurveModel> mCurves = new LinkedList<>();
     protected Map<CurveModel, List<FloatPointModel>> mNormalizedPointsMap = new HashMap<>();
@@ -128,13 +130,17 @@ class BaseChartView extends View {
      */
     protected FloatPointModel getFloatPointForPoint(PointModel point, BoundsModel bounds) {
         int width = getWidth();
-        int height = getHeight();
+        int height = getHeight() - mBaseYPadding;
         long minX = bounds.getMinX();
         long maxX = bounds.getMaxX();
         int minY = bounds.getMinY();
         int maxY = bounds.getMaxY();
         return new FloatPointModel((float) (point.getX() - minX) / (maxX - minX) * width,
-                height - (float) (point.getY() - minY) / (maxY - minY) * height);
+                height - (float) (point.getY() - minY) / (maxY - minY) * (height));
+    }
+
+    public void initBaseYPadding(int mBaseYPadding) {
+        this.mBaseYPadding = mBaseYPadding;
     }
 
     //================ View ==========================
@@ -145,8 +151,6 @@ class BaseChartView extends View {
             Paint paint = mPaintMap.get(curve);
             List<FloatPointModel> points = mNormalizedPointsMap.get(curve);
             if (paint == null || points == null) return;
-            float height = getHeight();
-
             for (int i = 0; i < points.size() - 1; i++) {
                 FloatPointModel point = points.get(i);
                 FloatPointModel nextPoint = points.get(i + 1);
