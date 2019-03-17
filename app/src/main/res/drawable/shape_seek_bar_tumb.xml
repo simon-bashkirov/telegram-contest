@@ -3,10 +3,10 @@
     android:shape="rectangle">
     <solid android:color="@color/transparent" />
     <size
-        android:width="120dp"
-        android:height="52dp" />
+        android:width="@dimen/seek_thumb_width"
+        android:height="@dimen/seek_chart_height" />
     <stroke
-        android:width="4dp"
+        android:width="@dimen/seek_thumb__stroke_width"
         android:color="@color/blue20" />
 
 </shape>
