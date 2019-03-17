@@ -39,7 +39,6 @@ public class CurveModel {
     }
 
     public BoundsModel adjustBoundsHeight(BoundsModel boundsModel) {
-        int minY = Integer.MAX_VALUE;
         int maxY = 0;
         long minX = boundsModel.getMinX();
         long maxX = boundsModel.getMaxX();
@@ -50,12 +49,9 @@ public class CurveModel {
                 if (y > maxY) {
                     maxY = y;
                 }
-                if (y < minY) {
-                    minY = y;
-                }
             }
         }
-        return new BoundsModel(minX, maxX, minY, maxY);
+        return new BoundsModel(minX, maxX, 0, maxY);
     }
 
     private static BoundsModel getBounds(List<PointModel> points) {
