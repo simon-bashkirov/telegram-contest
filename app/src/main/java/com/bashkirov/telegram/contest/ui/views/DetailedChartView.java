@@ -109,7 +109,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
 
     private Paint getScaleLinePaint() {
         Paint paint = new Paint();
-        paint.setColor(getResources().getColor(R.color.black10));
+        paint.setColor(getResources().getColor(R.color.divider_gray));
         paint.setAntiAlias(true);
         paint.setStrokeWidth(getResources().getDimension(R.dimen.divider_height));
         paint.setStyle(Paint.Style.STROKE);
@@ -121,7 +121,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     private Paint getTickTextPaint() {
         Paint paint = new Paint();
         paint.setTextSize(getResources().getDimension(R.dimen.tick_text_size));
-        paint.setColor(getResources().getColor(R.color.black60));
+        paint.setColor(getResources().getColor(R.color.tick_label_gray));
         return paint;
     }
 

@@ -2,7 +2,6 @@ package com.bashkirov.telegram.contest.ui.views;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.util.AttributeSet;
@@ -50,7 +49,7 @@ public class CompoundChartView extends LinearLayout {
     //////////////////////////////////////////////////
     private void initViews() {
         mSimpleChartView = findViewById(R.id.simple_chart_view);
-        mDetailedChartView = findViewById(R.id.rangable_chart_view);
+        mDetailedChartView = findViewById(R.id.detailed_chart_view);
         mSeekBar = findViewById(R.id.seekBar);
         mCheckGroup = findViewById(R.id.check_group);
         mSeekBar.setListener(mDetailedChartView);
@@ -72,7 +71,7 @@ public class CompoundChartView extends LinearLayout {
             if (count < curves.size() - 1) {
                 View divider = new View(getContext());
                 divider.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDimension(R.dimen.divider_height))));
-                divider.setBackgroundColor(Color.LTGRAY);
+                divider.setBackgroundColor(getResources().getColor(R.color.divider_gray));
                 mCheckGroup.addView(divider);
                 count++;
             }

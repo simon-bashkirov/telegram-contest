@@ -14,8 +14,8 @@ public class CustomSeekBar extends View {
 
     private final static float SENSITIVITY_LENGTH = 0.1f;
 
-    private final static int FILL_COLOR_ID = R.color.black10;
-    private final static int FRAME_COLOR_ID = R.color.blue20;
+    private final static int FILL_COLOR_ID = R.color.seek_bar_fill_gray;
+    private final static int FRAME_COLOR_ID = R.color.seek_bar_stroke_blue;
 
     private final static float MIN_WIDTH = SENSITIVITY_LENGTH * 3.5f;
     private final static float DEFAULT_END_POSITION = 1.0f;

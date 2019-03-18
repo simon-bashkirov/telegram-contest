@@ -14,17 +14,17 @@
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
         android:text="Followers"
-        android:textColor="@color/blue"
+        android:textColor="@color/text_blue"
         android:textSize="@dimen/chart_name_test_size" />
 
     <com.bashkirov.telegram.contest.ui.views.DetailedChartView
-        android:id="@+id/rangable_chart_view"
+        android:id="@+id/detailed_chart_view"
         android:layout_width="match_parent"
         android:layout_height="@dimen/detailed_chart_height"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
-        tools:background="@color/black10" />
+        tools:background="@color/seek_bar_fill_gray" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -52,7 +52,6 @@
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
-        android:divider="@drawable/shape_seek_bar_progress"
         android:orientation="vertical" />
 
 
