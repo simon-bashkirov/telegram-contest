@@ -22,7 +22,7 @@ import java.util.Locale;
  */
 public class DetailedChartView extends BaseChartView implements RangeListener {
 
-    private static final long DEFAULT_X_TICS_STEP = 7L * 1000 * 60 * 60 * 24; // DateUtils.DAY_IN_MILLIS for API > 3;
+    private static final int NUMBER_OF_X_TICS = 5;
     private static final int DEFAULT_Y_TICS_STEP = 50;
 
     private static final int DEFAULT_Y_TICS_TEXT_PADDING_PX = -16;
@@ -35,6 +35,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     private Paint mTextPaint = getPaintForColor(Color.GRAY);
 
     private BoundsModel mInitialBounds;
+    private Float mStartPosition;
+    private Float mEndPosition;
 
     public DetailedChartView(Context context) {
         this(context, null);
@@ -53,6 +55,9 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     public void loadChart(ChartModel chart) {
         super.loadChart(chart);
         mInitialBounds = getBounds();
+        if (mStartPosition != null && mEndPosition != null) {
+            onRangeChange(mStartPosition, mEndPosition);
+        }
     }
 
     // ============= Override default behaviour ==========
@@ -95,7 +100,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         mTicksX.clear();
         long minX = processedBounds.getMinX();
         long maxX = processedBounds.getMaxX();
-        for (long i = minX; i < maxX; i += DEFAULT_X_TICS_STEP) {
+        for (long i = minX; i < maxX; i += (maxX - minX) / NUMBER_OF_X_TICS) {
             PointModel point = new PointModel(i, 0);
             FloatPointModel floatPoint = getFloatPointForPoint(point, processedBounds);
             mTicksX.add(new Tick(mSimpleDateFormat.format(new Date(point.getX())), floatPoint));
@@ -105,6 +110,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     //============ RangeListener =====================
     @Override
     public void onRangeChange(float start, float end) {
+        mStartPosition = start;
+        mEndPosition = end;
         if (end < start) return;
         BoundsModel initialBounds = mInitialBounds;
         if (initialBounds == null) return;
