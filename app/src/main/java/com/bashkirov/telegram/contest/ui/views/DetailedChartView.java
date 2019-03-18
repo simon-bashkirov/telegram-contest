@@ -2,10 +2,10 @@ package com.bashkirov.telegram.contest.ui.views;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 
+import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.BoundsModel;
 import com.bashkirov.telegram.contest.models.ChartModel;
 import com.bashkirov.telegram.contest.models.FloatPointModel;
@@ -31,8 +31,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
 
     private List<Tick> mTicksX = new LinkedList<>();
     private List<Tick> mTicksY = new LinkedList<>();
-    private Paint mScaleLinePaint = getPaintForColor(Color.LTGRAY);
-    private Paint mTextPaint = getPaintForColor(Color.GRAY);
+    private Paint mScaleLinePaint = getScaleLinePaint();
+    private Paint mTextPaint = getTickTextPaint();
 
     private BoundsModel mInitialBounds;
     private Float mStartPosition;
@@ -106,6 +106,25 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
             mTicksX.add(new Tick(mSimpleDateFormat.format(new Date(point.getX())), floatPoint));
         }
     }
+
+    private Paint getScaleLinePaint() {
+        Paint paint = new Paint();
+        paint.setColor(getResources().getColor(R.color.black10));
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(getResources().getDimension(R.dimen.divider_height));
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeJoin(Paint.Join.ROUND);
+        paint.setStrokeCap(Paint.Cap.ROUND);
+        return paint;
+    }
+
+    private Paint getTickTextPaint() {
+        Paint paint = new Paint();
+        paint.setTextSize(getResources().getDimension(R.dimen.tick_text_size));
+        paint.setColor(getResources().getColor(R.color.black60));
+        return paint;
+    }
+
 
     //============ RangeListener =====================
     @Override

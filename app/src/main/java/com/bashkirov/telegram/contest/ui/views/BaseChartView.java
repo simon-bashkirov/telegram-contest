@@ -73,7 +73,7 @@ class BaseChartView extends View {
      */
     public void loadCurve(CurveModel curve) {
         mCurves.add(curve);
-        mPaintMap.put(curve, getPaintForColor(curve.getColor()));
+        mPaintMap.put(curve, getCurvePaintForColor(curve.getColor()));
         mCurvesVisibility.put(curve, true);
         adjustBoundsForCurve(curve);
     }
@@ -105,21 +105,6 @@ class BaseChartView extends View {
     }
 
     //========= Protected methods ==============
-
-    /**
-     * @return paint for given int color
-     */
-    protected Paint getPaintForColor(int color) {
-        Paint paint = new Paint();
-        paint.setColor(color);
-        paint.setAntiAlias(IS_ANTI_ALIAS);
-        paint.setStrokeWidth(LINE_WIDTH_PX);
-        paint.setStyle(PAINT_STYLE);
-        paint.setStrokeJoin(PAINT_JOIN);
-        paint.setStrokeCap(STROKE_CAP);
-        paint.setTextSize(30f);
-        return paint;
-    }
 
     /**
      * Maps given points in data coordinates to view coordinates
@@ -195,5 +180,19 @@ class BaseChartView extends View {
 
     private void recalculateBounds() {
         setBounds(mBounds);
+    }
+
+    /**
+     * @return paint for given int color
+     */
+    private Paint getCurvePaintForColor(int color) {
+        Paint paint = new Paint();
+        paint.setColor(color);
+        paint.setAntiAlias(IS_ANTI_ALIAS);
+        paint.setStrokeWidth(LINE_WIDTH_PX);
+        paint.setStyle(PAINT_STYLE);
+        paint.setStrokeJoin(PAINT_JOIN);
+        paint.setStrokeCap(STROKE_CAP);
+        return paint;
     }
 }
