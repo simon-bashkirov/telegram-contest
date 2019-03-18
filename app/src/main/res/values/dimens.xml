@@ -18,6 +18,6 @@
     <dimen name="seek_chart_height">56dp</dimen>
     <dimen name="seek_thumb_height">56dp</dimen>
     <dimen name="seek_thumb_width">120dp</dimen>
-    <dimen name="seek_thumb__stroke_width">4dp</dimen>
+    <dimen name="seek_thumb_stroke_width">4dp</dimen>
 
 </resources>

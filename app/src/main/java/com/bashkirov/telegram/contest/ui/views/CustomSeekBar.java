@@ -23,7 +23,7 @@ public class CustomSeekBar extends View {
 
     private final Paint mFillPaint = getFillPaint();
     private final Paint mFramePaint = getFramePaint();
-    private final float mStrokeWidth = getResources().getDimension(R.dimen.seek_thumb__stroke_width);
+    private final float mStrokeWidth = getResources().getDimension(R.dimen.seek_thumb_stroke_width);
 
     private float mStartPosition = DEFAULT_START_POSITION;
     private float mEndPosition = DEFAULT_END_POSITION;
@@ -111,7 +111,7 @@ public class CustomSeekBar extends View {
         float endFrame = mEndPosition * width;
         canvas.drawRect(0, 0, startFrame, height, mFillPaint);
         canvas.drawRect(endFrame, 0, width, height, mFillPaint);
-        canvas.drawRect(startFrame + mStrokeWidth / 2, mStrokeWidth / 2, endFrame - mStrokeWidth / 2, height - mStrokeWidth / 2, mFramePaint);
+        canvas.drawRect(startFrame + mStrokeWidth / 2, 0, endFrame - mStrokeWidth / 2, height, mFramePaint);
 
     }
 
@@ -126,7 +126,7 @@ public class CustomSeekBar extends View {
     public Paint getFramePaint() {
         Paint paint = new Paint();
         paint.setColor(getResources().getColor(FRAME_COLOR_ID));
-        paint.setStrokeWidth(getResources().getDimension(R.dimen.seek_thumb__stroke_width));
+        paint.setStrokeWidth(getResources().getDimension(R.dimen.seek_thumb_stroke_width));
         paint.setStyle(Paint.Style.STROKE);
         return paint;
     }
