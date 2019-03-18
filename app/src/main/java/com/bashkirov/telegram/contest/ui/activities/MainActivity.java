@@ -28,6 +28,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         loadData();
     }
 
@@ -71,6 +77,7 @@ public class MainActivity extends Activity {
 3. Toolbar style // proble,
 4. Night theme
 5. Javadoc comments to all
+6. Day view
  */
 
 
