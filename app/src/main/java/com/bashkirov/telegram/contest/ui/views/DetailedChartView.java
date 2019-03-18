@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Provides rangable anda decorated chart visualisation
+ * Provides rangable and decorated chart visualisation
  */
-public class DetailedChartView extends BaseChartView implements Rangable {
+public class DetailedChartView extends BaseChartView implements RangeListener {
 
     private static final long DEFAULT_X_TICS_STEP = 7L * 1000 * 60 * 60 * 24; // DateUtils.DAY_IN_MILLIS for API > 3;
     private static final int DEFAULT_Y_TICS_STEP = 50;
@@ -47,14 +47,12 @@ public class DetailedChartView extends BaseChartView implements Rangable {
     public DetailedChartView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initBaseYPadding(DEFAULT_X_TICS_TEXT_PADDING_PX + 20);
-
     }
 
     @Override
     public void loadChart(ChartModel chart) {
         super.loadChart(chart);
         mInitialBounds = getBounds();
-        setRange(0f, 0.31f);
     }
 
     // ============= Override default behaviour ==========
@@ -104,9 +102,9 @@ public class DetailedChartView extends BaseChartView implements Rangable {
         }
     }
 
-    //============ Rangable =====================
+    //============ RangeListener =====================
     @Override
-    public void setRange(float start, float end) {
+    public void onRangeChange(float start, float end) {
         if (end < start) return;
         BoundsModel initialBounds = mInitialBounds;
         if (initialBounds == null) return;
@@ -117,23 +115,7 @@ public class DetailedChartView extends BaseChartView implements Rangable {
         setBounds(newBounds);
         invalidate();
     }
-
-    @Override
-    public void shiftRange(float shift) {
-        BoundsModel initialBounds = mInitialBounds;
-        BoundsModel oldBounds = getBounds();
-        if (initialBounds == null) return;
-        Float xShift = shift * (initialBounds.getMaxX() - initialBounds.getMinX());
-        BoundsModel newBounds = new BoundsModel(oldBounds.getMinX() + xShift.longValue(),
-                oldBounds.getMaxX() + xShift.longValue(), initialBounds.getMinY(), initialBounds.getMaxY());
-        setBounds(newBounds);
-        invalidate();
-    }
-
-    @Override
-    public void extendRange(float percent, Direction direction) {
-        invalidate();
-    }
+    //////////////////////////////////////////////////////
 
     private class Tick {
         private final String text;

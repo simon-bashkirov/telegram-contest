@@ -53,34 +53,9 @@ public class CompoundChartView extends LinearLayout {
         mDetailedChartView = findViewById(R.id.rangable_chart_view);
         mSeekBar = findViewById(R.id.seekBar);
         mCheckGroup = findViewById(R.id.check_group);
-        //  initSeekBarListener();
+        mSeekBar.setListener(mDetailedChartView);
 
     }
-
-    private float mLastProgress;
-
-  /*  private void initSeekBarListener() {
-        mLastProgress = mSeekBar.getProgress();
-        final Rangable rangable = mDetailedChartView;
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                rangable.shiftRange((progress - mLastProgress) / 100);
-                mLastProgress = progress;
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                //Do nothing
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                //Do nothing
-            }
-        });
-
-    }*/
 
     private void setCheckGroup() {
         mCheckGroup.removeAllViews();
