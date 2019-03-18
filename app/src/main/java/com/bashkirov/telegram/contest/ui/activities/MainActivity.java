@@ -63,3 +63,16 @@ public class MainActivity extends Activity {
 
 
 }
+
+//TODO
+/*
+1. Control range
+2. Ranges for different charts
+3. Dimens for lines
+4. Scroll view
+5. Toolbar style // proble,
+6. Night theme
+7. Javadoc comments to all
+ */
+
+

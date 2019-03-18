@@ -38,15 +38,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <SeekBar
+        <com.bashkirov.telegram.contest.ui.views.CustomSeekBar
             android:id="@+id/seekBar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/default_margin_negative"
-            android:layout_marginRight="@dimen/default_margin_negative"
-            android:progressDrawable="@drawable/shape_seek_bar_progress"
-            android:thumb="@drawable/shape_seek_bar_tumb"
-            android:thumbOffset="@dimen/seek_thumb__offset" />
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 

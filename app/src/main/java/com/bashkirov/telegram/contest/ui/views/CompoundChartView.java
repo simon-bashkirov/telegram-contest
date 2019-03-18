@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.SeekBar;
 
 import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.ChartModel;
@@ -25,7 +24,7 @@ public class CompoundChartView extends LinearLayout {
     //Components
     private SimpleChartView mSimpleChartView;
     private DetailedChartView mDetailedChartView;
-    private SeekBar mSeekBar;
+    private CustomSeekBar mSeekBar;
     private LinearLayout mCheckGroup;
 
 
@@ -54,13 +53,13 @@ public class CompoundChartView extends LinearLayout {
         mDetailedChartView = findViewById(R.id.rangable_chart_view);
         mSeekBar = findViewById(R.id.seekBar);
         mCheckGroup = findViewById(R.id.check_group);
-        initSeekBarListener();
+        //  initSeekBarListener();
 
     }
 
     private float mLastProgress;
 
-    private void initSeekBarListener() {
+  /*  private void initSeekBarListener() {
         mLastProgress = mSeekBar.getProgress();
         final Rangable rangable = mDetailedChartView;
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -81,7 +80,7 @@ public class CompoundChartView extends LinearLayout {
             }
         });
 
-    }
+    }*/
 
     private void setCheckGroup() {
         mCheckGroup.removeAllViews();
