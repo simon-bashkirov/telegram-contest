@@ -6,6 +6,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.BoundsModel;
 import com.bashkirov.telegram.contest.models.ChartModel;
 import com.bashkirov.telegram.contest.models.CurveModel;
@@ -24,7 +25,6 @@ import java.util.Map;
 class BaseChartView extends View {
 
     //Constants
-    private final static float LINE_WIDTH_PX = 4f;
     private final static boolean IS_ANTI_ALIAS = true;
     private final static Paint.Style PAINT_STYLE = Paint.Style.STROKE;
     private final static Paint.Join PAINT_JOIN = Paint.Join.ROUND;
@@ -189,7 +189,7 @@ class BaseChartView extends View {
         Paint paint = new Paint();
         paint.setColor(color);
         paint.setAntiAlias(IS_ANTI_ALIAS);
-        paint.setStrokeWidth(LINE_WIDTH_PX);
+        paint.setStrokeWidth(getResources().getDimension(R.dimen.curve_width));
         paint.setStyle(PAINT_STYLE);
         paint.setStrokeJoin(PAINT_JOIN);
         paint.setStrokeCap(STROKE_CAP);
