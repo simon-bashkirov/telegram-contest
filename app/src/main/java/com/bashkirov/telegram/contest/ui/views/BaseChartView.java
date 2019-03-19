@@ -68,6 +68,14 @@ class BaseChartView extends View {
     }
 
     /**
+     * Clears the data
+     */
+    public void clear() {
+        mCurves.clear();
+        invalidate();
+    }
+
+    /**
      * Loads single @param curve to be displayed
      * @param curve curve to be loaded
      */

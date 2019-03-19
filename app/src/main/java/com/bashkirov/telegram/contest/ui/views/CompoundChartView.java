@@ -47,6 +47,12 @@ public class CompoundChartView extends LinearLayout {
         setCheckButtonsGroup();
     }
 
+    public void clear() {
+        mBaseChartView.clear();
+        mDetailedChartView.clear();
+
+    }
+
     //////////////////////////////////////////////////
 
     private void initViews() {
