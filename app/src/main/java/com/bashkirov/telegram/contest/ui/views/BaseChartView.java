@@ -72,6 +72,7 @@ class BaseChartView extends View {
      */
     public void clear() {
         mCurves.clear();
+        mBounds = null;
         invalidate();
     }
 

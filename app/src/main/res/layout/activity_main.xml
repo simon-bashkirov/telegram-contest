@@ -9,6 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_gravity="center"
         android:layout_height="wrap_content"
+        android:minHeight="@dimen/min_control_height"
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginLeft="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin">
