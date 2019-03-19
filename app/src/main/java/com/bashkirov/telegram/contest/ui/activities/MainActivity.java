@@ -28,7 +28,6 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
-
     }
 
     @Override
@@ -42,6 +41,7 @@ public class MainActivity extends Activity {
         mLoader.interrupt();
         super.onDestroy();
     }
+
 
     private void initViews() {
         mCompoundChartView = findViewById(R.id.compound_chart_view);
@@ -72,7 +72,6 @@ public class MainActivity extends Activity {
 
 //TODO
 /*
-1. Ranges for different charts
 2. Scroll view
 3. Toolbar style // proble,
 4. Night theme
