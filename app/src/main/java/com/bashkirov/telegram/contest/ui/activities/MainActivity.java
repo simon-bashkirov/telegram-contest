@@ -51,7 +51,7 @@ public class MainActivity extends Activity {
         mLoader = new Thread(() -> {
             try {
                 String data = FileReader.readStringFromAsset(this, TEST_DATA_FILE_NAME);
-                List<ChartModel> charts = DataParser.parseCharListJsonString(data);
+                List<ChartModel> charts = DataParser.parseChartListJsonString(data);
                 postDataInUIThread(charts);
             } catch (JSONException ex) {
                 ex.printStackTrace();
@@ -73,10 +73,8 @@ public class MainActivity extends Activity {
 //TODO
 /*
 2. Scroll view
-3. Toolbar style // proble,
 4. Night theme
 5. Javadoc comments to all
-6. Day view
  */
 
 

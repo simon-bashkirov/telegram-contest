@@ -2,6 +2,9 @@ package com.bashkirov.telegram.contest.models;
 
 import java.util.Arrays;
 
+/**
+ * Provides model for data bounds
+ */
 public class BoundsModel {
 
     public BoundsModel(long minX, long maxX, int minY, int maxY) {
@@ -31,6 +34,12 @@ public class BoundsModel {
         return mMaxY;
     }
 
+    /**
+     * Returns merge result of two bounds, i.e. new bounds containing both
+     *
+     * @param other other bounds
+     * @return merge result
+     */
     public BoundsModel megre(BoundsModel other) {
         if (other == null) return this;
         return new BoundsModel(

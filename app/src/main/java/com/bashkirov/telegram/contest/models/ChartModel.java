@@ -2,6 +2,9 @@ package com.bashkirov.telegram.contest.models;
 
 import java.util.List;
 
+/**
+ * Provides model for chart data
+ */
 public class ChartModel {
 
     private final List<CurveModel> mCurves;

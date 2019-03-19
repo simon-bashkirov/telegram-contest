@@ -16,14 +16,31 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Provides logic for JSON data parsing
+ */
 @SuppressWarnings("WeakerAccess")
 public class DataParser {
 
-    public static List<ChartModel> parseCharListJsonString(String string) throws JSONException {
+    /**
+     * Parses chart list JSON to list of ChartModels
+     *
+     * @param string input JSON in string format
+     * @return resulting list
+     * @throws JSONException when JSON is invalid
+     */
+    public static List<ChartModel> parseChartListJsonString(String string) throws JSONException {
         JSONArray data = new JSONArray(string);
         return parseChartList(data);
     }
 
+    /**
+     * Parses chart list JSON to list of ChartModels
+     *
+     * @param chartJsonArray input JSON in JsonArray format
+     * @return resulting list
+     * @throws JSONException when JSON is invalid
+     */
     public static List<ChartModel> parseChartList(JSONArray chartJsonArray) throws JSONException {
         List<ChartModel> charts = new ArrayList<>();
         for (int i = 0; i < chartJsonArray.length(); i++) {
@@ -33,6 +50,12 @@ public class DataParser {
         return charts;
     }
 
+    /**
+     * Parses chart JSON to ChartModel
+     * @param chartJson input JSON
+     * @return resulting ChartModel
+     * @throws JSONException when JSON is invalid
+     */
     public static ChartModel parseChart(JSONObject chartJson) throws JSONException {
         JSONArray columns = chartJson.getJSONArray("columns");
         //Parse x column

@@ -1,10 +1,13 @@
 package com.bashkirov.telegram.contest.models;
 
-public class FloatPointModel {
+/**
+ * Provides model for point in view coordinates
+ */
+public class ViewPointModel {
 
     private final float mX, mY;
 
-    public FloatPointModel(float x, float y) {
+    public ViewPointModel(float x, float y) {
         this.mX = x;
         this.mY = y;
     }

@@ -1,5 +1,8 @@
 package com.bashkirov.telegram.contest.ui.views;
 
+/**
+ * Implements abstraction for listening range changes
+ */
 public interface RangeListener {
 
     /**
@@ -9,6 +12,5 @@ public interface RangeListener {
      * @param end   ending percent of data raw
      */
     void onRangeChange(float start, float end);
-
 
 }

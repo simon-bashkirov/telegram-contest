@@ -12,24 +12,24 @@ import com.bashkirov.telegram.contest.R;
 
 public class CustomSeekBar extends View {
 
+    //Constants
     private final static float SENSITIVITY_LENGTH = 0.1f;
-
     private final static int FILL_COLOR_ID = R.color.seek_bar_fill_gray;
     private final static int FRAME_COLOR_ID = R.color.seek_bar_stroke_blue;
-
     private final static float MIN_WIDTH = SENSITIVITY_LENGTH * 3.5f;
     private final static float DEFAULT_END_POSITION = 1.0f;
     private final static float DEFAULT_START_POSITION = DEFAULT_END_POSITION - MIN_WIDTH;
-
     private final Paint mFillPaint = getFillPaint();
     private final Paint mFramePaint = getFramePaint();
     private final float mStrokeWidth = getResources().getDimension(R.dimen.seek_thumb_stroke_width);
 
+    //Private fields
     private float mStartPosition = DEFAULT_START_POSITION;
     private float mEndPosition = DEFAULT_END_POSITION;
-
     private RangeListener mListener;
+    private Touch mTouch = null;
 
+    //=================== Constructors ==========================
     public CustomSeekBar(Context context) {
         this(context, null);
     }
@@ -38,69 +38,19 @@ public class CustomSeekBar extends View {
         this(context, attrs, 0);
     }
 
-    private Touch mTouch = null;
-
     @SuppressLint("ClickableViewAccessibility")
     public CustomSeekBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                float touch = event.getX() / getWidth();
-                if (touch < mStartPosition + SENSITIVITY_LENGTH && touch > mStartPosition - SENSITIVITY_LENGTH) {
-                    this.mTouch = Touch.START;
-                }
-
-                if (touch < mEndPosition + SENSITIVITY_LENGTH && touch > mEndPosition - SENSITIVITY_LENGTH) {
-                    this.mTouch = Touch.END;
-                }
-                if (touch > mStartPosition + SENSITIVITY_LENGTH && touch < mEndPosition - SENSITIVITY_LENGTH) {
-                    this.mTouch = Touch.CENTER;
-                }
-
-                invalidate();
-                return true;
-            }
-            if (event.getAction() == MotionEvent.ACTION_MOVE) {
-                if (mTouch == Touch.START) {
-                    float newStartPosition = event.getX() / getWidth();
-                    if ((newStartPosition < mStartPosition || mEndPosition - mStartPosition >= MIN_WIDTH) && newStartPosition >= 0f) {
-                        mStartPosition = newStartPosition;
-                    }
-
-                }
-                if (mTouch == Touch.CENTER) {
-                    float centerPosition = event.getX() / getWidth();
-                    float dif = mEndPosition - mStartPosition;
-                    float newEndPosition = centerPosition + dif / 2f;
-                    float newStartPosition = centerPosition - dif / 2f;
-                    if (newStartPosition >= 0 && newEndPosition <= 1) {
-                        mStartPosition = newStartPosition;
-                        mEndPosition = newEndPosition;
-                    }
-                }
-                if (mTouch == Touch.END) {
-                    float newEndPosition = event.getX() / getWidth();
-                    if ((newEndPosition > mEndPosition || mEndPosition - mStartPosition >= MIN_WIDTH) && newEndPosition <= 1f) {
-                        mEndPosition = event.getX() / getWidth();
-                    }
-                }
-                mListener.onRangeChange(mStartPosition, mEndPosition);
-                invalidate();
-                return true;
-            }
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                mTouch = null;
-                invalidate();
-                return true;
-            }
-            return false;
-        });
+        initOnTouchListener();
     }
 
+    //================== Public methods ===========================
     public void setListener(RangeListener listener) {
         this.mListener = listener;
         listener.onRangeChange(mStartPosition, mEndPosition);
     }
+
+    //////////////////////////////////////////////////////////////
 
     @Override
     protected void onDraw(Canvas canvas) {
@@ -112,18 +62,16 @@ public class CustomSeekBar extends View {
         canvas.drawRect(0, 0, startFrame, height, mFillPaint);
         canvas.drawRect(endFrame, 0, width, height, mFillPaint);
         canvas.drawRect(startFrame + mStrokeWidth / 2, 0, endFrame - mStrokeWidth / 2, height, mFramePaint);
-
     }
 
-
-    public Paint getFillPaint() {
+    private Paint getFillPaint() {
         Paint paint = new Paint();
         paint.setColor(getResources().getColor(FILL_COLOR_ID));
         paint.setStyle(Paint.Style.FILL);
         return paint;
     }
 
-    public Paint getFramePaint() {
+    private Paint getFramePaint() {
         Paint paint = new Paint();
         paint.setColor(getResources().getColor(FRAME_COLOR_ID));
         paint.setStrokeWidth(getResources().getDimension(R.dimen.seek_thumb_stroke_width));
@@ -131,7 +79,88 @@ public class CustomSeekBar extends View {
         return paint;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
+    private void initOnTouchListener() {
+        setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                handleAcionDown(event.getX());
+            }
+            if (event.getAction() == MotionEvent.ACTION_MOVE) {
+                handleActionMove(event.getX());
+            }
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                handleActionUp();
+            }
+            return true;
+        });
+    }
 
+    /**
+     * Handles action down. Sets mTouch to START, CENTER or END depending on @param x and SENSITIVITY_LENGTH
+     *
+     * @param x event coordinate
+     */
+    private void handleAcionDown(float x) {
+        float touch = x / getWidth();
+        if (touch < mStartPosition + SENSITIVITY_LENGTH && touch > mStartPosition - SENSITIVITY_LENGTH) {
+            this.mTouch = Touch.START;
+        }
+
+        if (touch < mEndPosition + SENSITIVITY_LENGTH && touch > mEndPosition - SENSITIVITY_LENGTH) {
+            this.mTouch = Touch.END;
+        }
+        if (touch > mStartPosition + SENSITIVITY_LENGTH && touch < mEndPosition - SENSITIVITY_LENGTH) {
+            this.mTouch = Touch.CENTER;
+        }
+
+        invalidate();
+    }
+
+    /**
+     * Handles action move. Change mStartPosition or/and mEndPosition according to @param x.
+     * Notifies listener that range has been changed.
+     *
+     * @param x event coordinate
+     */
+    private void handleActionMove(float x) {
+        if (mTouch == Touch.START) {
+            float newStartPosition = x / getWidth();
+            if ((newStartPosition < mStartPosition || mEndPosition - mStartPosition >= MIN_WIDTH) && newStartPosition >= 0f) {
+                mStartPosition = newStartPosition;
+            }
+
+        }
+        if (mTouch == Touch.CENTER) {
+            float centerPosition = x / getWidth();
+            float dif = mEndPosition - mStartPosition;
+            float newEndPosition = centerPosition + dif / 2f;
+            float newStartPosition = centerPosition - dif / 2f;
+            if (newStartPosition >= 0 && newEndPosition <= 1) {
+                mStartPosition = newStartPosition;
+                mEndPosition = newEndPosition;
+            }
+        }
+        if (mTouch == Touch.END) {
+            float newEndPosition = x / getWidth();
+            if ((newEndPosition > mEndPosition || mEndPosition - mStartPosition >= MIN_WIDTH) && newEndPosition <= 1f) {
+                mEndPosition = x / getWidth();
+            }
+        }
+        mListener.onRangeChange(mStartPosition, mEndPosition);
+        invalidate();
+    }
+
+    /**
+     * Handles action up. Clears mTouch
+     */
+    private void handleActionUp() {
+        mTouch = null;
+        invalidate();
+    }
+
+    /**
+     * Provides positions where user touch this control.
+     */
     private enum Touch {
         START,
         CENTER,

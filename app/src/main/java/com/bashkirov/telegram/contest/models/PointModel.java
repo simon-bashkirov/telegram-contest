@@ -1,5 +1,8 @@
 package com.bashkirov.telegram.contest.models;
 
+/**
+ * Provides model for point in data coordinates
+ */
 public class PointModel {
 
     private final long mX;

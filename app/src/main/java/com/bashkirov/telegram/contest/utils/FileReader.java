@@ -1,12 +1,22 @@
 package com.bashkirov.telegram.contest.utils;
 
 import android.content.Context;
+
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * Provides utility to read files
+ */
 @SuppressWarnings("CharsetObjectCanBeUsed")
 public class FileReader {
-
+    /**
+     * Reads data form file into single string format
+     *
+     * @param context  context to get access to app assets
+     * @param fileName requested file name
+     * @return file content as single string
+     */
     public static String readStringFromAsset(Context context, String fileName) {
         String string;
         try {

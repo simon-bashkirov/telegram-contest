@@ -10,8 +10,8 @@ import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.BoundsModel;
 import com.bashkirov.telegram.contest.models.ChartModel;
 import com.bashkirov.telegram.contest.models.CurveModel;
-import com.bashkirov.telegram.contest.models.FloatPointModel;
 import com.bashkirov.telegram.contest.models.PointModel;
+import com.bashkirov.telegram.contest.models.ViewPointModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,17 +30,15 @@ class BaseChartView extends View {
     private final static Paint.Join PAINT_JOIN = Paint.Join.ROUND;
     private final static Paint.Cap STROKE_CAP = Paint.Cap.ROUND;
 
-    private int mBaseYPadding = 0;
-
     //Common fields
     protected List<CurveModel> mCurves = new LinkedList<>();
-    protected Map<CurveModel, List<FloatPointModel>> mNormalizedPointsMap = new HashMap<>();
+    protected Map<CurveModel, List<ViewPointModel>> mNormalizedPointsMap = new HashMap<>();
     protected Map<CurveModel, Boolean> mCurvesVisibility = new HashMap<>();
 
     //Private field
     private Map<CurveModel, Paint> mPaintMap = new HashMap<>();
     private BoundsModel mBounds;
-
+    private int mBaseYPadding = 0;
 
     //============  View constructors =============
     public BaseChartView(Context context) {
@@ -59,6 +57,7 @@ class BaseChartView extends View {
 
     /**
      * Loads chart containing a list of curves to be displayed
+     * @param  chart chart to be loaded
      */
     public void loadChart(ChartModel chart) {
         List<CurveModel> curves = chart.getCurves();
@@ -70,6 +69,7 @@ class BaseChartView extends View {
 
     /**
      * Loads single @param curve to be displayed
+     * @param curve curve to be loaded
      */
     public void loadCurve(CurveModel curve) {
         mCurves.add(curve);
@@ -78,15 +78,22 @@ class BaseChartView extends View {
         adjustBoundsForCurve(curve);
     }
 
+    /**
+     * Sets bound of data range
+     *
+     * @param bounds bounds that limit display data range
+     */
     public void setBounds(BoundsModel bounds) {
         mNormalizedPointsMap.clear();
         BoundsModel adjustedBounds = null;
         for (CurveModel aCurve : mCurves) {
             Boolean visible = mCurvesVisibility.get(aCurve);
             if (visible == null || !visible) continue;
-            if (adjustedBounds == null) adjustedBounds = aCurve.adjustBoundsHeight(bounds);
-            else adjustedBounds = adjustedBounds.megre(aCurve.adjustBoundsHeight(bounds));
-            List<FloatPointModel> normalized = normalize(aCurve.getPoints(), adjustedBounds);
+            if (adjustedBounds == null)
+                adjustedBounds = aCurve.adjustBoundsHeight(bounds.getMinX(), bounds.getMaxX());
+            else
+                adjustedBounds = adjustedBounds.megre(aCurve.adjustBoundsHeight(bounds.getMinX(), bounds.getMaxX()));
+            List<ViewPointModel> normalized = normalize(aCurve.getPoints(), adjustedBounds);
             mNormalizedPointsMap.put(aCurve, normalized);
         }
         if (adjustedBounds != null) {
@@ -95,6 +102,12 @@ class BaseChartView extends View {
         }
     }
 
+    /**
+     * Sets visibility of a specified curve
+     *
+     * @param curveModel the curve to set visible/invisible
+     * @param visible    the curve is visible if true
+     */
     public void setCurveVisible(CurveModel curveModel, boolean visible) {
         if (mCurvesVisibility.containsKey(curveModel)) {
             mCurvesVisibility.remove(curveModel);
@@ -112,10 +125,10 @@ class BaseChartView extends View {
      * @param points in data coordinates
      * @return points in view coordinates
      */
-    protected List<FloatPointModel> normalize(List<PointModel> points, BoundsModel bounds) {
-        List<FloatPointModel> normalized = new ArrayList<>();
+    protected List<ViewPointModel> normalize(List<PointModel> points, BoundsModel bounds) {
+        List<ViewPointModel> normalized = new ArrayList<>();
         for (PointModel point : points) {
-            normalized.add(getFloatPointForPoint(point, bounds));
+            normalized.add(getViewPointForPoint(point, bounds));
         }
         return normalized;
     }
@@ -125,18 +138,19 @@ class BaseChartView extends View {
      * @param bounds curve bounds
      * @return Maps given point in data coordinates to view coordinates
      */
-    protected FloatPointModel getFloatPointForPoint(PointModel point, BoundsModel bounds) {
+    protected ViewPointModel getViewPointForPoint(PointModel point, BoundsModel bounds) {
         int width = getWidth();
         int height = getHeight() - mBaseYPadding;
         long minX = bounds.getMinX();
         long maxX = bounds.getMaxX();
         int minY = bounds.getMinY();
         int maxY = bounds.getMaxY();
-        return new FloatPointModel((float) (point.getX() - minX) / (maxX - minX) * width,
+        return new ViewPointModel((float) (point.getX() - minX) / (maxX - minX) * width,
                 height - (float) (point.getY() - minY) / (maxY - minY) * (height));
     }
 
-    public void initBaseYPadding(int mBaseYPadding) {
+    @SuppressWarnings("SameParameterValue")
+    protected void initBaseYPadding(int mBaseYPadding) {
         this.mBaseYPadding = mBaseYPadding;
     }
 
@@ -150,11 +164,11 @@ class BaseChartView extends View {
         super.onDraw(canvas);
         for (CurveModel curve : mCurves) {
             Paint paint = mPaintMap.get(curve);
-            List<FloatPointModel> points = mNormalizedPointsMap.get(curve);
+            List<ViewPointModel> points = mNormalizedPointsMap.get(curve);
             if (paint == null || points == null) continue;
             for (int i = 0; i < points.size() - 1; i++) {
-                FloatPointModel point = points.get(i);
-                FloatPointModel nextPoint = points.get(i + 1);
+                ViewPointModel point = points.get(i);
+                ViewPointModel nextPoint = points.get(i + 1);
                 canvas.drawLine(point.getX(), point.getY(), nextPoint.getX(), nextPoint.getY(), paint);
             }
 
@@ -170,7 +184,7 @@ class BaseChartView extends View {
         BoundsModel existingBounds = mBounds;
         BoundsModel mergedBounds = curveBounds.megre(existingBounds);
         if (mergedBounds.equals(existingBounds)) {
-            List<FloatPointModel> normalized = normalize(curve.getPoints(), existingBounds);
+            List<ViewPointModel> normalized = normalize(curve.getPoints(), existingBounds);
             mNormalizedPointsMap.put(curve, normalized);
         } else {
             //New bounds should be set

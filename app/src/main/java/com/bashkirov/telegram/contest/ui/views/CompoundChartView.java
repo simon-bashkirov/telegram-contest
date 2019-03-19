@@ -20,13 +20,13 @@ public class CompoundChartView extends LinearLayout {
 
     private ChartModel mChartModel;
 
-    //Components
+    //Views
     private BaseChartView mBaseChartView;
     private DetailedChartView mDetailedChartView;
     private CustomSeekBar mSeekBar;
     private LinearLayout mCheckGroup;
 
-
+    //============= Constructors ================
     public CompoundChartView(Context context) {
         this(context, null);
     }
@@ -36,6 +36,7 @@ public class CompoundChartView extends LinearLayout {
         View.inflate(context, R.layout.view_chart_compound, this);
         setOrientation(VERTICAL);
         initViews();
+        initSeekBarListener();
     }
 
     //========= Public methods ===================
@@ -43,20 +44,26 @@ public class CompoundChartView extends LinearLayout {
         mChartModel = chartModel;
         mBaseChartView.loadChart(chartModel);
         mDetailedChartView.loadChart(chartModel);
-        setCheckGroup();
+        setCheckButtonsGroup();
     }
 
     //////////////////////////////////////////////////
+
     private void initViews() {
         mBaseChartView = findViewById(R.id.base_chart_view);
         mDetailedChartView = findViewById(R.id.detailed_chart_view);
         mSeekBar = findViewById(R.id.seekBar);
         mCheckGroup = findViewById(R.id.check_group);
-        mSeekBar.setListener(mDetailedChartView);
-
     }
 
-    private void setCheckGroup() {
+    private void initSeekBarListener() {
+        mSeekBar.setListener(mDetailedChartView);
+    }
+
+    /**
+     * Creates required number of check buttons and fills the mCheckGroup
+     */
+    private void setCheckButtonsGroup() {
         mCheckGroup.removeAllViews();
         int count = 0;
         List<CurveModel> curves = mChartModel.getCurves();

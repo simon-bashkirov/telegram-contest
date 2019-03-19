@@ -8,8 +8,8 @@ import android.util.AttributeSet;
 import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.BoundsModel;
 import com.bashkirov.telegram.contest.models.ChartModel;
-import com.bashkirov.telegram.contest.models.FloatPointModel;
 import com.bashkirov.telegram.contest.models.PointModel;
+import com.bashkirov.telegram.contest.models.ViewPointModel;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Provides rangable and decorated chart visualisation
+ * Provides rangable and detailed chart visualisation
  */
 public class DetailedChartView extends BaseChartView implements RangeListener {
 
@@ -29,8 +29,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     private static final int DEFAULT_X_TICS_TEXT_PADDING_PX = 60;
     private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("MMM dd", Locale.US);
 
-    private int mYtickStep = 10;
-    private long mXtickStep = 10L * 24L * 60L * 60L * 1000L;//10 Days in millis
+    private int mYtickStep = 10; //Default value
+    private long mXtickStep = 10L * 24L * 60L * 60L * 1000L;//10 Days in millis, default value
 
     private List<Tick> mTicksX = new LinkedList<>();
     private List<Tick> mTicksY = new LinkedList<>();
@@ -40,6 +40,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     private BoundsModel mInitialBounds;
     private Float mStartPosition;
     private Float mEndPosition;
+
+    //================== Constructors ========================
 
     public DetailedChartView(Context context) {
         this(context, null);
@@ -54,6 +56,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         initBaseYPadding(DEFAULT_X_TICS_TEXT_PADDING_PX + 20);
     }
 
+    /////////////////////////////////////////////////////////////
+
     @Override
     public void loadChart(ChartModel chart) {
         super.loadChart(chart);
@@ -66,7 +70,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         }
     }
 
-    // ============= Override default behaviour ==========
+    // ============= Override base behaviour ==========
 
     @Override
     public void setBounds(BoundsModel bounds) {
@@ -100,7 +104,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         int maxY = processedBounds.getMaxY();
         for (int i = minY; i < maxY; i += mYtickStep) {
             PointModel point = new PointModel(processedBounds.getMinX(), i);
-            FloatPointModel floatPoint = getFloatPointForPoint(point, processedBounds);
+            ViewPointModel floatPoint = getViewPointForPoint(point, processedBounds);
             mTicksY.add(new Tick(String.valueOf(point.getY()), floatPoint));
         }
     }
@@ -115,7 +119,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         long maxX = processedBounds.getMaxX();
         for (long i = minX; i < maxX; i += mXtickStep) {
             PointModel point = new PointModel(i, processedBounds.getMinY());
-            FloatPointModel floatPoint = getFloatPointForPoint(point, processedBounds);
+            ViewPointModel floatPoint = getViewPointForPoint(point, processedBounds);
             mTicksX.add(new Tick(mSimpleDateFormat.format(new Date(point.getX())), floatPoint));
         }
     }
@@ -160,11 +164,14 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     }
     //////////////////////////////////////////////////////
 
+    /**
+     * Provides model for plot tick label (text and position)
+     */
     private class Tick {
         private final String text;
-        private final FloatPointModel floatPoint;
+        private final ViewPointModel floatPoint;
 
-        Tick(String text, FloatPointModel floatPoint) {
+        Tick(String text, ViewPointModel floatPoint) {
             this.text = text;
             this.floatPoint = floatPoint;
         }
