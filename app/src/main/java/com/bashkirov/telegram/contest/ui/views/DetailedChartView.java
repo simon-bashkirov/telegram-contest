@@ -22,7 +22,7 @@ import java.util.Locale;
  */
 public class DetailedChartView extends BaseChartView implements RangeListener {
 
-    private static final int NUMBER_OF_X_TICS = 5;
+    private static final int X_TICS_COUNT = 5;
     private static final int Y_TICS_COUNT = 5;
 
     private static final int DEFAULT_Y_TICS_TEXT_PADDING_PX = -16;
@@ -30,6 +30,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("MMM dd", Locale.US);
 
     private int mYtickStep = 10;
+    private long mXtickStep = 10L * 24L * 60L * 60L * 1000L;//10 Days in millis
 
     private List<Tick> mTicksX = new LinkedList<>();
     private List<Tick> mTicksY = new LinkedList<>();
@@ -57,7 +58,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     public void loadChart(ChartModel chart) {
         super.loadChart(chart);
         mInitialBounds = getBounds();
-        mYtickStep = Math.round((float) (mInitialBounds.getMaxY() - mInitialBounds.getMinY()) / 5);
+        mXtickStep = Math.round((float) (mInitialBounds.getMaxX() - mInitialBounds.getMinX()) / X_TICS_COUNT);
+        mYtickStep = Math.round((float) (mInitialBounds.getMaxY() - mInitialBounds.getMinY()) / Y_TICS_COUNT);
         roundYstep();
         if (mStartPosition != null && mEndPosition != null) {
             onRangeChange(mStartPosition, mEndPosition);
@@ -90,8 +92,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     private void setTicksY() {
         BoundsModel processedBounds = getBounds();
         int dif = processedBounds.getMaxY() - processedBounds.getMinY();
-        if (dif / mYtickStep < 4) mYtickStep = mYtickStep / 2;
-        if (dif / mYtickStep > 5) mYtickStep = mYtickStep * 2;
+        if (dif / mYtickStep < Y_TICS_COUNT - 1) mYtickStep = mYtickStep / 2;
+        if (dif / mYtickStep > Y_TICS_COUNT) mYtickStep = mYtickStep * 2;
         mTicksY.clear();
         roundYstep();
         int minY = (processedBounds.getMinY() / Y_TICS_COUNT) * Y_TICS_COUNT;
@@ -105,11 +107,14 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
 
     private void setTicksX() {
         BoundsModel processedBounds = getBounds();
+        long dif = processedBounds.getMaxX() - processedBounds.getMinX();
+        if (dif / mXtickStep < X_TICS_COUNT - 1) mXtickStep = mXtickStep / 2;
+        if (dif / mXtickStep > X_TICS_COUNT) mXtickStep = mXtickStep * 2;
         mTicksX.clear();
         long minX = processedBounds.getMinX();
         long maxX = processedBounds.getMaxX();
-        for (long i = minX; i < maxX; i += (maxX - minX) / NUMBER_OF_X_TICS) {
-            PointModel point = new PointModel(i, 0);
+        for (long i = minX; i < maxX; i += mXtickStep) {
+            PointModel point = new PointModel(i, processedBounds.getMinY());
             FloatPointModel floatPoint = getFloatPointForPoint(point, processedBounds);
             mTicksX.add(new Tick(mSimpleDateFormat.format(new Date(point.getX())), floatPoint));
         }
