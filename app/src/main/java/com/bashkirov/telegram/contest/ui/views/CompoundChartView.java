@@ -21,7 +21,7 @@ public class CompoundChartView extends LinearLayout {
     private ChartModel mChartModel;
 
     //Components
-    private SimpleChartView mSimpleChartView;
+    private BaseChartView mBaseChartView;
     private DetailedChartView mDetailedChartView;
     private CustomSeekBar mSeekBar;
     private LinearLayout mCheckGroup;
@@ -41,14 +41,14 @@ public class CompoundChartView extends LinearLayout {
     //========= Public methods ===================
     public void loadChart(ChartModel chartModel) {
         mChartModel = chartModel;
-        mSimpleChartView.loadChart(chartModel);
+        mBaseChartView.loadChart(chartModel);
         mDetailedChartView.loadChart(chartModel);
         setCheckGroup();
     }
 
     //////////////////////////////////////////////////
     private void initViews() {
-        mSimpleChartView = findViewById(R.id.simple_chart_view);
+        mBaseChartView = findViewById(R.id.base_chart_view);
         mDetailedChartView = findViewById(R.id.detailed_chart_view);
         mSeekBar = findViewById(R.id.seekBar);
         mCheckGroup = findViewById(R.id.check_group);
@@ -79,7 +79,7 @@ public class CompoundChartView extends LinearLayout {
                     (buttonView, isChecked) -> {
                         if (buttonView == checkBox) {
                             mDetailedChartView.setCurveVisible(curve, isChecked);
-                            mSimpleChartView.setCurveVisible(curve, isChecked);
+                            mBaseChartView.setCurveVisible(curve, isChecked);
                         }
                     }
             );

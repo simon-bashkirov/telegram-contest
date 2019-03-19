@@ -33,8 +33,8 @@
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin">
 
-        <com.bashkirov.telegram.contest.ui.views.SimpleChartView
-            android:id="@+id/simple_chart_view"
+        <com.bashkirov.telegram.contest.ui.views.BaseChartView
+            android:id="@+id/base_chart_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
