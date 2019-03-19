@@ -2,8 +2,6 @@ package com.bashkirov.telegram.contest.ui.activities;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 
 import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.ChartModel;
@@ -56,7 +54,7 @@ public class MainActivity extends Activity {
     }
 
     private void postDataInUIThread(List<ChartModel> charts) {
-        (new Handler(Looper.getMainLooper())).post(() -> {
+        mCompoundChartView.post(() -> {
             if (charts.isEmpty()) return;
             mCompoundChartView.loadChart(charts.get(0));
         });
