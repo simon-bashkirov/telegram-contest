@@ -109,13 +109,12 @@ class SelectedPointDraw {
     }
 
     private Paint getFramePaint() {
-        int gray = mContext.getResources().getColor(R.color.divider_gray);
-        float px = 2f * mContext.getResources().getDimension(R.dimen.divider_thickness);
+        float px = mContext.getResources().getDimension(R.dimen.divider_thickness);
         Paint paint = new Paint();
-        paint.setColor(gray);
+        paint.setColor(mContext.getResources().getColor(R.color.divider_gray));
         paint.setStrokeWidth(strokeWidth);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setShadowLayer(px, px, px, gray);
+        paint.setShadowLayer(px, px, px, mContext.getResources().getColor(R.color.shadow_gray));
         return paint;
     }
 

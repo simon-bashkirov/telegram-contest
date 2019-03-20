@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -68,6 +69,10 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         super(context, attrs, defStyle);
         initBaseYPadding(DEFAULT_X_TICS_TEXT_PADDING_PX + 20);
         initTouchListener();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            //Enable shadows
+            setLayerType(LAYER_TYPE_SOFTWARE, new Paint());
+        }
     }
 
     /////////////////////////////////////////////////////////////
