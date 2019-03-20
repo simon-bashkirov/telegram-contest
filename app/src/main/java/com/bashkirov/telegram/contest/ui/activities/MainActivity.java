@@ -108,6 +108,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 /*
 1. Dynamic width for selected view
 2. Night theme
+3. Shadow
  */
 
 
