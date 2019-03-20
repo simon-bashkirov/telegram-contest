@@ -11,6 +11,7 @@
     <!-- Detailed chart view -->
     <dimen name="tick_text_size">14sp</dimen>
     <dimen name="detailed_chart_height">300dp</dimen>
+    <dimen name="selected_point_radius">4dp</dimen>
 
     <!-- CompoundChartView -->
     <dimen name="chart_name_test_size">16sp</dimen>

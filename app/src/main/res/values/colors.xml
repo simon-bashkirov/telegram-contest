@@ -4,6 +4,7 @@
     <color name="colorPrimary">#517DA2</color>
     <color name="colorPrimaryDark">#426382</color>
     <color name="text_black">#222222</color>
+    <color name="base_background">#FFFFFF</color>
 
     <!-- Detailed chart view -->
     <color name="tick_label_gray">#96A2AA</color>

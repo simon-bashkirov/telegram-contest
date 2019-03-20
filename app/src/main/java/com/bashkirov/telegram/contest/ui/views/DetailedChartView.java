@@ -1,21 +1,26 @@
 package com.bashkirov.telegram.contest.ui.views;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.BoundsModel;
 import com.bashkirov.telegram.contest.models.ChartModel;
+import com.bashkirov.telegram.contest.models.CurveModel;
 import com.bashkirov.telegram.contest.models.PointModel;
 import com.bashkirov.telegram.contest.models.ViewPointModel;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Provides rangable and detailed chart visualisation
@@ -27,6 +32,11 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
 
     private static final int DEFAULT_Y_TICS_TEXT_PADDING_PX = -16;
     private static final int DEFAULT_X_TICS_TEXT_PADDING_PX = 60;
+
+    private final float mSelectedPointStrokeRadius = getResources().getDimension(R.dimen.selected_point_radius);
+    private final float mSelectedPointFillRadius =
+            mSelectedPointStrokeRadius - getResources().getDimension(R.dimen.curve_width) / 2;
+
     private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("MMM dd", Locale.US);
 
     private int mYtickStep = 10; //Default value
@@ -41,6 +51,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     private Float mStartPosition;
     private Float mEndPosition;
 
+    private List<SelectedPoint> mSelectedPoints = new ArrayList<>();
+
     //================== Constructors ========================
 
     public DetailedChartView(Context context) {
@@ -54,6 +66,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     public DetailedChartView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initBaseYPadding(DEFAULT_X_TICS_TEXT_PADDING_PX + 20);
+        initTouchListener();
     }
 
     /////////////////////////////////////////////////////////////
@@ -88,10 +101,62 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         for (Tick tick : mTicksX) {
             canvas.drawText(String.valueOf(tick.text), tick.floatPoint.getX(), tick.floatPoint.getY() + DEFAULT_X_TICS_TEXT_PADDING_PX, mTextPaint);
         }
+
         super.onDraw(canvas);
+
+        for (SelectedPoint selectedPoint : mSelectedPoints) {
+            canvas.drawCircle(selectedPoint.getX(), selectedPoint.getY(), mSelectedPointStrokeRadius, selectedPoint.strokePaint);
+            canvas.drawCircle(selectedPoint.getX(), selectedPoint.getY(), mSelectedPointFillRadius, selectedPoint.fillPaint);
+        }
+
+    }
+
+    @Override
+    public void clear() {
+        super.clear();
+        mSelectedPoints.clear();
     }
 
     //////////////////////////////////////////////
+
+
+    @SuppressLint("ClickableViewAccessibility")
+    private void initTouchListener() {
+        setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                float x = event.getX();
+                float y = event.getY();
+                Integer selectedPointIndex = null;
+                for (Map.Entry<CurveModel, List<ViewPointModel>> entry : mNormalizedPointsMap.entrySet()) {
+                    List<ViewPointModel> points = entry.getValue();
+                    for (ViewPointModel point : points) {
+                        float pointX = point.getX();
+                        float pointY = point.getY();
+                        if (Math.abs(x - pointX) < 20f && Math.abs(y - pointY) < 200f) {
+                            selectedPointIndex = points.indexOf(point);
+                        }
+                    }
+                }
+                mSelectedPoints.clear();
+                if (selectedPointIndex == null) {
+                    invalidate();
+                    return true;
+                }
+                for (Map.Entry<CurveModel, List<ViewPointModel>> entry : mNormalizedPointsMap.entrySet()) {
+                    CurveModel curve = entry.getKey();
+                    List<ViewPointModel> points = entry.getValue();
+                    mSelectedPoints.add(
+                            new SelectedPoint(points.get(selectedPointIndex),
+                                    getStrokePaintForSelectedPoint(curve.getColor()),
+                                    getFillPaintForSelectedPoint()));
+                }
+                invalidate();
+            }
+            return true;
+        });
+    }
+
+
 
     private void setTicksY() {
         BoundsModel processedBounds = getBounds();
@@ -142,6 +207,23 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         return paint;
     }
 
+    private Paint getFillPaintForSelectedPoint() {
+        Paint paint = new Paint();
+        paint.setColor(getResources().getColor(R.color.base_background));
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.FILL);
+        return paint;
+    }
+
+    private Paint getStrokePaintForSelectedPoint(int color) {
+        Paint paint = new Paint();
+        paint.setColor(color);
+        paint.setAntiAlias(true);
+        paint.setStrokeWidth(getResources().getDimension(R.dimen.curve_width));
+        paint.setStyle(Paint.Style.STROKE);
+        return paint;
+    }
+
     private void roundYstep() {
         mYtickStep = (mYtickStep / Y_TICS_COUNT) * Y_TICS_COUNT;
     }
@@ -174,6 +256,26 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         Tick(String text, ViewPointModel floatPoint) {
             this.text = text;
             this.floatPoint = floatPoint;
+        }
+    }
+
+    private class SelectedPoint {
+        private final ViewPointModel point;
+        private final Paint strokePaint;
+        private final Paint fillPaint;
+
+        SelectedPoint(ViewPointModel point, Paint strokePaint, Paint fillPaint) {
+            this.point = point;
+            this.strokePaint = strokePaint;
+            this.fillPaint = fillPaint;
+        }
+
+        float getX() {
+            return point.getX();
+        }
+
+        float getY() {
+            return point.getY();
         }
     }
 
