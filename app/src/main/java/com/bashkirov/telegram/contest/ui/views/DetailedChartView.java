@@ -232,6 +232,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     //============ RangeListener =====================
     @Override
     public void onRangeChange(float start, float end) {
+        mSelectedPoints.clear();
         mStartPosition = start;
         mEndPosition = end;
         if (end < start) return;
