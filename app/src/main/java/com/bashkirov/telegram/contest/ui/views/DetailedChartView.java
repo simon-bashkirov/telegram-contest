@@ -102,6 +102,11 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
             canvas.drawText(String.valueOf(tick.text), tick.floatPoint.getX(), tick.floatPoint.getY() + DEFAULT_X_TICS_TEXT_PADDING_PX, mTextPaint);
         }
 
+        if (!mSelectedPoints.isEmpty()) {
+            float x = mSelectedPoints.get(0).getX();
+            canvas.drawLine(x, 0, x, mTicksY.get(0).floatPoint.getY(), mScaleLinePaint);
+        }
+
         super.onDraw(canvas);
 
         for (SelectedPoint selectedPoint : mSelectedPoints) {
