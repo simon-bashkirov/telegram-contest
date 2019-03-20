@@ -197,22 +197,47 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         for (int i = minY; i < maxY; i += mYtickStep) {
             PointModel point = new PointModel(processedBounds.getMinX(), i);
             ViewPointModel floatPoint = getViewPointForPoint(point, processedBounds);
-            mTicksY.add(new Tick(String.valueOf(point.getY()), floatPoint));
+            mTicksY.add(new Tick(String.valueOf(point.getY()), point, floatPoint));
         }
     }
 
     private void setTicksX() {
         BoundsModel processedBounds = getBounds();
         long dif = processedBounds.getMaxX() - processedBounds.getMinX();
+        long oldStep = mXtickStep;
         if (dif / mXtickStep < X_TICS_COUNT - 1) mXtickStep = mXtickStep / 2;
         if (dif / mXtickStep > X_TICS_COUNT) mXtickStep = mXtickStep * 2;
-        mTicksX.clear();
-        long minX = processedBounds.getMinX();
-        long maxX = processedBounds.getMaxX();
-        for (long i = minX; i < maxX; i += mXtickStep) {
-            PointModel point = new PointModel(i, processedBounds.getMinY());
-            ViewPointModel floatPoint = getViewPointForPoint(point, processedBounds);
-            mTicksX.add(new Tick(mSimpleDateFormat.format(new Date(point.getX())), floatPoint));
+        if (oldStep == mXtickStep) {
+            List<Tick> oldTicks = new LinkedList<>(mTicksX);
+            mTicksX.clear();
+            for (Tick tick : oldTicks) {
+                PointModel point = new PointModel(tick.point.getX(), processedBounds.getMinY());
+                mTicksX.add(new Tick(tick.text, point, getViewPointForPoint(point, processedBounds)));
+            }
+            Tick first = mTicksX.get(0);
+            if (first.point.getX() - processedBounds.getMinX() > mXtickStep) {
+                PointModel point = new PointModel(first.point.getX() - mXtickStep, processedBounds.getMinY());
+                ViewPointModel floatPoint = getViewPointForPoint(point, processedBounds);
+                mTicksX.add(0, new Tick(mSimpleDateFormat.format(new Date(point.getX())), point, floatPoint));
+                //  mTicksX.remove(mTicksX.size()-1);
+                return;
+            }
+            Tick last = mTicksX.get(mTicksX.size() - 1);
+            if (processedBounds.getMaxX() - last.point.getX() > mXtickStep) {
+                PointModel point = new PointModel(last.point.getX() + mXtickStep, processedBounds.getMinY());
+                ViewPointModel floatPoint = getViewPointForPoint(point, processedBounds);
+                mTicksX.add(new Tick(mSimpleDateFormat.format(new Date(point.getX())), point, floatPoint));
+                //    mTicksX.remove(0);
+            }
+        } else {
+            mTicksX.clear();
+            long minX = ((processedBounds.getMinX()) / Y_TICS_COUNT) * Y_TICS_COUNT;
+            long maxX = processedBounds.getMaxX();
+            for (long i = minX; i < maxX; i += mXtickStep) {
+                PointModel point = new PointModel(i, processedBounds.getMinY());
+                ViewPointModel floatPoint = getViewPointForPoint(point, processedBounds);
+                mTicksX.add(new Tick(mSimpleDateFormat.format(new Date(point.getX())), point, floatPoint));
+            }
         }
     }
 
@@ -279,10 +304,12 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
      */
     private class Tick {
         private final String text;
+        private final PointModel point;
         private final ViewPointModel floatPoint;
 
-        Tick(String text, ViewPointModel floatPoint) {
+        Tick(String text, PointModel point, ViewPointModel floatPoint) {
             this.text = text;
+            this.point = point;
             this.floatPoint = floatPoint;
         }
     }
