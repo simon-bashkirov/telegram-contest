@@ -79,7 +79,7 @@ class SelectedPointDraw {
         float offset = mContext.getResources().getDimension(R.dimen.selected_point_positioning_x_offset);
         float positionX = isRight ? x - offset : x - width + offset;
         ViewPointModel position = new ViewPointModel(
-                positionX, 0f);
+                positionX, mContext.getResources().getDimension(R.dimen.divider_thickness));
 
         topLeftX = position.getX();
         topLeftY = position.getY();
@@ -110,12 +110,12 @@ class SelectedPointDraw {
 
     private Paint getFramePaint() {
         int gray = mContext.getResources().getColor(R.color.divider_gray);
-        float fx = 2f * mContext.getResources().getDimension(R.dimen.divider_thickness);
+        float px = 2f * mContext.getResources().getDimension(R.dimen.divider_thickness);
         Paint paint = new Paint();
         paint.setColor(gray);
         paint.setStrokeWidth(strokeWidth);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setShadowLayer(fx, fx, fx, gray);
+        paint.setShadowLayer(px, px, px, gray);
         return paint;
     }
 
