@@ -2,7 +2,7 @@
 <resources>
     <!-- Common -->
     <dimen name="default_margin">16dp</dimen>
-    <dimen name="divider_height">1dp</dimen>
+    <dimen name="divider_thickness">1dp</dimen>
     <dimen name="min_control_height">48dp</dimen>
 
     <!-- BaseChartView -->
@@ -12,6 +12,16 @@
     <dimen name="tick_text_size">14sp</dimen>
     <dimen name="detailed_chart_height">300dp</dimen>
     <dimen name="selected_point_radius">4dp</dimen>
+
+    <!-- Selected point view -->
+    <dimen name="selected_point_view_width">150dp</dimen>
+    <dimen name="selected_point_view_height">100dp</dimen>
+    <dimen name="selected_point_positioning_x_offset">20dp</dimen>
+    <dimen name="selected_point_corner_radius">8dp</dimen>
+    <dimen name="selected_point_date_text_size">16sp</dimen>
+    <dimen name="selected_point_value_text_size">18sp</dimen>
+    <dimen name="selected_point_caption_text_size">14sp</dimen>
+
 
     <!-- CompoundChartView -->
     <dimen name="chart_name_test_size">16sp</dimen>

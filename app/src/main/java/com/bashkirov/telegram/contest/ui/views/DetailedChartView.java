@@ -52,6 +52,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     private Float mEndPosition;
 
     private List<SelectedPoint> mSelectedPoints = new ArrayList<>();
+    private SelectedPointDraw mSelectedPointDraw = null;
 
     //================== Constructors ========================
 
@@ -102,9 +103,11 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
             canvas.drawText(String.valueOf(tick.text), tick.floatPoint.getX(), tick.floatPoint.getY() + DEFAULT_X_TICS_TEXT_PADDING_PX, mTextPaint);
         }
 
+        Float verictalLineX = null;
+
         if (!mSelectedPoints.isEmpty()) {
-            float x = mSelectedPoints.get(0).getX();
-            canvas.drawLine(x, 0, x, mTicksY.get(0).floatPoint.getY(), mScaleLinePaint);
+            verictalLineX = mSelectedPoints.get(0).getX();
+            canvas.drawLine(verictalLineX, 0, verictalLineX, mTicksY.get(0).floatPoint.getY(), mScaleLinePaint);
         }
 
         super.onDraw(canvas);
@@ -113,13 +116,22 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
             canvas.drawCircle(selectedPoint.getX(), selectedPoint.getY(), mSelectedPointStrokeRadius, selectedPoint.strokePaint);
             canvas.drawCircle(selectedPoint.getX(), selectedPoint.getY(), mSelectedPointFillRadius, selectedPoint.fillPaint);
         }
+        if (mSelectedPointDraw != null && verictalLineX != null) {
+            mSelectedPointDraw.draw(canvas);
+        }
 
+    }
+
+    @Override
+    public void setCurveVisible(CurveModel curveModel, boolean visible) {
+        super.setCurveVisible(curveModel, visible);
+        clearSelection();
     }
 
     @Override
     public void clear() {
         super.clear();
-        mSelectedPoints.clear();
+        clearSelection();
     }
 
     //////////////////////////////////////////////
@@ -142,11 +154,12 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
                         }
                     }
                 }
-                mSelectedPoints.clear();
+                clearSelection();
                 if (selectedPointIndex == null) {
                     invalidate();
                     return true;
                 }
+                mSelectedPointDraw = new SelectedPointDraw(getContext());
                 for (Map.Entry<CurveModel, List<ViewPointModel>> entry : mNormalizedPointsMap.entrySet()) {
                     CurveModel curve = entry.getKey();
                     List<ViewPointModel> points = entry.getValue();
@@ -154,13 +167,22 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
                             new SelectedPoint(points.get(selectedPointIndex),
                                     getStrokePaintForSelectedPoint(curve.getColor()),
                                     getFillPaintForSelectedPoint()));
+
+                    mSelectedPointDraw.addData(curve, selectedPointIndex);
                 }
+                float pointX = mSelectedPoints.get(0).point.getX();
+                mSelectedPointDraw.setPosition(pointX, pointX / getWidth() < 0.7);
+
                 invalidate();
             }
             return true;
         });
     }
 
+    private void clearSelection() {
+        mSelectedPoints.clear();
+        mSelectedPointDraw = null;
+    }
 
 
     private void setTicksY() {
@@ -198,7 +220,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         Paint paint = new Paint();
         paint.setColor(getResources().getColor(R.color.divider_gray));
         paint.setAntiAlias(true);
-        paint.setStrokeWidth(getResources().getDimension(R.dimen.divider_height));
+        paint.setStrokeWidth(getResources().getDimension(R.dimen.divider_thickness));
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeJoin(Paint.Join.ROUND);
         paint.setStrokeCap(Paint.Cap.ROUND);
@@ -237,7 +259,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     //============ RangeListener =====================
     @Override
     public void onRangeChange(float start, float end) {
-        mSelectedPoints.clear();
+        clearSelection();
         mStartPosition = start;
         mEndPosition = end;
         if (end < start) return;

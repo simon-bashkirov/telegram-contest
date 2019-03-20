@@ -83,7 +83,7 @@ public class CompoundChartView extends LinearLayout {
             mCheckGroup.addView(checkBox);
             if (count < curves.size() - 1) {
                 View divider = new View(getContext());
-                divider.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDimension(R.dimen.divider_height))));
+                divider.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDimension(R.dimen.divider_thickness))));
                 divider.setBackgroundColor(getResources().getColor(R.color.divider_gray));
                 mCheckGroup.addView(divider);
                 count++;
