@@ -42,7 +42,7 @@ public class BoundsModel {
      * @param other other bounds
      * @return merge result
      */
-    public BoundsModel megre(BoundsModel other) {
+    public BoundsModel merge(BoundsModel other) {
         if (other == null) return this;
         return new BoundsModel(
                 Math.min(this.mMinX, other.mMaxX),

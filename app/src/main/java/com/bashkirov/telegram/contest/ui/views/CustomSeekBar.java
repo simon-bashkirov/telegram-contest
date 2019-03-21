@@ -82,7 +82,7 @@ public class CustomSeekBar extends View {
     private void initOnTouchListener() {
         setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                handleAcionDown(event.getX());
+                handleActionDown(event.getX());
             }
             if (event.getAction() == MotionEvent.ACTION_MOVE) {
                 handleActionMove(event.getX());
@@ -99,7 +99,7 @@ public class CustomSeekBar extends View {
      *
      * @param x event coordinate
      */
-    private void handleAcionDown(float x) {
+    private void handleActionDown(float x) {
         float touch = x / getWidth();
         if (touch < mStartPosition + SENSITIVITY_LENGTH && touch > mStartPosition - SENSITIVITY_LENGTH) {
             this.mTouch = Touch.START;

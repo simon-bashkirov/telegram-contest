@@ -22,14 +22,11 @@
     <dimen name="selected_point_value_text_size">18sp</dimen>
     <dimen name="selected_point_caption_text_size">14sp</dimen>
 
-
     <!-- CompoundChartView -->
     <dimen name="chart_name_test_size">16sp</dimen>
 
     <!-- CustomSeekBar -->
     <dimen name="seek_chart_height">56dp</dimen>
-    <dimen name="seek_thumb_height">56dp</dimen>
-    <dimen name="seek_thumb_width">120dp</dimen>
     <dimen name="seek_thumb_stroke_width">4dp</dimen>
 
 </resources>

@@ -45,16 +45,16 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     private int mYtickStep = 10; //Default value
     private long mXtickStep = 10L * 24L * 60L * 60L * 1000L;//10 Days in millis, default value
 
-    private List<Tick> mTicksX = new LinkedList<>();
-    private List<Tick> mTicksY = new LinkedList<>();
-    private Paint mScaleLinePaint = getScaleLinePaint();
-    private Paint mTextPaint = getTickTextPaint();
+    private final List<Tick> mTicksX = new LinkedList<>();
+    private final List<Tick> mTicksY = new LinkedList<>();
+    private final Paint mScaleLinePaint = getScaleLinePaint();
+    private final Paint mTextPaint = getTickTextPaint();
 
     private BoundsModel mInitialBounds;
     private Float mStartPosition;
     private Float mEndPosition;
 
-    private List<SelectedPoint> mSelectedPoints = new ArrayList<>();
+    private final List<SelectedPoint> mSelectedPoints = new ArrayList<>();
     private SelectedPointDraw mSelectedPointDraw = null;
 
     //================== Constructors ========================
@@ -110,11 +110,11 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
             canvas.drawText(String.valueOf(tick.text), tick.floatPoint.getX(), tick.floatPoint.getY() + DEFAULT_X_TICS_TEXT_PADDING_PX, mTextPaint);
         }
 
-        Float verictalLineX = null;
+        Float verticalLineX = null;
 
         if (!mSelectedPoints.isEmpty()) {
-            verictalLineX = mSelectedPoints.get(0).getX();
-            canvas.drawLine(verictalLineX, 0, verictalLineX, mTicksY.get(0).floatPoint.getY(), mScaleLinePaint);
+            verticalLineX = mSelectedPoints.get(0).getX();
+            canvas.drawLine(verticalLineX, 0, verticalLineX, mTicksY.get(0).floatPoint.getY(), mScaleLinePaint);
         }
 
         super.onDraw(canvas);
@@ -123,7 +123,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
             canvas.drawCircle(selectedPoint.getX(), selectedPoint.getY(), mSelectedPointStrokeRadius, selectedPoint.strokePaint);
             canvas.drawCircle(selectedPoint.getX(), selectedPoint.getY(), mSelectedPointFillRadius, selectedPoint.fillPaint);
         }
-        if (mSelectedPointDraw != null && verictalLineX != null) {
+        if (mSelectedPointDraw != null && verticalLineX != null) {
             mSelectedPointDraw.draw(canvas);
         }
 

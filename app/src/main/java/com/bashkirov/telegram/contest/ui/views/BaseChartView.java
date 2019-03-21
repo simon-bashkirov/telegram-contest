@@ -31,12 +31,12 @@ class BaseChartView extends View {
     private final static Paint.Cap STROKE_CAP = Paint.Cap.ROUND;
 
     //Common fields
-    protected List<CurveModel> mCurves = new LinkedList<>();
-    protected Map<CurveModel, List<ViewPointModel>> mNormalizedPointsMap = new HashMap<>();
-    protected Map<CurveModel, Boolean> mCurvesVisibility = new HashMap<>();
+    protected final List<CurveModel> mCurves = new LinkedList<>();
+    protected final Map<CurveModel, List<ViewPointModel>> mNormalizedPointsMap = new HashMap<>();
+    protected final Map<CurveModel, Boolean> mCurvesVisibility = new HashMap<>();
 
     //Private field
-    private Map<CurveModel, Paint> mPaintMap = new HashMap<>();
+    private final Map<CurveModel, Paint> mPaintMap = new HashMap<>();
     private BoundsModel mBounds;
     private int mBaseYPadding = 0;
 
@@ -101,7 +101,7 @@ class BaseChartView extends View {
             if (adjustedBounds == null)
                 adjustedBounds = aCurve.adjustBoundsHeight(bounds.getMinX(), bounds.getMaxX());
             else
-                adjustedBounds = adjustedBounds.megre(aCurve.adjustBoundsHeight(bounds.getMinX(), bounds.getMaxX()));
+                adjustedBounds = adjustedBounds.merge(aCurve.adjustBoundsHeight(bounds.getMinX(), bounds.getMaxX()));
             List<ViewPointModel> normalized = normalize(aCurve.getPoints(), adjustedBounds);
             mNormalizedPointsMap.put(aCurve, normalized);
         }
@@ -191,7 +191,7 @@ class BaseChartView extends View {
     private void adjustBoundsForCurve(CurveModel curve) {
         BoundsModel curveBounds = curve.getBounds();
         BoundsModel existingBounds = mBounds;
-        BoundsModel mergedBounds = curveBounds.megre(existingBounds);
+        BoundsModel mergedBounds = curveBounds.merge(existingBounds);
         if (mergedBounds.equals(existingBounds)) {
             List<ViewPointModel> normalized = normalize(curve.getPoints(), existingBounds);
             mNormalizedPointsMap.put(curve, normalized);
