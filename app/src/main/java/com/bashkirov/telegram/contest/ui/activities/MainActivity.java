@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.bashkirov.telegram.contest.R;
+import com.bashkirov.telegram.contest.ThisApplication;
 import com.bashkirov.telegram.contest.models.ChartModel;
 import com.bashkirov.telegram.contest.ui.views.CompoundChartView;
 import com.bashkirov.telegram.contest.utils.DataParser;
@@ -44,6 +45,9 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (ThisApplication.getInstance().isNight()) {
+            setTheme(R.style.ActivityThemeNight);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initViews();
@@ -68,7 +72,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.switch_night_mode) {
-            getWindow().setBackgroundDrawable(getDrawable(R.color.colorPrimaryTextDay));
+            ThisApplication.getInstance().toggleNight();
+            recreate();
             return true;
         }
         return false;

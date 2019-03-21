@@ -8,13 +8,14 @@
         android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:name=".ThisApplication"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning"
         tools:targetApi="donut">
         <activity
             android:name=".ui.activities.MainActivity"
-            android:theme="@style/ActivityThemeNight">
+            android:theme="@style/ActivityThemeDay">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
