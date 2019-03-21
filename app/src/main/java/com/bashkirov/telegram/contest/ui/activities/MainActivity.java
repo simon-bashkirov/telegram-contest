@@ -1,7 +1,12 @@
 package com.bashkirov.telegram.contest.ui.activities;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -52,6 +57,19 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         super.onDestroy();
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_toolbar, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return item.getItemId() == R.id.switch_night_mode;
+    }
+
     private void initViews() {
         mCompoundChartView = findViewById(R.id.compound_chart_view);
         mSpinner = findViewById(R.id.spinner);
@@ -84,7 +102,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             mCharts.addAll(charts);
             mChartNames.clear();
             for (int i = 0; i < charts.size(); i++) {
-                mChartNames.add("Chart " + i);
+                mChartNames.add(getString(R.string.chart, i));
             }
             mSpinnerAdapter.notifyDataSetChanged();
         });
