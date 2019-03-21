@@ -2,18 +2,13 @@
 <resources>
     <declare-styleable name="CTAppTheme">
 
-        <attr name="attrPrimaryText" format="color" />
-        <attr name="attrDividerGray" format="color" />
-
         <!-- Detailed chart view -->
         <attr name="attrTickLabel" format="color" />
         <attr name="attrShadow" format="color" />
+        <attr name="attrSelectedPointFill" format="color" />
 
         <!-- CompoundChartView -->
-        <attr name="attrTextAccent" format="color" />
         <attr name="attrChartBackground" format="color" />
-
-
         <!-- CustomSeekBar -->
         <attr name="attrSeekBarFill" format="color" />
         <attr name="attrSeekBarStroke" format="color" />

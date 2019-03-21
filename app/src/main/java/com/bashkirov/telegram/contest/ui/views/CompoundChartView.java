@@ -16,6 +16,8 @@ import com.bashkirov.telegram.contest.models.CurveModel;
 
 import java.util.List;
 
+import static com.bashkirov.telegram.contest.utils.ThemeHelper.getColorForAttrId;
+
 public class CompoundChartView extends LinearLayout {
 
     private ChartModel mChartModel;
@@ -37,6 +39,7 @@ public class CompoundChartView extends LinearLayout {
         setOrientation(VERTICAL);
         initViews();
         initSeekBarListener();
+        setBackgroundColor(getColorForAttrId(getContext(), R.attr.attrChartBackground));
     }
 
     //========= Public methods ===================
@@ -77,6 +80,7 @@ public class CompoundChartView extends LinearLayout {
             String name = curve.getName();
             int color = curve.getColor();
             final CheckBox checkBox = new CheckBox(getContext());
+            checkBox.setTextColor(getColorForAttrId(getContext(), android.R.attr.textColorPrimary));
             checkBox.setText(name);
             setCheckBoxTint(checkBox, color);
             checkBox.setChecked(true);
@@ -84,7 +88,7 @@ public class CompoundChartView extends LinearLayout {
             if (count < curves.size() - 1) {
                 View divider = new View(getContext());
                 divider.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDimension(R.dimen.divider_thickness))));
-                divider.setBackgroundColor(getResources().getColor(R.color.colorDividerGrayDay));
+                divider.setBackgroundColor(getColorForAttrId(getContext(), android.R.attr.divider));
                 mCheckGroup.addView(divider);
                 count++;
             }

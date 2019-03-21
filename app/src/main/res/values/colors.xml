@@ -14,6 +14,7 @@
     <!-- Detailed chart view -->
     <color name="colorTickLabelDay">#96A2AA</color>
     <color name="colorShadowDay">#DCDCDC</color>
+    <color name="colorSelectedPointFillDay">#FAFAFA</color>
 
     <!-- CompoundChartView -->
     <color name="colorTextAccentDay">#3896D4</color>
@@ -37,6 +38,7 @@
     <!-- Detailed chart view -->
     <color name="colorTickLabelNight">#425361</color>
     <color name="colorShadowNight">#1C2531</color>
+    <color name="colorSelectedPointFillNight">#202B38</color>
 
     <!-- CompoundChartView -->
     <color name="colorTextAccentNight">#3896D4</color>

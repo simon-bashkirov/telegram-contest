@@ -7,52 +7,47 @@
     <style name="ActivityThemeDay" parent="ActivityTheme.Primary.Base.Day">
         <item name="android:title">Statistics</item>
         <item name="android:windowBackground">@color/colorWindowBackgroundDay</item>
+        <item name="android:divider">@color/colorDividerGrayDay</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryTextDay</item>
+        <item name="android:textColor">@color/colorTextAccentDay</item>
+
         <item name="android:colorPrimary">@color/colorPrimaryDay</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDarkDay</item>
+
         <item name="android:titleTextColor">@color/colorTitle</item>
     </style>
 
     <style name="ActivityThemeNight" parent="ActivityTheme.Primary.Base.Night">
         <item name="android:title">Statistics</item>
         <item name="android:windowBackground">@color/colorWindowBackgroundNight</item>
+        <item name="android:divider">@color/colorDividerGrayNight</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryTextNight</item>
+        <item name="android:textColor">@color/colorTextAccentNight</item>
+
         <item name="android:colorPrimary">@color/colorPrimaryNight</item>
         <item name="android:colorPrimaryDark">@color/colorPrimaryDarkNight</item>
+
         <item name="android:titleTextColor">@color/colorTitle</item>
     </style>
 
+
     <!-- Light base activity theme -->
     <style name="ActivityTheme.Primary.Base.Day" parent="AppTheme">
-        <item name="attrPrimaryText">@color/colorPrimaryTextDay</item>
-        <!-- Detailed chart view -->
         <item name="attrTickLabel">@color/colorTickLabelDay</item>
         <item name="attrShadow">@color/colorShadowDay</item>
-
-        <!-- CompoundChartView -->
-        <item name="attrTextAccent">@color/colorTextAccentDay</item>
         <item name="attrChartBackground">@color/colorChartBackgroundDay</item>
-
-
-        <!-- CustomSeekBar -->
         <item name="attrSeekBarFill">@color/colorSeekBarFillDay</item>
         <item name="attrSeekBarStroke">@color/colorSeekBarStrokeDay</item>
-
+        <item name="attrSelectedPointFill">@color/colorSelectedPointFillDay</item>
     </style>
+
     <!-- Dark base activity theme -->
     <style name="ActivityTheme.Primary.Base.Night" parent="AppTheme">
-
-        <item name="attrPrimaryText">@color/colorPrimaryTextNight</item>
-
-        <!-- Detailed chart view -->
         <item name="attrTickLabel">@color/colorTickLabelNight</item>
         <item name="attrShadow">@color/colorShadowNight</item>
-
-        <!-- CompoundChartView -->
-        <item name="attrTextAccent">@color/colorTextAccentNight</item>
         <item name="attrChartBackground">@color/colorChartBackgroundNight</item>
-
-
-        <!-- CustomSeekBar -->
         <item name="attrSeekBarFill">@color/colorSeekBarFillNight</item>
         <item name="attrSeekBarStroke">@color/colorSeekBarStrokeNight</item>
+        <item name="attrSelectedPointFill">@color/colorSelectedPointFillNight</item>
     </style>
 </resources>

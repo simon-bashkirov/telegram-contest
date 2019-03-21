@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/default_margin"
         android:layout_marginRight="@dimen/default_margin"
         android:text="@string/followers"
-        android:textColor="?attr/attrTextAccent"
+        android:textColor="?android:textColor"
         android:textSize="@dimen/chart_name_test_size" />
 
     <com.bashkirov.telegram.contest.ui.views.DetailedChartView

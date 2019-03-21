@@ -23,6 +23,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import static com.bashkirov.telegram.contest.utils.ThemeHelper.getColorForAttrId;
+
 /**
  * Provides rangable and detailed chart visualisation
  */
@@ -224,7 +226,6 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
                 PointModel point = new PointModel(first.point.getX() - mXtickStep, processedBounds.getMinY());
                 ViewPointModel floatPoint = getViewPointForPoint(point, processedBounds);
                 mTicksX.add(0, new Tick(mSimpleDateFormat.format(new Date(point.getX())), point, floatPoint));
-                //  mTicksX.remove(mTicksX.size()-1);
                 return;
             }
             Tick last = mTicksX.get(mTicksX.size() - 1);
@@ -232,7 +233,6 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
                 PointModel point = new PointModel(last.point.getX() + mXtickStep, processedBounds.getMinY());
                 ViewPointModel floatPoint = getViewPointForPoint(point, processedBounds);
                 mTicksX.add(new Tick(mSimpleDateFormat.format(new Date(point.getX())), point, floatPoint));
-                //    mTicksX.remove(0);
             }
         } else {
             mTicksX.clear();
@@ -248,7 +248,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
 
     private Paint getScaleLinePaint() {
         Paint paint = new Paint();
-        paint.setColor(getResources().getColor(R.color.colorDividerGrayDay));
+        paint.setColor(getColorForAttrId(getContext(), android.R.attr.divider));
         paint.setAntiAlias(true);
         paint.setStrokeWidth(getResources().getDimension(R.dimen.divider_thickness));
         paint.setStyle(Paint.Style.STROKE);
@@ -260,13 +260,13 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     private Paint getTickTextPaint() {
         Paint paint = new Paint();
         paint.setTextSize(getResources().getDimension(R.dimen.tick_text_size));
-        paint.setColor(getResources().getColor(R.color.colorTickLabelDay));
+        paint.setColor(getColorForAttrId(getContext(), R.attr.attrTickLabel));
         return paint;
     }
 
     private Paint getFillPaintForSelectedPoint() {
         Paint paint = new Paint();
-        paint.setColor(getResources().getColor(R.color.colorWindowBackgroundDay));
+        paint.setColor(getColorForAttrId(getContext(), android.R.attr.windowBackground));
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
         return paint;

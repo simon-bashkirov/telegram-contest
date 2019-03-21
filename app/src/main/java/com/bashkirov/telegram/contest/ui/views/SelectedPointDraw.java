@@ -17,6 +17,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.bashkirov.telegram.contest.utils.ThemeHelper.getColorForAttrId;
+
 class SelectedPointDraw {
 
 
@@ -43,7 +45,6 @@ class SelectedPointDraw {
 
         this.mContext = context;
 
-
         mPadding = mContext.getResources().getDimension(R.dimen.default_margin);
         strokeWidth = mContext.getResources().getDimension(R.dimen.divider_thickness);
 
@@ -52,9 +53,7 @@ class SelectedPointDraw {
         mDateTextPaint = getDateTextPaint();
 
         mRadius = mContext.getResources().getDimension(R.dimen.selected_point_corner_radius);
-
     }
-
 
     void addData(CurveModel curve, int selectedPointIndex) {
         PointModel point = curve.getPoints().get(selectedPointIndex);
@@ -111,16 +110,16 @@ class SelectedPointDraw {
     private Paint getFramePaint() {
         float px = mContext.getResources().getDimension(R.dimen.divider_thickness);
         Paint paint = new Paint();
-        paint.setColor(mContext.getResources().getColor(R.color.colorDividerGrayDay));
+        paint.setColor(getColorForAttrId(mContext, android.R.attr.divider));
         paint.setStrokeWidth(strokeWidth);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setShadowLayer(px, px, px, mContext.getResources().getColor(R.color.colorShadowDay));
+        paint.setShadowLayer(px, px, px, getColorForAttrId(mContext, R.attr.attrShadow));
         return paint;
     }
 
     private Paint getFillPaint() {
         Paint paint = new Paint();
-        paint.setColor(mContext.getResources().getColor(R.color.colorWindowBackgroundDay));
+        paint.setColor(getColorForAttrId(mContext, R.attr.attrSelectedPointFill));
         paint.setStrokeWidth(mContext.getResources().getDimension(R.dimen.divider_thickness));
         paint.setStyle(Paint.Style.FILL);
         return paint;
@@ -129,7 +128,7 @@ class SelectedPointDraw {
     private Paint getDateTextPaint() {
         Paint paint = new Paint();
         paint.setTextSize(mContext.getResources().getDimension(R.dimen.selected_point_date_text_size));
-        paint.setColor(mContext.getResources().getColor(R.color.colorPrimaryTextDay));
+        paint.setColor(getColorForAttrId(mContext, android.R.attr.textColorPrimary));
         return paint;
     }
 

@@ -9,13 +9,12 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.bashkirov.telegram.contest.R;
+import com.bashkirov.telegram.contest.utils.ThemeHelper;
 
 public class CustomSeekBar extends View {
 
     //Constants
     private final static float SENSITIVITY_LENGTH = 0.1f;
-    private final static int FILL_COLOR_ID = R.color.colorSeekBarFillDay;
-    private final static int FRAME_COLOR_ID = R.color.colorSeekBarStrokeDay;
     private final static float MIN_WIDTH = SENSITIVITY_LENGTH * 3.5f;
     private final static float DEFAULT_END_POSITION = 1.0f;
     private final static float DEFAULT_START_POSITION = DEFAULT_END_POSITION - MIN_WIDTH;
@@ -66,14 +65,14 @@ public class CustomSeekBar extends View {
 
     private Paint getFillPaint() {
         Paint paint = new Paint();
-        paint.setColor(getResources().getColor(FILL_COLOR_ID));
+        paint.setColor(ThemeHelper.getColorForAttrId(getContext(), R.attr.attrSeekBarFill));
         paint.setStyle(Paint.Style.FILL);
         return paint;
     }
 
     private Paint getFramePaint() {
         Paint paint = new Paint();
-        paint.setColor(getResources().getColor(FRAME_COLOR_ID));
+        paint.setColor(ThemeHelper.getColorForAttrId(getContext(), R.attr.attrSeekBarStroke));
         paint.setStrokeWidth(getResources().getDimension(R.dimen.seek_thumb_stroke_width));
         paint.setStyle(Paint.Style.STROKE);
         return paint;

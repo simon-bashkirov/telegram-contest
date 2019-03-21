@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.ThisApplication;
@@ -18,6 +19,7 @@ import com.bashkirov.telegram.contest.models.ChartModel;
 import com.bashkirov.telegram.contest.ui.views.CompoundChartView;
 import com.bashkirov.telegram.contest.utils.DataParser;
 import com.bashkirov.telegram.contest.utils.FileReader;
+import com.bashkirov.telegram.contest.utils.ThemeHelper;
 
 import org.json.JSONException;
 
@@ -120,6 +122,11 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     //===================== OnItemSelectedListener ==========================
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (view instanceof TextView) {
+            TextView tw = (TextView) view;
+            tw.setTextColor(ThemeHelper.getColorForAttrId(this, android.R.attr.textColor));
+        }
+
         if (mCharts.size() > position) {
             mCompoundChartView.clear();
             mCompoundChartView.loadChart(mCharts.get(position));
