@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- ============ Light ============= -->
     <!-- Common -->
     <color name="colorPrimary">#517DA2</color>
     <color name="colorPrimaryDark">#426382</color>
-    <color name="text_black">#222222</color>
-    <color name="base_background">#FAFAFA</color>
-    <color name="divider_gray">#F1F1F2</color>
+
+    <color name="colorPrimaryText">#222222</color>
+    <color name="colorWindowBackground">#FAFAFA</color>
+    <color name="colorDividerGray">#F1F1F2</color>
 
     <!-- Detailed chart view -->
-    <color name="tick_label_gray">#96A2AA</color>
-    <color name="shadow_gray">#DCDCDC</color>
+    <color name="colorTickLabel">#96A2AA</color>
+    <color name="colorShadow">#DCDCDC</color>
 
     <!-- CompoundChartView -->
-    <color name="text_blue">#3896D4</color>
+    <color name="colorTextAccent">#3896D4</color>
 
 
     <!-- CustomSeekBar -->
-    <color name="seek_bar_fill_gray">#1A000000</color>
-    <color name="seek_bar_stroke_blue">#33517DA2</color>
+    <color name="colorSeekBarFill">#1A000000</color>
+    <color name="colorSeekBarStroke">#33517DA2</color>
+
+    <!-- ============ Dark ============= -->
 
 </resources>

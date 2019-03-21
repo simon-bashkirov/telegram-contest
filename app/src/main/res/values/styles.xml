@@ -4,4 +4,13 @@
         <item name="android:title">Statistics</item>
     </style>
 
+    <!-- Light base activity theme -->
+    <style name="ActivityTheme.Primary.Base.Light" parent="AppTheme">
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
+    </style>
+    <!-- Dark base activity theme -->
+    <style name="ActivityTheme.Primary.Base.Dark" parent="AppTheme">
+        <item name="android:windowBackground">@color/colorWindowBackground</item>
+    </style>
+
 </resources>

@@ -64,10 +64,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         return super.onCreateOptionsMenu(menu);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return item.getItemId() == R.id.switch_night_mode;
+        if (item.getItemId() == R.id.switch_night_mode) {
+            getWindow().setBackgroundDrawable(getDrawable(R.color.colorPrimaryText));
+            return true;
+        }
+        return false;
     }
 
     private void initViews() {
