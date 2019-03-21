@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- ============ Light ============= -->
+    <!-- ============ Day ============= -->
     <!-- Common -->
     <color name="colorPrimary">#517DA2</color>
     <color name="colorPrimaryDark">#426382</color>
@@ -16,12 +16,33 @@
 
     <!-- CompoundChartView -->
     <color name="colorTextAccent">#3896D4</color>
+    <color name="colorChartBackground">#FAFAFA</color>
 
 
     <!-- CustomSeekBar -->
     <color name="colorSeekBarFill">#1A000000</color>
     <color name="colorSeekBarStroke">#33517DA2</color>
 
-    <!-- ============ Dark ============= -->
+    <!-- ============ Night ============= -->
+
+    <!-- Common -->
+    <color name="colorPrimaryNight">#212D3B</color>
+    <color name="colorPrimaryDarkNight">#1A242E</color>
+
+    <color name="colorPrimaryTextNight">#FFFFFF</color>
+    <color name="colorWindowBackgroundNight">#151E27</color>
+    <color name="colorDividerGrayNight">#151E27</color>
+
+    <!-- Detailed chart view -->
+    <color name="colorTickLabelNight">#425361</color>
+    <color name="colorShadowNight">#1C2531</color>
+
+    <!-- CompoundChartView -->
+    <color name="colorTextAccentNight">#3896D4</color>
+    <color name="colorChartBackgroundNight">#1D2733</color>
+
+    <!-- CustomSeekBar -->
+    <color name="colorSeekBarFillNight">#1A000000</color>
+    <color name="colorSeekBarStrokeNight">#33517DA2</color>
 
 </resources>
