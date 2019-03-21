@@ -33,10 +33,6 @@ public class CurveModel {
         return mName;
     }
 
-    public String getType() {
-        return mType;
-    }
-
     public BoundsModel getBounds() {
         return mBounds;
     }

@@ -14,9 +14,11 @@ public class BoundsModel {
         this.mMaxY = maxY;
     }
 
-    private long mMinX, mMaxX;
+    private final long mMinX;
+    private final long mMaxX;
 
-    private int mMinY, mMaxY;
+    private final int mMinY;
+    private final int mMaxY;
 
     public long getMinX() {
         return mMinX;

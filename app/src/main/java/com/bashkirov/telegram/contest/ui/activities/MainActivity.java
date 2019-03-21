@@ -2,6 +2,7 @@ package com.bashkirov.telegram.contest.ui.activities;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,7 +35,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     //Data
     private Thread mLoader;
-    private List<ChartModel> mCharts = new ArrayList<>();
+    private final List<ChartModel> mCharts = new ArrayList<>();
 
     //Views
     private CompoundChartView mCompoundChartView;
@@ -42,7 +43,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     //Adapter
     private ArrayAdapter<String> mSpinnerAdapter;
-    private List<String> mChartNames = new ArrayList<>();
+    private final List<String> mChartNames = new ArrayList<>();
 
 
     @Override
@@ -75,7 +76,14 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.switch_night_mode) {
             ThisApplication.getInstance().toggleNight();
-            recreate();
+
+            //Restart without animation
+            Intent intent = getIntent();
+            overridePendingTransition(0, 0);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            finish();
+            overridePendingTransition(0, 0);
+            startActivity(intent);
             return true;
         }
         return false;
