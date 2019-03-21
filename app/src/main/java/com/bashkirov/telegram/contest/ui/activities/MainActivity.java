@@ -68,7 +68,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.switch_night_mode) {
-            getWindow().setBackgroundDrawable(getDrawable(R.color.colorPrimaryText));
+            getWindow().setBackgroundDrawable(getDrawable(R.color.colorPrimaryTextDay));
             return true;
         }
         return false;

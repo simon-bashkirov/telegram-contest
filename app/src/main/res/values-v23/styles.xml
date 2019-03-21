@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <style name="AppTheme">
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="android:titleTextColor">@color/colorWindowBackground</item>
+        <item name="android:colorPrimary">@color/colorPrimaryDay</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDarkDay</item>
+        <item name="android:titleTextColor">@color/colorTitle</item>
         <item name="android:title">Statistics</item>
+    </style>
+
+    <!-- Light base activity theme -->
+    <style name="ActivityTheme.Primary.Base.Light" parent="AppTheme">
+        <item name="android:windowBackground">@color/colorWindowBackgroundDay</item>
+        <item name="android:colorPrimary">@color/colorPrimaryDay</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDarkDay</item>
+        <item name="android:titleTextColor">@color/colorTitle</item>
+    </style>
+    <!-- Dark base activity theme -->
+    <style name="ActivityTheme.Primary.Base.Dark" parent="AppTheme">
+        <item name="android:windowBackground">@color/colorWindowBackgroundNight</item>
+        <item name="android:colorPrimary">@color/colorPrimaryNight</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDarkNight</item>
+        <item name="android:titleTextColor">@color/colorTitle</item>
     </style>
 </resources>

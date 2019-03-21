@@ -1,19 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="CTAppTheme">
-        <attr name="text_base" format="color" />
-        <attr name="base_background" format="color" />
-        <attr name="divider_gray" format="color" />
+
+        <attr name="attrTitle" />
+        <!-- ============  ============= -->
+        <!-- Common -->
+        <attr name="attrPrimary" format="color" />
+        <attr name="attrPrimaryDark" format="color" />
+
+        <attr name="attrPrimaryText" format="color" />
+        <attr name="attrWindowBackground" format="color" />
+        <attr name="attrDividerGray" format="color" />
 
         <!-- Detailed chart view -->
-        <attr name="tick_label_gray" format="color" />
-        <attr name="shadow_gray" format="color" />
+        <attr name="attrTickLabel" format="color" />
+        <attr name="attrShadow" format="color" />
 
         <!-- CompoundChartView -->
-        <attr name="text_blue" format="color" />
+        <attr name="attrTextAccent" format="color" />
+        <attr name="attrChartBackground" format="color" />
+
 
         <!-- CustomSeekBar -->
-        <attr name="seek_bar_fill_gray" format="color" />
-        <attr name="seek_bar_stroke_blue" format="color" />
+        <attr name="attrSeekBarFill" format="color" />
+        <attr name="attrSeekBarStroke" format="color" />
     </declare-styleable>
 </resources>

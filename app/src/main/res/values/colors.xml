@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <color name="colorTitle">#FFFFFF</color>
     <!-- ============ Day ============= -->
     <!-- Common -->
-    <color name="colorPrimary">#517DA2</color>
-    <color name="colorPrimaryDark">#426382</color>
+    <color name="colorPrimaryDay">#517DA2</color>
+    <color name="colorPrimaryDarkDay">#426382</color>
 
-    <color name="colorPrimaryText">#222222</color>
-    <color name="colorWindowBackground">#FAFAFA</color>
-    <color name="colorDividerGray">#F1F1F2</color>
+    <color name="colorPrimaryTextDay">#222222</color>
+    <color name="colorWindowBackgroundDay">#FAFAFA</color>
+    <color name="colorDividerGrayDay">#F1F1F2</color>
 
     <!-- Detailed chart view -->
-    <color name="colorTickLabel">#96A2AA</color>
-    <color name="colorShadow">#DCDCDC</color>
+    <color name="colorTickLabelDay">#96A2AA</color>
+    <color name="colorShadowDay">#DCDCDC</color>
 
     <!-- CompoundChartView -->
-    <color name="colorTextAccent">#3896D4</color>
-    <color name="colorChartBackground">#FAFAFA</color>
+    <color name="colorTextAccentDay">#3896D4</color>
+    <color name="colorChartBackgroundDay">#FAFAFA</color>
 
 
     <!-- CustomSeekBar -->
-    <color name="colorSeekBarFill">#1A000000</color>
-    <color name="colorSeekBarStroke">#33517DA2</color>
+    <color name="colorSeekBarFillDay">#1A000000</color>
+    <color name="colorSeekBarStrokeDay">#33517DA2</color>
 
     <!-- ============ Night ============= -->
 

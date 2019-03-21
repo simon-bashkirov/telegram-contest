@@ -111,16 +111,16 @@ class SelectedPointDraw {
     private Paint getFramePaint() {
         float px = mContext.getResources().getDimension(R.dimen.divider_thickness);
         Paint paint = new Paint();
-        paint.setColor(mContext.getResources().getColor(R.color.colorDividerGray));
+        paint.setColor(mContext.getResources().getColor(R.color.colorDividerGrayDay));
         paint.setStrokeWidth(strokeWidth);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setShadowLayer(px, px, px, mContext.getResources().getColor(R.color.colorShadow));
+        paint.setShadowLayer(px, px, px, mContext.getResources().getColor(R.color.colorShadowDay));
         return paint;
     }
 
     private Paint getFillPaint() {
         Paint paint = new Paint();
-        paint.setColor(mContext.getResources().getColor(R.color.colorWindowBackground));
+        paint.setColor(mContext.getResources().getColor(R.color.colorWindowBackgroundDay));
         paint.setStrokeWidth(mContext.getResources().getDimension(R.dimen.divider_thickness));
         paint.setStyle(Paint.Style.FILL);
         return paint;
@@ -129,7 +129,7 @@ class SelectedPointDraw {
     private Paint getDateTextPaint() {
         Paint paint = new Paint();
         paint.setTextSize(mContext.getResources().getDimension(R.dimen.selected_point_date_text_size));
-        paint.setColor(mContext.getResources().getColor(R.color.colorPrimaryText));
+        paint.setColor(mContext.getResources().getColor(R.color.colorPrimaryTextDay));
         return paint;
     }
 

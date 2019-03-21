@@ -6,11 +6,11 @@
 
     <!-- Light base activity theme -->
     <style name="ActivityTheme.Primary.Base.Light" parent="AppTheme">
-        <item name="android:windowBackground">@color/colorWindowBackground</item>
+        <item name="android:windowBackground">@color/colorWindowBackgroundDay</item>
     </style>
     <!-- Dark base activity theme -->
     <style name="ActivityTheme.Primary.Base.Dark" parent="AppTheme">
-        <item name="android:windowBackground">@color/colorWindowBackground</item>
+        <item name="android:windowBackground">@color/colorWindowBackgroundNight</item>
     </style>
 
 </resources>

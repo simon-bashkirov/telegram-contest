@@ -2,8 +2,22 @@
 <resources>
 
     <style name="AppTheme">
-        <item name="android:colorPrimary">@color/colorPrimary</item>
-        <item name="android:colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="android:colorPrimary">@color/colorPrimaryDay</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDarkDay</item>
         <item name="android:title">Statistics</item>
     </style>
+
+    <!-- Light base activity theme -->
+    <style name="ActivityTheme.Primary.Base.Light" parent="AppTheme">
+        <item name="android:windowBackground">@color/colorWindowBackgroundDay</item>
+        <item name="android:colorPrimary">@color/colorPrimaryDay</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDarkDay</item>
+    </style>
+    <!-- Dark base activity theme -->
+    <style name="ActivityTheme.Primary.Base.Dark" parent="AppTheme">
+        <item name="android:windowBackground">@color/colorWindowBackgroundNight</item>
+        <item name="android:colorPrimary">@color/colorPrimaryNight</item>
+        <item name="android:colorPrimaryDark">@color/colorPrimaryDarkNight</item>
+    </style>
+
 </resources>
