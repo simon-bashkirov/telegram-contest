@@ -2,14 +2,7 @@
 <resources>
     <declare-styleable name="CTAppTheme">
 
-        <attr name="attrTitle" />
-        <!-- ============  ============= -->
-        <!-- Common -->
-        <attr name="attrPrimary" format="color" />
-        <attr name="attrPrimaryDark" format="color" />
-
         <attr name="attrPrimaryText" format="color" />
-        <attr name="attrWindowBackground" format="color" />
         <attr name="attrDividerGray" format="color" />
 
         <!-- Detailed chart view -->
