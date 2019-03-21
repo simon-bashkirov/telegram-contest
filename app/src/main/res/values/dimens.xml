@@ -3,14 +3,14 @@
     <!-- Common -->
     <dimen name="default_margin">16dp</dimen>
     <dimen name="divider_thickness">1dp</dimen>
-    <dimen name="min_control_height">48dp</dimen>
+    <dimen name="min_control_height">44dp</dimen>
 
     <!-- BaseChartView -->
     <dimen name="curve_width">2dp</dimen>
 
     <!-- Detailed chart view -->
     <dimen name="tick_text_size">14sp</dimen>
-    <dimen name="detailed_chart_height">300dp</dimen>
+    <dimen name="detailed_chart_height">250dp</dimen>
     <dimen name="selected_point_radius">4dp</dimen>
 
     <!-- Selected point view -->
