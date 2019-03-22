@@ -14,8 +14,6 @@
     <dimen name="selected_point_radius">4dp</dimen>
 
     <!-- Selected point view -->
-    <dimen name="selected_point_view_width">150dp</dimen>
-    <dimen name="selected_point_view_height">100dp</dimen>
     <dimen name="selected_point_positioning_x_offset">20dp</dimen>
     <dimen name="selected_point_corner_radius">8dp</dimen>
     <dimen name="selected_point_date_text_size">16sp</dimen>
