@@ -14,7 +14,9 @@ import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.models.ChartModel;
 import com.bashkirov.telegram.contest.models.CurveModel;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.bashkirov.telegram.contest.utils.ThemeHelper.getColorForAttrId;
 
@@ -27,6 +29,8 @@ public class CompoundChartView extends LinearLayout {
     private DetailedChartView mDetailedChartView;
     private CustomSeekBar mSeekBar;
     private LinearLayout mCheckGroup;
+
+    //   private Set<Integer> mHiddenCurvesIndexes = new HashSet<>();
 
     //============= Constructors ================
     public CompoundChartView(Context context) {
@@ -44,16 +48,61 @@ public class CompoundChartView extends LinearLayout {
 
     //========= Public methods ===================
     public void loadChart(ChartModel chartModel) {
+        clear();
         mChartModel = chartModel;
         mBaseChartView.loadChart(chartModel);
         mDetailedChartView.loadChart(chartModel);
         setCheckButtonsGroup();
     }
 
+    public ChartModel getLoadedChart() {
+        return mChartModel;
+    }
+
     public void clear() {
         mBaseChartView.clear();
         mDetailedChartView.clear();
+    }
 
+    public Set<Integer> getHiddenCurvesIndexes() {
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < mCheckGroup.getChildCount(); i++) {
+            View view = mCheckGroup.getChildAt(i);
+            if (view instanceof CheckBox && !((CheckBox) view).isChecked()) {
+                set.add(i);
+            }
+        }
+        return set;
+    }
+
+    public void setHiddenCurvesIndexes(Set<Integer> indexes) {
+        for (Integer index : indexes) {
+            if (mCheckGroup.getChildCount() > index &&
+                    mCheckGroup.getChildAt(index) instanceof CheckBox) {
+                ((CheckBox) mCheckGroup.getChildAt(index)).setChecked(false);
+            }
+        }
+    }
+
+    public float getStartPosition() {
+        return mSeekBar.getStartPosition();
+    }
+
+    public float getEndPosition() {
+        return mSeekBar.getEndPosition();
+    }
+
+    public void setPositions(float mStartPosition, float mEndPosition) {
+        mSeekBar.setPositions(mStartPosition, mEndPosition);
+        invalidate();
+    }
+
+    public Integer getSelectedPointIndex() {
+        return mDetailedChartView.getSelectedPointIndex();
+    }
+
+    public void setSelectedPointIndex(Integer index) {
+        mDetailedChartView.setSelectedPointIndex(index);
     }
 
     //////////////////////////////////////////////////

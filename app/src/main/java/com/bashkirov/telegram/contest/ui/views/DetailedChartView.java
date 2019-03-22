@@ -56,6 +56,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
 
     private final List<SelectedPoint> mSelectedPoints = new ArrayList<>();
     private SelectedPointDraw mSelectedPointDraw = null;
+    private Integer mSelectedPointIndex;
 
     //================== Constructors ========================
 
@@ -89,6 +90,14 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         if (mStartPosition != null && mEndPosition != null) {
             onRangeChange(mStartPosition, mEndPosition);
         }
+    }
+
+    public Integer getSelectedPointIndex() {
+        return mSelectedPointIndex;
+    }
+
+    public void setSelectedPointIndex(Integer selectedPointIndex) {
+        processSelectedPointIndex(selectedPointIndex);
     }
 
     // ============= Override base behaviour ==========
@@ -162,25 +171,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
                     }
                 }
                 clearSelection();
-                if (selectedPointIndex == null) {
-                    invalidate();
-                    return true;
-                }
-                mSelectedPointDraw = new SelectedPointDraw(getContext());
-                for (Map.Entry<CurveModel, List<ViewPointModel>> entry : mNormalizedPointsMap.entrySet()) {
-                    CurveModel curve = entry.getKey();
-                    List<ViewPointModel> points = entry.getValue();
-                    mSelectedPoints.add(
-                            new SelectedPoint(points.get(selectedPointIndex),
-                                    getStrokePaintForSelectedPoint(curve.getColor()),
-                                    getFillPaintForSelectedPoint()));
-
-                    mSelectedPointDraw.addData(curve, selectedPointIndex);
-                }
-                float pointX = mSelectedPoints.get(0).point.getX();
-                mSelectedPointDraw.setPosition(pointX, pointX / getWidth() < 0.7);
-
-                invalidate();
+                processSelectedPointIndex(selectedPointIndex);
             }
             return true;
         });
@@ -244,6 +235,31 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
                 mTicksX.add(new Tick(mSimpleDateFormat.format(new Date(point.getX())), point, floatPoint));
             }
         }
+    }
+
+    private void processSelectedPointIndex(Integer selectedPointIndex) {
+        mSelectedPointIndex = selectedPointIndex;
+        if (selectedPointIndex == null) {
+            invalidate();
+            return;
+        }
+        mSelectedPointDraw = new SelectedPointDraw(getContext());
+        for (Map.Entry<CurveModel, List<ViewPointModel>> entry : mNormalizedPointsMap.entrySet()) {
+            CurveModel curve = entry.getKey();
+            List<ViewPointModel> points = entry.getValue();
+            mSelectedPoints.add(
+                    new SelectedPoint(points.get(selectedPointIndex),
+                            getStrokePaintForSelectedPoint(curve.getColor()),
+                            getFillPaintForSelectedPoint()));
+
+            mSelectedPointDraw.addData(curve, selectedPointIndex);
+        }
+        if (!mSelectedPoints.isEmpty()) {
+            float pointX = mSelectedPoints.get(0).point.getX();
+            mSelectedPointDraw.setPosition(pointX, pointX / getWidth() < 0.7);
+        }
+
+        invalidate();
     }
 
     private Paint getScaleLinePaint() {
@@ -319,7 +335,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         }
     }
 
-    private class SelectedPoint {
+    public class SelectedPoint {
         private final ViewPointModel point;
         private final Paint strokePaint;
         private final Paint fillPaint;

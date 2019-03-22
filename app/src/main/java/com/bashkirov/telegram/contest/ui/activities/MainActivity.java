@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.bashkirov.telegram.contest.R;
 import com.bashkirov.telegram.contest.ThisApplication;
 import com.bashkirov.telegram.contest.models.ChartModel;
+import com.bashkirov.telegram.contest.models.State;
 import com.bashkirov.telegram.contest.ui.views.CompoundChartView;
 import com.bashkirov.telegram.contest.utils.DataParser;
 import com.bashkirov.telegram.contest.utils.FileReader;
@@ -55,12 +56,20 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         setContentView(R.layout.activity_main);
         initViews();
         initAdapter();
-        loadData();
+        State state = ThisApplication.getInstance().getState();
+        if (state == null) {
+            loadData();
+        } else {
+            setState(state);
+        }
+
     }
 
     @Override
     protected void onDestroy() {
-        mLoader.interrupt();
+        if (mLoader != null) {
+            mLoader.interrupt();
+        }
         super.onDestroy();
     }
 
@@ -76,14 +85,15 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.switch_night_mode) {
             ThisApplication.getInstance().toggleNight();
-
-            //Restart without animation
-            Intent intent = getIntent();
-            overridePendingTransition(0, 0);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-            finish();
-            overridePendingTransition(0, 0);
-            startActivity(intent);
+            ThisApplication.getInstance().setState(
+                    new State(mCharts,
+                            mCompoundChartView.getHiddenCurvesIndexes(),
+                            mSpinner.getSelectedItemPosition(),
+                            mCompoundChartView.getStartPosition(),
+                            mCompoundChartView.getEndPosition(),
+                            mCompoundChartView.getSelectedPointIndex())
+            );
+            restartActivityWithoutAnimation();
             return true;
         }
         return false;
@@ -106,7 +116,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             try {
                 String data = FileReader.readStringFromAsset(this, TEST_DATA_FILE_NAME);
                 List<ChartModel> charts = DataParser.parseChartListJsonString(data);
-                postDataInUIThread(charts);
+                mCompoundChartView.post(() -> setCharts(charts));
             } catch (JSONException ex) {
                 ex.printStackTrace();
             }
@@ -114,17 +124,39 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         mLoader.start();
     }
 
-    private void postDataInUIThread(List<ChartModel> charts) {
+    private void setCharts(List<ChartModel> charts) {
+        if (charts.isEmpty()) return;
+        mCharts.clear();
+        mCharts.addAll(charts);
+        mChartNames.clear();
+        for (int i = 0; i < charts.size(); i++) {
+            mChartNames.add(getString(R.string.chart, i));
+        }
+        mSpinnerAdapter.notifyDataSetChanged();
+    }
+
+    @TargetApi(Build.VERSION_CODES.ECLAIR)
+    private void restartActivityWithoutAnimation() {
+        Intent intent = getIntent();
+        overridePendingTransition(0, 0);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        finish();
+        overridePendingTransition(0, 0);
+        startActivity(intent);
+    }
+
+    private void setState(State state) {
         mCompoundChartView.post(() -> {
-            if (charts.isEmpty()) return;
-            mCharts.clear();
-            mCharts.addAll(charts);
-            mChartNames.clear();
-            for (int i = 0; i < charts.size(); i++) {
-                mChartNames.add(getString(R.string.chart, i));
-            }
-            mSpinnerAdapter.notifyDataSetChanged();
+            setCharts(state.getCharts());
+            int selectedChartIndex = state.getSelectedChartIndex();
+            mCompoundChartView.loadChart(mCharts.get(selectedChartIndex));
+            mCompoundChartView.setHiddenCurvesIndexes(state.getHiddenCurvesIndexes());
+            mCompoundChartView.setPositions(state.getStartPosition(), state.getEndPosition());
+            mCompoundChartView.setSelectedPointIndex(state.getSelectedPointIndex());
+            mSpinner.setSelection(selectedChartIndex);
         });
+
+
     }
 
     //===================== OnItemSelectedListener ==========================
@@ -136,8 +168,10 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         }
 
         if (mCharts.size() > position) {
-            mCompoundChartView.clear();
-            mCompoundChartView.loadChart(mCharts.get(position));
+            ChartModel chart = mCharts.get(position);
+            if (mCompoundChartView.getLoadedChart() != chart) {
+                mCompoundChartView.loadChart(chart);
+            }
         }
     }
 
@@ -149,8 +183,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 //TODO
 /*
 1. Dynamic width for selected view
-2. Night theme
-3. Shadow
  */
 
 

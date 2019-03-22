@@ -49,6 +49,22 @@ public class CustomSeekBar extends View {
         listener.onRangeChange(mStartPosition, mEndPosition);
     }
 
+    public float getStartPosition() {
+        return mStartPosition;
+    }
+
+    public float getEndPosition() {
+        return mEndPosition;
+    }
+
+    public void setPositions(float mStartPosition, float mEndPosition) {
+        this.mStartPosition = mStartPosition;
+        this.mEndPosition = mEndPosition;
+        mListener.onRangeChange(mStartPosition, mEndPosition);
+        invalidate();
+    }
+
+
     //////////////////////////////////////////////////////////////
 
     @Override
