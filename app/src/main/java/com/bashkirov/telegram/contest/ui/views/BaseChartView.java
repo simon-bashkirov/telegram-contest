@@ -175,6 +175,10 @@ class BaseChartView extends View {
             Paint paint = mPaintMap.get(curve);
             List<ViewPointModel> points = mNormalizedPointsMap.get(curve);
             if (paint == null || points == null) continue;
+
+            ///Note: there could be some place for discussion on looped drawLine() vs drawlines().
+            //Although, there is a point of view that drawlines() is much efficient, tests show that the execution time is almost the same.
+            //On the other hand, drawlines() requires twice bigger data array. given that, looped drawLine() was chosen.
             for (int i = 0; i < points.size() - 1; i++) {
                 ViewPointModel point = points.get(i);
                 ViewPointModel nextPoint = points.get(i + 1);

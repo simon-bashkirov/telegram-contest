@@ -194,10 +194,3 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         //Do nothing
     }
 }
-
-//TODO
-/*
-1. Dynamic width for selected view
- */
-
-
