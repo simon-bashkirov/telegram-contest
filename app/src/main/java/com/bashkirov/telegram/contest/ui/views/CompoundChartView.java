@@ -1,6 +1,5 @@
 package com.bashkirov.telegram.contest.ui.views;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -152,12 +151,13 @@ public class CompoundChartView extends LinearLayout {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     private void setCheckBoxTint(CheckBox checkBox, int color) {
-        Drawable buttonDrawable = checkBox.getButtonDrawable();
-        if (buttonDrawable != null) {
-            buttonDrawable.setTint(color);
-            checkBox.setButtonDrawable(buttonDrawable);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            Drawable buttonDrawable = checkBox.getButtonDrawable();
+            if (buttonDrawable != null) {
+                buttonDrawable.setTint(color);
+                checkBox.setButtonDrawable(buttonDrawable);
+            }
         }
     }
 }

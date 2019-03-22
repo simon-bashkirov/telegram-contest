@@ -1,6 +1,5 @@
 package com.bashkirov.telegram.contest.ui.views;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -118,17 +117,26 @@ class SelectedPointDraw {
         bottomRightY = topLeftY + height;
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     void draw(Canvas canvas) {
         if (mPoints.isEmpty()) return;
-        canvas.drawRoundRect(topLeftX, topLeftY, bottomRightX, bottomRightY, mRadius, mRadius, mFramePaint);
-        canvas.drawRoundRect(topLeftX + strokeWidth / 2,
-                topLeftY + strokeWidth / 2,
-                bottomRightX - strokeWidth / 2,
-                bottomRightY - strokeWidth / 2,
-                mRadius,
-                mRadius,
-                mFillPaint);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            canvas.drawRoundRect(topLeftX, topLeftY, bottomRightX, bottomRightY, mRadius, mRadius, mFramePaint);
+            canvas.drawRoundRect(topLeftX + strokeWidth / 2,
+                    topLeftY + strokeWidth / 2,
+                    bottomRightX - strokeWidth / 2,
+                    bottomRightY - strokeWidth / 2,
+                    mRadius,
+                    mRadius,
+                    mFillPaint);
+
+        } else {
+            canvas.drawRect(topLeftX, topLeftY, bottomRightX, bottomRightY, mFramePaint);
+            canvas.drawRect(topLeftX + strokeWidth / 2,
+                    topLeftY + strokeWidth / 2,
+                    bottomRightX - strokeWidth / 2,
+                    bottomRightY - strokeWidth / 2,
+                    mFillPaint);
+        }
         canvas.drawText(mDate,
                 topLeftX + mPadding,
                 topLeftY + 0.5f * mPadding + mFirstLineHeight, mDateTextPaint);

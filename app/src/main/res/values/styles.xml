@@ -1,6 +1,6 @@
 <resources>
     <style name="AppTheme">
-        <item name="android:title">Statistics</item>
+        <item name="android:title">@string/title</item>
     </style>
 
     <style name="ActivityThemeDay" parent="ActivityTheme.Primary.Base.Day">

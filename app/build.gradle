@@ -4,6 +4,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.bashkirov.telegram.contest"
+
         minSdkVersion 1
         targetSdkVersion 28
         versionCode 1

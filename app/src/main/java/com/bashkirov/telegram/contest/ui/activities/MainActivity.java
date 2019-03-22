@@ -1,6 +1,5 @@
 package com.bashkirov.telegram.contest.ui.activities;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -81,7 +80,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         return super.onCreateOptionsMenu(menu);
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.switch_night_mode) {
@@ -143,13 +141,16 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         mSpinnerAdapter.notifyDataSetChanged();
     }
 
-    @TargetApi(Build.VERSION_CODES.ECLAIR)
     private void restartActivityWithoutAnimation() {
         Intent intent = getIntent();
-        overridePendingTransition(0, 0);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
+            overridePendingTransition(0, 0);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        }
         finish();
-        overridePendingTransition(0, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ECLAIR) {
+            overridePendingTransition(0, 0);
+        }
         startActivity(intent);
     }
 
