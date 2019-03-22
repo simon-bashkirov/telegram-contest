@@ -17,7 +17,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static com.bashkirov.telegram.contest.utils.ThemeHelper.getColorForAttrId;
+import static com.bashkirov.telegram.contest.utils.ThemeUtils.getColorForAttrId;
 
 public class CompoundChartView extends LinearLayout {
 
@@ -135,7 +135,9 @@ public class CompoundChartView extends LinearLayout {
             mCheckGroup.addView(checkBox);
             if (count < curves.size() - 1) {
                 View divider = new View(getContext());
-                divider.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDimension(R.dimen.divider_thickness))));
+                divider.setLayoutParams(
+                        new LinearLayout.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT, Math.round(getResources().getDimension(R.dimen.divider_thickness))));
                 divider.setBackgroundColor(getColorForAttrId(getContext(), android.R.attr.divider));
                 mCheckGroup.addView(divider);
                 count++;

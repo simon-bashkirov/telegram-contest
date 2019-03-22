@@ -10,14 +10,12 @@ public class CurveModel {
     private final List<PointModel> mPoints;
     private final int mColor;
     private final String mName;
-    private final String mType;
     private final BoundsModel mBounds;
 
     public CurveModel(List<PointModel> points, int color, String name, String type) {
         this.mPoints = points;
         this.mColor = color;
         this.mName = name;
-        this.mType = type;
         this.mBounds = initBounds();
     }
 

@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import static com.bashkirov.telegram.contest.utils.ThemeHelper.getColorForAttrId;
+import static com.bashkirov.telegram.contest.utils.ThemeUtils.getColorForAttrId;
 
 /**
  * Provides rangable and detailed chart visualisation
@@ -31,6 +31,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
 
     private static final int X_TICS_COUNT = 5;
     private static final int Y_TICS_COUNT = 5;
+
+    private static final float LIMIT_TO_SWITCH_SIDE = 0.7f;
 
     private static final int DEFAULT_Y_TICS_TEXT_PADDING_PX = -16;
     private static final int DEFAULT_X_TICS_TEXT_PADDING_PX = 60;
@@ -71,7 +73,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         super(context, attrs, defStyle);
         initBaseYPadding(DEFAULT_X_TICS_TEXT_PADDING_PX + 20);
         initTouchListener();
-       /*Uncomment this to enable shadows. This will cost disabling hardware acceleration that may affect the performance.
+       /*Uncomment this to enable shadows in paintings.
+        This will cost disabling hardware acceleration that may affect the performance.
        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             //Enable shadows
             setLayerType(LAYER_TYPE_SOFTWARE, new Paint());
@@ -85,8 +88,10 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     public void loadChart(ChartModel chart) {
         super.loadChart(chart);
         mInitialBounds = getBounds();
-        mXtickStep = Math.round((float) (mInitialBounds.getMaxX() - mInitialBounds.getMinX()) / X_TICS_COUNT);
-        mYtickStep = Math.round((float) (mInitialBounds.getMaxY() - mInitialBounds.getMinY()) / Y_TICS_COUNT);
+        mXtickStep = Math.round(
+                (float) (mInitialBounds.getMaxX() - mInitialBounds.getMinX()) / X_TICS_COUNT);
+        mYtickStep = Math.round(
+                (float) (mInitialBounds.getMaxY() - mInitialBounds.getMinY()) / Y_TICS_COUNT);
         roundYstep();
         if (mStartPosition != null && mEndPosition != null) {
             onRangeChange(mStartPosition, mEndPosition);
@@ -113,25 +118,31 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     @Override
     protected void onDraw(Canvas canvas) {
         for (Tick tick : mTicksY) {
-            canvas.drawLine(tick.floatPoint.getX(), tick.floatPoint.getY(), getWidth(), tick.floatPoint.getY(), mScaleLinePaint);
-            canvas.drawText(String.valueOf(tick.text), tick.floatPoint.getX(), tick.floatPoint.getY() + DEFAULT_Y_TICS_TEXT_PADDING_PX, mTextPaint);
+            canvas.drawLine(tick.floatPoint.getX(), tick.floatPoint.getY(), getWidth(),
+                    tick.floatPoint.getY(), mScaleLinePaint);
+            canvas.drawText(String.valueOf(tick.text), tick.floatPoint.getX(),
+                    tick.floatPoint.getY() + DEFAULT_Y_TICS_TEXT_PADDING_PX, mTextPaint);
         }
         for (Tick tick : mTicksX) {
-            canvas.drawText(String.valueOf(tick.text), tick.floatPoint.getX(), tick.floatPoint.getY() + DEFAULT_X_TICS_TEXT_PADDING_PX, mTextPaint);
+            canvas.drawText(String.valueOf(tick.text), tick.floatPoint.getX(),
+                    tick.floatPoint.getY() + DEFAULT_X_TICS_TEXT_PADDING_PX, mTextPaint);
         }
 
         Float verticalLineX = null;
 
         if (!mSelectedPoints.isEmpty()) {
             verticalLineX = mSelectedPoints.get(0).getX();
-            canvas.drawLine(verticalLineX, 0, verticalLineX, mTicksY.get(0).floatPoint.getY(), mScaleLinePaint);
+            canvas.drawLine(verticalLineX, 0, verticalLineX,
+                    mTicksY.get(0).floatPoint.getY(), mScaleLinePaint);
         }
 
         super.onDraw(canvas);
 
         for (SelectedPoint selectedPoint : mSelectedPoints) {
-            canvas.drawCircle(selectedPoint.getX(), selectedPoint.getY(), mSelectedPointStrokeRadius, selectedPoint.strokePaint);
-            canvas.drawCircle(selectedPoint.getX(), selectedPoint.getY(), mSelectedPointFillRadius, selectedPoint.fillPaint);
+            canvas.drawCircle(selectedPoint.getX(), selectedPoint.getY(),
+                    mSelectedPointStrokeRadius, selectedPoint.strokePaint);
+            canvas.drawCircle(selectedPoint.getX(), selectedPoint.getY(),
+                    mSelectedPointFillRadius, selectedPoint.fillPaint);
         }
         if (mSelectedPointDraw != null && verticalLineX != null) {
             mSelectedPointDraw.draw(canvas);
@@ -161,12 +172,13 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
                 float x = event.getX();
                 float y = event.getY();
                 Integer selectedPointIndex = null;
-                for (Map.Entry<CurveModel, List<ViewPointModel>> entry : mNormalizedPointsMap.entrySet()) {
+                for (Map.Entry<CurveModel, List<ViewPointModel>> entry
+                        : mNormalizedPointsMap.entrySet()) {
                     List<ViewPointModel> points = entry.getValue();
                     for (ViewPointModel point : points) {
                         float pointX = point.getX();
                         float pointY = point.getY();
-                        if (Math.abs(x - pointX) < 20f && Math.abs(y - pointY) < 200f) {
+                        if (Math.abs(x - pointX) < 20f && Math.abs(y - pointY) < 20f) {
                             selectedPointIndex = points.indexOf(point);
                         }
                     }
@@ -215,16 +227,20 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
             }
             Tick first = mTicksX.get(0);
             if (first.point.getX() - processedBounds.getMinX() > mXtickStep) {
-                PointModel point = new PointModel(first.point.getX() - mXtickStep, processedBounds.getMinY());
+                PointModel point = new PointModel(first.point.getX() - mXtickStep,
+                        processedBounds.getMinY());
                 ViewPointModel floatPoint = getViewPointForPoint(point, processedBounds);
-                mTicksX.add(0, new Tick(mSimpleDateFormat.format(new Date(point.getX())), point, floatPoint));
+                mTicksX.add(0, new Tick(
+                        mSimpleDateFormat.format(new Date(point.getX())), point, floatPoint));
                 return;
             }
             Tick last = mTicksX.get(mTicksX.size() - 1);
             if (processedBounds.getMaxX() - last.point.getX() > mXtickStep) {
-                PointModel point = new PointModel(last.point.getX() + mXtickStep, processedBounds.getMinY());
+                PointModel point = new PointModel(last.point.getX() + mXtickStep,
+                        processedBounds.getMinY());
                 ViewPointModel floatPoint = getViewPointForPoint(point, processedBounds);
-                mTicksX.add(new Tick(mSimpleDateFormat.format(new Date(point.getX())), point, floatPoint));
+                mTicksX.add(new Tick(mSimpleDateFormat.format(
+                        new Date(point.getX())), point, floatPoint));
             }
         } else {
             mTicksX.clear();
@@ -233,7 +249,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
             for (long i = minX; i < maxX; i += mXtickStep) {
                 PointModel point = new PointModel(i, processedBounds.getMinY());
                 ViewPointModel floatPoint = getViewPointForPoint(point, processedBounds);
-                mTicksX.add(new Tick(mSimpleDateFormat.format(new Date(point.getX())), point, floatPoint));
+                mTicksX.add(new Tick(
+                        mSimpleDateFormat.format(new Date(point.getX())), point, floatPoint));
             }
         }
     }
@@ -257,7 +274,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         }
         if (!mSelectedPoints.isEmpty()) {
             float pointX = mSelectedPoints.get(0).point.getX();
-            mSelectedPointDraw.setPosition(pointX, pointX / getWidth() < 0.7);
+            mSelectedPointDraw.setPosition(pointX, pointX / getWidth() < LIMIT_TO_SWITCH_SIDE);
         }
 
         invalidate();

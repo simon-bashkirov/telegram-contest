@@ -101,7 +101,8 @@ class BaseChartView extends View {
             if (adjustedBounds == null)
                 adjustedBounds = aCurve.adjustBoundsHeight(bounds.getMinX(), bounds.getMaxX());
             else
-                adjustedBounds = adjustedBounds.merge(aCurve.adjustBoundsHeight(bounds.getMinX(), bounds.getMaxX()));
+                adjustedBounds = adjustedBounds.merge(
+                        aCurve.adjustBoundsHeight(bounds.getMinX(), bounds.getMaxX()));
             List<ViewPointModel> normalized = normalize(aCurve.getPoints(), adjustedBounds);
             mNormalizedPointsMap.put(aCurve, normalized);
         }
@@ -176,13 +177,16 @@ class BaseChartView extends View {
             List<ViewPointModel> points = mNormalizedPointsMap.get(curve);
             if (paint == null || points == null) continue;
 
-            ///Note: there could be some place for discussion on looped drawLine() vs drawlines().
-            //Although, there is a point of view that drawlines() is much efficient, tests show that the execution time is almost the same.
-            //On the other hand, drawlines() requires twice bigger data array. given that, looped drawLine() was chosen.
+            // Note: there could be some place for discussion on looped drawLine() vs drawlines().
+            // Although, there is a point of view that drawlines() is much efficient,
+            // tests show that the execution time is almost the same.
+            // On the other hand, drawlines() requires twice bigger data array.
+            // Given that, looped drawLine() was chosen.
             for (int i = 0; i < points.size() - 1; i++) {
                 ViewPointModel point = points.get(i);
                 ViewPointModel nextPoint = points.get(i + 1);
-                canvas.drawLine(point.getX(), point.getY(), nextPoint.getX(), nextPoint.getY(), paint);
+                canvas.drawLine(point.getX(), point.getY(),
+                        nextPoint.getX(), nextPoint.getY(), paint);
             }
 
         }

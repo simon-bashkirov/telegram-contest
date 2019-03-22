@@ -20,7 +20,7 @@ import com.bashkirov.telegram.contest.models.State;
 import com.bashkirov.telegram.contest.ui.views.CompoundChartView;
 import com.bashkirov.telegram.contest.utils.DataParser;
 import com.bashkirov.telegram.contest.utils.FileReader;
-import com.bashkirov.telegram.contest.utils.ThemeHelper;
+import com.bashkirov.telegram.contest.utils.ThemeUtils;
 
 import org.json.JSONException;
 
@@ -97,7 +97,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     private void initAdapter() {
-        mSpinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mChartNames);
+        mSpinnerAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, mChartNames);
         mSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(mSpinnerAdapter);
         mSpinner.setOnItemSelectedListener(this);
@@ -180,7 +181,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         if (view instanceof TextView) {
             TextView tw = (TextView) view;
-            tw.setTextColor(ThemeHelper.getColorForAttrId(this, android.R.attr.textColor));
+            tw.setTextColor(ThemeUtils.getColorForAttrId(this, android.R.attr.textColor));
         }
 
         if (mCharts.size() > position) {

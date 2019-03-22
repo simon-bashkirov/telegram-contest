@@ -3,7 +3,7 @@ package com.bashkirov.telegram.contest.utils;
 import android.content.Context;
 import android.util.TypedValue;
 
-public class ThemeHelper {
+public class ThemeUtils {
 
     public static int getColorForAttrId(Context context, int attrId) {
         TypedValue typedValue = new TypedValue();

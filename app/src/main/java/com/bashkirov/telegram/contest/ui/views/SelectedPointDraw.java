@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import static com.bashkirov.telegram.contest.utils.ThemeHelper.getColorForAttrId;
+import static com.bashkirov.telegram.contest.utils.ThemeUtils.getColorForAttrId;
 
 /**
  * Draws selected point details on canvas.
@@ -120,7 +120,8 @@ class SelectedPointDraw {
     void draw(Canvas canvas) {
         if (mPoints.isEmpty()) return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            canvas.drawRoundRect(topLeftX, topLeftY, bottomRightX, bottomRightY, mRadius, mRadius, mFramePaint);
+            canvas.drawRoundRect(topLeftX, topLeftY, bottomRightX,
+                    bottomRightY, mRadius, mRadius, mFramePaint);
             canvas.drawRoundRect(topLeftX + strokeWidth / 2,
                     topLeftY + strokeWidth / 2,
                     bottomRightX - strokeWidth / 2,
@@ -148,7 +149,8 @@ class SelectedPointDraw {
                     point.valueTextPaint);
             canvas.drawText(String.valueOf(point.caption),
                     topLeftX + padding,
-                    topLeftY + 2.0f * mPadding + mFirstLineHeight + mSecondLineHeight + mThirdLineHeight,
+                    topLeftY + 2.0f * mPadding + mFirstLineHeight +
+                            mSecondLineHeight + mThirdLineHeight,
                     point.valueCaptionTextPaint);
             padding += point.length + mPaddingBetweenPoints;
         }

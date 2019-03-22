@@ -9,7 +9,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.bashkirov.telegram.contest.R;
-import com.bashkirov.telegram.contest.utils.ThemeHelper;
+import com.bashkirov.telegram.contest.utils.ThemeUtils;
 
 public class CustomSeekBar extends View {
 
@@ -77,19 +77,20 @@ public class CustomSeekBar extends View {
         float endFrame = mEndPosition * width;
         canvas.drawRect(0, 0, startFrame, height, mFillPaint);
         canvas.drawRect(endFrame, 0, width, height, mFillPaint);
-        canvas.drawRect(startFrame + mStrokeWidth / 2, 0, endFrame - mStrokeWidth / 2, height, mFramePaint);
+        canvas.drawRect(startFrame + mStrokeWidth / 2, 0,
+                endFrame - mStrokeWidth / 2, height, mFramePaint);
     }
 
     private Paint getFillPaint() {
         Paint paint = new Paint();
-        paint.setColor(ThemeHelper.getColorForAttrId(getContext(), R.attr.attrSeekBarFill));
+        paint.setColor(ThemeUtils.getColorForAttrId(getContext(), R.attr.attrSeekBarFill));
         paint.setStyle(Paint.Style.FILL);
         return paint;
     }
 
     private Paint getFramePaint() {
         Paint paint = new Paint();
-        paint.setColor(ThemeHelper.getColorForAttrId(getContext(), R.attr.attrSeekBarStroke));
+        paint.setColor(ThemeUtils.getColorForAttrId(getContext(), R.attr.attrSeekBarStroke));
         paint.setStrokeWidth(getResources().getDimension(R.dimen.seek_thumb_stroke_width));
         paint.setStyle(Paint.Style.STROKE);
         return paint;
@@ -112,8 +113,9 @@ public class CustomSeekBar extends View {
     }
 
     /**
-     * Handles action down. Sets mTouch to START, CENTER or END depending on @param x and SENSITIVITY_LENGTH
-     *
+     * Handles action down.
+     * Sets mTouch to START, CENTER or END depending on @param x and SENSITIVITY_LENGTH
+     * *
      * @param x event coordinate
      */
     private void handleActionDown(float x) {
@@ -141,7 +143,8 @@ public class CustomSeekBar extends View {
     private void handleActionMove(float x) {
         if (mTouch == Touch.START) {
             float newStartPosition = x / getWidth();
-            if ((newStartPosition < mStartPosition || mEndPosition - mStartPosition >= MIN_WIDTH) && newStartPosition >= 0f) {
+            if ((newStartPosition < mStartPosition ||
+                    mEndPosition - mStartPosition >= MIN_WIDTH) && newStartPosition >= 0f) {
                 mStartPosition = newStartPosition;
             }
 
@@ -158,7 +161,9 @@ public class CustomSeekBar extends View {
         }
         if (mTouch == Touch.END) {
             float newEndPosition = x / getWidth();
-            if ((newEndPosition > mEndPosition || mEndPosition - mStartPosition >= MIN_WIDTH) && newEndPosition <= 1f) {
+            if ((newEndPosition > mEndPosition ||
+                    mEndPosition - mStartPosition >= MIN_WIDTH) &&
+                    newEndPosition <= 1f) {
                 mEndPosition = x / getWidth();
             }
         }
