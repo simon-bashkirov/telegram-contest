@@ -16,11 +16,12 @@ public class CustomSeekBar extends View {
     //Constants
     private final static float SENSITIVITY_LENGTH = 0.1f;
     private final static float MIN_WIDTH = SENSITIVITY_LENGTH * 3.5f;
-    private final static float DEFAULT_END_POSITION = 1.0f;
-    private final static float DEFAULT_START_POSITION = DEFAULT_END_POSITION - MIN_WIDTH;
     private final Paint mFillPaint = getFillPaint();
     private final Paint mFramePaint = getFramePaint();
     private final float mStrokeWidth = getResources().getDimension(R.dimen.seek_thumb_stroke_width);
+
+    public final static float DEFAULT_END_POSITION = 1.0f;
+    public final static float DEFAULT_START_POSITION = DEFAULT_END_POSITION - MIN_WIDTH;
 
     //Private fields
     private float mStartPosition = DEFAULT_START_POSITION;
@@ -57,9 +58,9 @@ public class CustomSeekBar extends View {
         return mEndPosition;
     }
 
-    public void setPositions(float mStartPosition, float mEndPosition) {
-        this.mStartPosition = mStartPosition;
-        this.mEndPosition = mEndPosition;
+    public void setPositions(Float startPosition, Float endPosition) {
+        this.mStartPosition = startPosition != null ? startPosition : DEFAULT_START_POSITION;
+        this.mEndPosition = endPosition != null ? endPosition : DEFAULT_END_POSITION;
         mListener.onRangeChange(mStartPosition, mEndPosition);
         invalidate();
     }

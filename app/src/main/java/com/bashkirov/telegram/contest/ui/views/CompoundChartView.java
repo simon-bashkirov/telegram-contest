@@ -92,7 +92,7 @@ public class CompoundChartView extends LinearLayout {
         return mSeekBar.getEndPosition();
     }
 
-    public void setPositions(float mStartPosition, float mEndPosition) {
+    public void setPositions(Float mStartPosition, Float mEndPosition) {
         mSeekBar.setPositions(mStartPosition, mEndPosition);
         invalidate();
     }

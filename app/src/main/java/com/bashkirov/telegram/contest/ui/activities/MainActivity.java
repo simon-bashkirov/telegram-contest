@@ -26,6 +26,7 @@ import com.bashkirov.telegram.contest.utils.ThemeHelper;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 
@@ -85,14 +86,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.switch_night_mode) {
             ThisApplication.getInstance().toggleNight();
-            ThisApplication.getInstance().setState(
-                    new State(mCharts,
-                            mCompoundChartView.getHiddenCurvesIndexes(),
-                            mSpinner.getSelectedItemPosition(),
-                            mCompoundChartView.getStartPosition(),
-                            mCompoundChartView.getEndPosition(),
-                            mCompoundChartView.getSelectedPointIndex())
-            );
+            ThisApplication.getInstance().setState(getState());
             restartActivityWithoutAnimation();
             return true;
         }
@@ -116,12 +110,26 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             try {
                 String data = FileReader.readStringFromAsset(this, TEST_DATA_FILE_NAME);
                 List<ChartModel> charts = DataParser.parseChartListJsonString(data);
-                mCompoundChartView.post(() -> setCharts(charts));
+                setDefaultState(charts);
             } catch (JSONException ex) {
                 ex.printStackTrace();
             }
         });
         mLoader.start();
+    }
+
+    private void setDefaultState(List<ChartModel> charts) {
+        State defaultState = new State(
+                charts,
+                new HashSet<>(),
+                0,
+                //Not specified. Will be set by defaults
+                null,
+                null,
+                //No selected point
+                null
+        );
+        setState(defaultState);
     }
 
     private void setCharts(List<ChartModel> charts) {
@@ -155,8 +163,15 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
             mCompoundChartView.setSelectedPointIndex(state.getSelectedPointIndex());
             mSpinner.setSelection(selectedChartIndex);
         });
+    }
 
-
+    private State getState() {
+        return new State(mCharts,
+                mCompoundChartView.getHiddenCurvesIndexes(),
+                mSpinner.getSelectedItemPosition(),
+                mCompoundChartView.getStartPosition(),
+                mCompoundChartView.getEndPosition(),
+                mCompoundChartView.getSelectedPointIndex());
     }
 
     //===================== OnItemSelectedListener ==========================

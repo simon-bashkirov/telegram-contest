@@ -12,11 +12,11 @@ public class State {
     private final List<ChartModel> mCharts = new ArrayList<>();
     private final int mSelectedChartIndex;
     private final Set<Integer> mHiddenCurvesIndexes = new HashSet<>();
-    private final float mStartPosition;
-    private final float mEndPosition;
+    private final Float mStartPosition;
+    private final Float mEndPosition;
     private final Integer mSelectedPointIndex;
 
-    public State(List<ChartModel> charts, Set<Integer> hiddenCurvesIndexes, int selectedChartIndex, float startPosition, float endPosition, Integer selectedPointIndex) {
+    public State(List<ChartModel> charts, Set<Integer> hiddenCurvesIndexes, int selectedChartIndex, Float startPosition, Float endPosition, Integer selectedPointIndex) {
         this.mCharts.addAll(charts);
         this.mHiddenCurvesIndexes.addAll(hiddenCurvesIndexes);
         this.mSelectedChartIndex = selectedChartIndex;
@@ -37,11 +37,11 @@ public class State {
         return mHiddenCurvesIndexes;
     }
 
-    public float getStartPosition() {
+    public Float getStartPosition() {
         return mStartPosition;
     }
 
-    public float getEndPosition() {
+    public Float getEndPosition() {
         return mEndPosition;
     }
 
