@@ -27,6 +27,8 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
@@ -35,7 +37,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     private final String TEST_DATA_FILE_NAME = "chart_data.json";
 
     //Data
-    private Thread mLoader;
+    private ExecutorService mLoadingService = Executors.newSingleThreadExecutor();
     private final List<ChartModel> mCharts = new ArrayList<>();
 
     //Views
@@ -77,10 +79,8 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     @Override
     protected void onDestroy() {
-        if (mLoader != null) {
-            mLoader.interrupt();
-        }
         super.onDestroy();
+        mLoadingService.shutdown();
     }
 
     @Override
@@ -114,16 +114,16 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     private void loadData() {
-        mLoader = new Thread(() -> {
-            try {
-                String data = FileReader.readStringFromAsset(this, TEST_DATA_FILE_NAME);
-                List<ChartModel> charts = DataParser.parseChartListJsonString(data);
-                setDefaultState(charts);
-            } catch (JSONException ex) {
-                ex.printStackTrace();
-            }
-        });
-        mLoader.start();
+        mLoadingService.execute(() -> {
+                    try {
+                        String data = FileReader.readStringFromAsset(this, TEST_DATA_FILE_NAME);
+                        List<ChartModel> charts = DataParser.parseChartListJsonString(data);
+                        setDefaultState(charts);
+                    } catch (JSONException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
     }
 
     private void setDefaultState(List<ChartModel> charts) {
