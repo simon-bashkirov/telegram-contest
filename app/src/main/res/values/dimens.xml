@@ -12,6 +12,7 @@
     <dimen name="tick_text_size">14sp</dimen>
     <dimen name="detailed_chart_height">250dp</dimen>
     <dimen name="selected_point_radius">4dp</dimen>
+    <dimen name="point_selection_sensible_area">16dp</dimen>
 
     <!-- Selected point view -->
     <dimen name="selected_point_positioning_x_offset">20dp</dimen>

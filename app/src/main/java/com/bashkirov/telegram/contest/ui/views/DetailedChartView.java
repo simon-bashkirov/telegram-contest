@@ -35,9 +35,14 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     private static final int DEFAULT_Y_TICS_TEXT_PADDING_PX = -16;
     private static final int DEFAULT_X_TICS_TEXT_PADDING_PX = 60;
 
-    private final float mSelectedPointStrokeRadius = getResources().getDimension(R.dimen.selected_point_radius);
+    private final float mSelectedPointStrokeRadius = getResources()
+            .getDimension(R.dimen.selected_point_radius);
+
     private final float mSelectedPointFillRadius =
             mSelectedPointStrokeRadius - getResources().getDimension(R.dimen.curve_width) / 2;
+
+    private final float mPointSelectionSensibleArea = getResources()
+            .getDimension(R.dimen.point_selection_sensible_area);
 
     private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("MMM dd", Locale.US);
 
@@ -174,7 +179,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
                     for (ViewPointModel point : points) {
                         float pointX = point.getX();
                         float pointY = point.getY();
-                        if (Math.abs(x - pointX) < 20f && Math.abs(y - pointY) < 20f) {
+                        if (Math.abs(x - pointX) <= mPointSelectionSensibleArea &&
+                                Math.abs(y - pointY) <= mPointSelectionSensibleArea) {
                             selectedPointIndex = points.indexOf(point);
                         }
                     }
