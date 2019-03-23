@@ -4,6 +4,9 @@ import android.app.Application;
 
 import com.bashkirov.telegram.contest.models.State;
 
+/**
+ * Provides access to global state
+ */
 public class ThisApplication extends Application {
 
     private boolean mIsNight = false;
@@ -23,6 +26,9 @@ public class ThisApplication extends Application {
         return mIsNight;
     }
 
+    /**
+     * Switches day and night nodes
+     */
     public void toggleNight() {
         this.mIsNight = !this.mIsNight;
     }

@@ -26,7 +26,8 @@ import static com.bashkirov.telegram.contest.utils.ThemeUtils.getColorForAttrId;
  * This class may look somehow ugly, but it does for it is made for and works fast.
  */
 class SelectedPointDraw {
-    private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("EEE, MMM dd", Locale.US);
+    private final SimpleDateFormat mSimpleDateFormat =
+            new SimpleDateFormat("EEE, MMM dd", Locale.US);
 
     private final Context mContext;
     private float topLeftX;
@@ -72,7 +73,8 @@ class SelectedPointDraw {
     void addData(CurveModel curve, int selectedPointIndex) {
         PointModel point = curve.getPoints().get(selectedPointIndex);
         int intValue = point.getY();
-        String value = intValue < 10000 ? String.valueOf(intValue) : String.valueOf(Math.round((float) intValue / 1000) + "K");
+        String value = intValue < 10000 ?
+                String.valueOf(intValue) : String.valueOf(Math.round((float) intValue / 1000) + "K");
         String caption = curve.getName();
         Paint valueTextPaint = getValueTextPaint(curve.getColor());
         Paint captionTextPaint = getValueCaptionTextPaint(curve.getColor());
@@ -214,6 +216,5 @@ class SelectedPointDraw {
             this.length = length;
         }
     }
-
 }
 

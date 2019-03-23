@@ -49,7 +49,6 @@ public class BoundsModel {
                 Math.max(this.mMaxX, other.mMaxX),
                 Math.min(this.mMinY, other.mMinY),
                 Math.max(this.mMaxY, other.mMaxY));
-
     }
 
     @Override

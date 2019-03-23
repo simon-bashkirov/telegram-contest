@@ -62,7 +62,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         } else {
             setState(state);
         }
-
     }
 
     @Override

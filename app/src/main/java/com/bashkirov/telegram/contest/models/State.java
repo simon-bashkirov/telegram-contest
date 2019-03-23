@@ -9,6 +9,7 @@ import java.util.Set;
  * Provides model for saving activity state
  */
 public class State {
+
     private final List<ChartModel> mCharts = new ArrayList<>();
     private final int mSelectedChartIndex;
     private final Set<Integer> mHiddenCurvesIndexes = new HashSet<>();

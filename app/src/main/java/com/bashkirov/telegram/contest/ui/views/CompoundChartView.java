@@ -29,8 +29,6 @@ public class CompoundChartView extends LinearLayout {
     private CustomSeekBar mSeekBar;
     private LinearLayout mCheckGroup;
 
-    //   private Set<Integer> mHiddenCurvesIndexes = new HashSet<>();
-
     //============= Constructors ================
     public CompoundChartView(Context context) {
         this(context, null);

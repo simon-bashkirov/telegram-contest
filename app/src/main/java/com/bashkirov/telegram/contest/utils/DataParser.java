@@ -101,8 +101,8 @@ public class DataParser {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            // String type = types.getString(key);
             // Note: type is unused
+            // String type = types.getString(key);
             if (name != null && color != -1) {
                 CurveModel curveModel = new CurveModel(points, color, name);
                 curves.add(curveModel);

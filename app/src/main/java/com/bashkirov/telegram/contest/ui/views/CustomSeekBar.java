@@ -64,7 +64,6 @@ public class CustomSeekBar extends View {
         invalidate();
     }
 
-
     //////////////////////////////////////////////////////////////
 
     @Override
@@ -119,14 +118,17 @@ public class CustomSeekBar extends View {
      */
     private void handleActionDown(float x) {
         float touch = x / getWidth();
-        if (touch < mStartPosition + SENSITIVITY_LENGTH && touch > mStartPosition - SENSITIVITY_LENGTH) {
+        if (touch < mStartPosition + SENSITIVITY_LENGTH &&
+                touch > mStartPosition - SENSITIVITY_LENGTH) {
             this.mTouch = Touch.START;
         }
 
-        if (touch < mEndPosition + SENSITIVITY_LENGTH && touch > mEndPosition - SENSITIVITY_LENGTH) {
+        if (touch < mEndPosition + SENSITIVITY_LENGTH &&
+                touch > mEndPosition - SENSITIVITY_LENGTH) {
             this.mTouch = Touch.END;
         }
-        if (touch > mStartPosition + SENSITIVITY_LENGTH && touch < mEndPosition - SENSITIVITY_LENGTH) {
+        if (touch > mStartPosition + SENSITIVITY_LENGTH &&
+                touch < mEndPosition - SENSITIVITY_LENGTH) {
             this.mTouch = Touch.CENTER;
         }
 
@@ -186,7 +188,5 @@ public class CustomSeekBar extends View {
         CENTER,
         END
     }
-
-
 }
 

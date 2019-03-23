@@ -31,9 +31,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
 
     private static final int X_TICS_COUNT = 5;
     private static final int Y_TICS_COUNT = 5;
-
     private static final float LIMIT_TO_SWITCH_SIDE = 0.7f;
-
     private static final int DEFAULT_Y_TICS_TEXT_PADDING_PX = -16;
     private static final int DEFAULT_X_TICS_TEXT_PADDING_PX = 60;
 
@@ -73,6 +71,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         super(context, attrs, defStyle);
         initBaseYPadding(DEFAULT_X_TICS_TEXT_PADDING_PX + 20);
         initTouchListener();
+
        /*Uncomment this to enable shadows in paintings.
         This will cost disabling hardware acceleration that may affect the performance.
        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
@@ -147,7 +146,6 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         if (mSelectedPointDraw != null && verticalLineX != null) {
             mSelectedPointDraw.draw(canvas);
         }
-
     }
 
     @Override
@@ -161,9 +159,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         super.clear();
         clearSelection();
     }
-
     //////////////////////////////////////////////
-
 
     @SuppressLint("ClickableViewAccessibility")
     private void initTouchListener() {
@@ -194,7 +190,6 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         mSelectedPoints.clear();
         mSelectedPointDraw = null;
     }
-
 
     private void setTicksY() {
         BoundsModel processedBounds = getBounds();
@@ -276,7 +271,6 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
             float pointX = mSelectedPoints.get(0).point.getX();
             mSelectedPointDraw.setPosition(pointX, pointX / getWidth() < LIMIT_TO_SWITCH_SIDE);
         }
-
         invalidate();
     }
 
@@ -319,7 +313,6 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         mYtickStep = (mYtickStep / Y_TICS_COUNT) * Y_TICS_COUNT;
     }
 
-
     //============ RangeListener =====================
     @Override
     public void onRangeChange(float start, float end) {
@@ -331,8 +324,10 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         if (initialBounds == null) return;
         Float xStartShift = start * (initialBounds.getMaxX() - initialBounds.getMinX());
         Float xEndShift = end * (initialBounds.getMaxX() - initialBounds.getMinX());
-        BoundsModel newBounds = new BoundsModel(initialBounds.getMinX() + xStartShift.longValue(),
-                initialBounds.getMinX() + xEndShift.longValue(), initialBounds.getMinY(), initialBounds.getMaxY());
+        BoundsModel newBounds = new BoundsModel(
+                initialBounds.getMinX() + xStartShift.longValue(),
+                initialBounds.getMinX() + xEndShift.longValue(),
+                initialBounds.getMinY(), initialBounds.getMaxY());
         setBounds(newBounds);
         invalidate();
     }
@@ -372,5 +367,4 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
             return point.getY();
         }
     }
-
 }
