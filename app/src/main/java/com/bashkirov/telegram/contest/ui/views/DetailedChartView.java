@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
@@ -32,8 +33,6 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     private static final int X_TICS_COUNT = 5;
     private static final int Y_TICS_COUNT = 5;
     private static final float LIMIT_TO_SWITCH_SIDE = 0.7f;
-    private static final int DEFAULT_Y_TICS_TEXT_PADDING_PX = -16;
-    private static final int DEFAULT_X_TICS_TEXT_PADDING_PX = 60;
 
     private final float mSelectedPointStrokeRadius = getResources()
             .getDimension(R.dimen.selected_point_radius);
@@ -43,6 +42,9 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
 
     private final float mPointSelectionSensibleArea = getResources()
             .getDimension(R.dimen.point_selection_sensible_area);
+
+    private float mYTicksTextPadding;
+    private float mXTicksTextPadding;
 
     private final SimpleDateFormat mSimpleDateFormat = new SimpleDateFormat("MMM dd", Locale.US);
 
@@ -74,8 +76,8 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
 
     public DetailedChartView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        initBaseYPadding(DEFAULT_X_TICS_TEXT_PADDING_PX + 20);
         initTouchListener();
+        setPadding();
 
        /*Uncomment this to enable shadows in paintings.
         This will cost disabling hardware acceleration that may affect the performance.
@@ -121,26 +123,29 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        //Draw tick lines
         for (Tick tick : mTicksY) {
             canvas.drawLine(tick.floatPoint.getX(), tick.floatPoint.getY(), getWidth(),
                     tick.floatPoint.getY(), mScaleLinePaint);
             canvas.drawText(String.valueOf(tick.text), tick.floatPoint.getX(),
-                    tick.floatPoint.getY() + DEFAULT_Y_TICS_TEXT_PADDING_PX, mTextPaint);
+                    tick.floatPoint.getY() - mYTicksTextPadding, mTextPaint);
         }
+        //Draw curves
+        super.onDraw(canvas);
+
+        //Draw tick labels
         for (Tick tick : mTicksX) {
             canvas.drawText(String.valueOf(tick.text), tick.floatPoint.getX(),
-                    tick.floatPoint.getY() + DEFAULT_X_TICS_TEXT_PADDING_PX, mTextPaint);
+                    tick.floatPoint.getY() + mXTicksTextPadding, mTextPaint);
         }
-
         Float verticalLineX = null;
 
+        //Draw selected point
         if (!mSelectedPoints.isEmpty()) {
             verticalLineX = mSelectedPoints.get(0).getX();
             canvas.drawLine(verticalLineX, 0, verticalLineX,
                     mTicksY.get(0).floatPoint.getY(), mScaleLinePaint);
         }
-
-        super.onDraw(canvas);
 
         for (SelectedPoint selectedPoint : mSelectedPoints) {
             canvas.drawCircle(selectedPoint.getX(), selectedPoint.getY(),
@@ -165,6 +170,15 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         clearSelection();
     }
     //////////////////////////////////////////////
+
+    private void setPadding() {
+        mYTicksTextPadding = getResources().getDimension(R.dimen.y_tick_label_padding);
+        Rect rect = new Rect();
+        mTextPaint.getTextBounds("0", 0, 1, rect);
+        float height = (float) rect.height();
+        mXTicksTextPadding = height + getResources().getDimension(R.dimen.x_tick_label_padding);
+        mCurvePaddingBottom = getResources().getDimension(R.dimen.curve_padding) + mXTicksTextPadding;
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     private void initTouchListener() {

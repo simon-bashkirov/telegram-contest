@@ -32,13 +32,14 @@ class BaseChartView extends View {
 
     //Common fields
     final Map<CurveModel, List<ViewPointModel>> mNormalizedPointsMap = new HashMap<>();
+    float mCurvePaddingTop = getResources().getDimension(R.dimen.curve_padding);
+    float mCurvePaddingBottom = getResources().getDimension(R.dimen.curve_padding);
 
     //Private field
     private final List<CurveModel> mCurves = new LinkedList<>();
     private final Map<CurveModel, Boolean> mCurvesVisibility = new HashMap<>();
     private final Map<CurveModel, Paint> mPaintMap = new HashMap<>();
     private BoundsModel mBounds;
-    private int mBaseYPadding = 0;
 
     //============  View constructors =============
     public BaseChartView(Context context) {
@@ -128,19 +129,15 @@ class BaseChartView extends View {
      * @return Maps given point in data coordinates to view coordinates
      */
     ViewPointModel getViewPointForPoint(PointModel point, BoundsModel bounds) {
-        int width = getWidth();
-        int height = getHeight() - mBaseYPadding;
+        float width = getWidth();
+        float height = getHeight() - (mCurvePaddingTop + mCurvePaddingBottom);
+        float bottomLevelY = height + mCurvePaddingTop;
         long minX = bounds.getMinX();
         long maxX = bounds.getMaxX();
         int minY = bounds.getMinY();
         int maxY = bounds.getMaxY();
         return new ViewPointModel((float) (point.getX() - minX) / (maxX - minX) * width,
-                height - (float) (point.getY() - minY) / (maxY - minY) * (height));
-    }
-
-    @SuppressWarnings("SameParameterValue")
-    void initBaseYPadding(int mBaseYPadding) {
-        this.mBaseYPadding = mBaseYPadding;
+                bottomLevelY - (float) (point.getY() - minY) / (maxY - minY) * (height));
     }
 
     //================ View ==========================
