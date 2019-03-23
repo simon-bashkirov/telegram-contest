@@ -56,12 +56,23 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         setContentView(R.layout.activity_main);
         initViews();
         initAdapter();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         State state = ThisApplication.getInstance().getState();
         if (state == null) {
             loadData();
         } else {
             setState(state);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        ThisApplication.getInstance().setState(getState());
     }
 
     @Override
@@ -83,7 +94,6 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.switch_night_mode) {
             ThisApplication.getInstance().toggleNight();
-            ThisApplication.getInstance().setState(getState());
             restartActivityWithoutAnimation();
             return true;
         }
@@ -127,6 +137,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
                 //No selected point
                 null
         );
+        ThisApplication.getInstance().setState(defaultState);
         setState(defaultState);
     }
 
