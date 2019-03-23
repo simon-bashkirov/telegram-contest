@@ -189,4 +189,3 @@ public class CustomSeekBar extends View {
         END
     }
 }
-
