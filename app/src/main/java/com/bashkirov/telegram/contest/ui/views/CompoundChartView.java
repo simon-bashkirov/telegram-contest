@@ -58,11 +58,6 @@ public class CompoundChartView extends LinearLayout {
         return mChartModel;
     }
 
-    public void clear() {
-        mBaseChartView.clear();
-        mDetailedChartView.clear();
-    }
-
     public Set<Integer> getHiddenCurvesIndexes() {
         Set<Integer> set = new HashSet<>();
         for (int i = 0; i < mCheckGroup.getChildCount(); i++) {
@@ -161,5 +156,10 @@ public class CompoundChartView extends LinearLayout {
                 checkBox.setButtonDrawable(buttonDrawable);
             }
         }
+    }
+
+    private void clear() {
+        mBaseChartView.clear();
+        mDetailedChartView.clear();
     }
 }

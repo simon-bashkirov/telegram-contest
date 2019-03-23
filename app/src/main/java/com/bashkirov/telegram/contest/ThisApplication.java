@@ -15,6 +15,7 @@ public class ThisApplication extends Application {
         return ourInstance;
     }
 
+    @SuppressWarnings("WeakerAccess")
     public ThisApplication() {
     }
 

@@ -109,7 +109,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
     // ============= Override base behaviour ==========
 
     @Override
-    public void setBounds(BoundsModel bounds) {
+    void setBounds(BoundsModel bounds) {
         super.setBounds(bounds);
         setTicksX();
         setTicksY();
@@ -353,7 +353,7 @@ public class DetailedChartView extends BaseChartView implements RangeListener {
         }
     }
 
-    public class SelectedPoint {
+    private class SelectedPoint {
         private final ViewPointModel point;
         private final Paint strokePaint;
         private final Paint fillPaint;

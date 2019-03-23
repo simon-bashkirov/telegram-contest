@@ -3,7 +3,7 @@ package com.bashkirov.telegram.contest.ui.views;
 /**
  * Implements abstraction for listening range changes
  */
-public interface RangeListener {
+interface RangeListener {
 
     /**
      * Notifies range changes

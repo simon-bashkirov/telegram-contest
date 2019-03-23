@@ -31,11 +31,11 @@ class BaseChartView extends View {
     private final static Paint.Cap STROKE_CAP = Paint.Cap.ROUND;
 
     //Common fields
-    protected final List<CurveModel> mCurves = new LinkedList<>();
-    protected final Map<CurveModel, List<ViewPointModel>> mNormalizedPointsMap = new HashMap<>();
-    protected final Map<CurveModel, Boolean> mCurvesVisibility = new HashMap<>();
+    final Map<CurveModel, List<ViewPointModel>> mNormalizedPointsMap = new HashMap<>();
 
     //Private field
+    private final List<CurveModel> mCurves = new LinkedList<>();
+    private final Map<CurveModel, Boolean> mCurvesVisibility = new HashMap<>();
     private final Map<CurveModel, Paint> mPaintMap = new HashMap<>();
     private BoundsModel mBounds;
     private int mBaseYPadding = 0;
@@ -77,22 +77,11 @@ class BaseChartView extends View {
     }
 
     /**
-     * Loads single @param curve to be displayed
-     * @param curve curve to be loaded
-     */
-    public void loadCurve(CurveModel curve) {
-        mCurves.add(curve);
-        mPaintMap.put(curve, getCurvePaintForColor(curve.getColor()));
-        mCurvesVisibility.put(curve, true);
-        adjustBoundsForCurve(curve);
-    }
-
-    /**
      * Sets bound of data range
      *
      * @param bounds bounds that limit display data range
      */
-    public void setBounds(BoundsModel bounds) {
+    void setBounds(BoundsModel bounds) {
         mNormalizedPointsMap.clear();
         BoundsModel adjustedBounds = null;
         for (CurveModel aCurve : mCurves) {
@@ -127,20 +116,10 @@ class BaseChartView extends View {
         }
     }
 
-    //========= Protected methods ==============
+    //========= Package-private methods ==============
 
-    /**
-     * Maps given points in data coordinates to view coordinates
-     *
-     * @param points in data coordinates
-     * @return points in view coordinates
-     */
-    protected List<ViewPointModel> normalize(List<PointModel> points, BoundsModel bounds) {
-        List<ViewPointModel> normalized = new ArrayList<>();
-        for (PointModel point : points) {
-            normalized.add(getViewPointForPoint(point, bounds));
-        }
-        return normalized;
+    BoundsModel getBounds() {
+        return mBounds;
     }
 
     /**
@@ -148,7 +127,7 @@ class BaseChartView extends View {
      * @param bounds curve bounds
      * @return Maps given point in data coordinates to view coordinates
      */
-    protected ViewPointModel getViewPointForPoint(PointModel point, BoundsModel bounds) {
+    ViewPointModel getViewPointForPoint(PointModel point, BoundsModel bounds) {
         int width = getWidth();
         int height = getHeight() - mBaseYPadding;
         long minX = bounds.getMinX();
@@ -160,12 +139,8 @@ class BaseChartView extends View {
     }
 
     @SuppressWarnings("SameParameterValue")
-    protected void initBaseYPadding(int mBaseYPadding) {
+    void initBaseYPadding(int mBaseYPadding) {
         this.mBaseYPadding = mBaseYPadding;
-    }
-
-    protected BoundsModel getBounds() {
-        return mBounds;
     }
 
     //================ View ==========================
@@ -188,10 +163,21 @@ class BaseChartView extends View {
                 canvas.drawLine(point.getX(), point.getY(),
                         nextPoint.getX(), nextPoint.getY(), paint);
             }
-
         }
     }
     /////////////////////////////////////////////////////
+
+    /**
+     * Loads single @param curve to be displayed
+     *
+     * @param curve curve to be loaded
+     */
+    private void loadCurve(CurveModel curve) {
+        mCurves.add(curve);
+        mPaintMap.put(curve, getCurvePaintForColor(curve.getColor()));
+        mCurvesVisibility.put(curve, true);
+        adjustBoundsForCurve(curve);
+    }
 
     /**
      * Adjusts bounds for the given curve
@@ -211,6 +197,20 @@ class BaseChartView extends View {
 
     private void recalculateBounds() {
         setBounds(mBounds);
+    }
+
+    /**
+     * Maps given points in data coordinates to view coordinates
+     *
+     * @param points in data coordinates
+     * @return points in view coordinates
+     */
+    private List<ViewPointModel> normalize(List<PointModel> points, BoundsModel bounds) {
+        List<ViewPointModel> normalized = new ArrayList<>();
+        for (PointModel point : points) {
+            normalized.add(getViewPointForPoint(point, bounds));
+        }
+        return normalized;
     }
 
     /**

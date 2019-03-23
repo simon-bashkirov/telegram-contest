@@ -19,9 +19,8 @@ public class CustomSeekBar extends View {
     private final Paint mFillPaint = getFillPaint();
     private final Paint mFramePaint = getFramePaint();
     private final float mStrokeWidth = getResources().getDimension(R.dimen.seek_thumb_stroke_width);
-
-    public final static float DEFAULT_END_POSITION = 1.0f;
-    public final static float DEFAULT_START_POSITION = DEFAULT_END_POSITION - MIN_WIDTH;
+    private final static float DEFAULT_END_POSITION = 1.0f;
+    private final static float DEFAULT_START_POSITION = DEFAULT_END_POSITION - MIN_WIDTH;
 
     //Private fields
     private float mStartPosition = DEFAULT_START_POSITION;

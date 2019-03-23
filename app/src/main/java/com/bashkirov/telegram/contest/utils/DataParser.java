@@ -85,7 +85,9 @@ public class DataParser {
         //Parse properties
         JSONObject names = chartJson.getJSONObject("names");
         JSONObject colors = chartJson.getJSONObject("colors");
-        JSONObject types = chartJson.getJSONObject("types");
+
+        // Note: Types are unused.
+        // JSONObject types = chartJson.getJSONObject("types");
 
         //Create curves
         List<CurveModel> curves = new LinkedList<>();
@@ -99,9 +101,10 @@ public class DataParser {
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
-            String type = types.getString(key);
-            if (name != null && type != null && color != -1) {
-                CurveModel curveModel = new CurveModel(points, color, name, type);
+            // String type = types.getString(key);
+            // Note: type is unused
+            if (name != null && color != -1) {
+                CurveModel curveModel = new CurveModel(points, color, name);
                 curves.add(curveModel);
             }
         }

@@ -12,7 +12,7 @@ public class CurveModel {
     private final String mName;
     private final BoundsModel mBounds;
 
-    public CurveModel(List<PointModel> points, int color, String name, String type) {
+    public CurveModel(List<PointModel> points, int color, String name) {
         this.mPoints = points;
         this.mColor = color;
         this.mName = name;
