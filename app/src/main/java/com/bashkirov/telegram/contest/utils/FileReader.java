@@ -21,12 +21,10 @@ public class FileReader {
      */
     public static String readStringFromAsset(Context context, String fileName) {
         String string;
-        try {
-            InputStream is = context.getAssets().open(fileName);
+        try (InputStream is = context.getAssets().open(fileName)) {
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
-            is.close();
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                 string = new String(buffer, StandardCharsets.UTF_8);
             } else {
